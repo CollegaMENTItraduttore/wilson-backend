@@ -25,9 +25,13 @@
             $conn = $this->connectToDatabase();
             
             try {
-                $stmt = $conn->prepare("
-                    SELECT *
-                    from resident r"
+                $stmt = $conn->prepare('
+                    SELECT r.id, r.first_name, r.last_name, r.gender, 
+                           CONCAT( r.first_name," ",r.last_name) as nominative,
+                           r.picture
+                    from resident r
+                    ORDER BY nominative'
+                    
                 );
                 $stmt->execute();
                 array_push( $responseMessage, Costanti::OPERATION_OK);
