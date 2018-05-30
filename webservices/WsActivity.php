@@ -23,7 +23,12 @@
                 $dateEnd = DateUtils::getEndOfDay($dateStart);
                 $payload = $classManager->getListByFilters($_GET['idResident'], $dateStart, $dateEnd);
                 
-                break;   
+                break; 
+            case 'listForCategory':
+                $payload = $classManager-> listForCategory($_GET['idResident']);
+                
+                break; 
+              
             case 'getById':
                 $idActivityEdition = isset($_GET['idActivityEdition']) ? $_GET['idActivityEdition'] : null;
                 $payload = $classManager->getById($idActivityEdition);

@@ -1,6 +1,7 @@
 <?php
     require_once('../classes/std/WilsonBaseClass.php');
     require_once('../utils/Costanti.php');
+    require_once('../utils/DateUtils.php');
 
     class Activity extends WilsonBaseClass {
         function __construct() {
@@ -10,6 +11,50 @@
         function launch( $params, $data ) {
        
         }
+        /**
+         *  Metodo che ritorna la lista ordinate per id Categoria
+         * 
+         *  @param idResident
+         */
+        function listForCategory($idResident) {
+            $responseSuccess = true;
+            $responseMessage = [];
+            $responseData = [];
+
+            if (!isset($idResident)) {
+                throw new Exception(sprintf(Costanti::INVALID_FIELD, 'idResident'));
+            }
+            $conn = $this->connectToDatabase();
+            try {
+                
+                $stmt = $conn->prepare("
+                    SELECT  
+                        a.id as id_activity,
+                        a.id_resident,
+                        ac.id as id_category,
+                        a.name,
+                        ac.name as category
+                    FROM activity a
+                    INNER JOIN activity_category ac
+                        ON a.id_activity_category = ac.id
+                    where a.id_resident = ?
+                    GROUP BY a.name 
+                    ORDER BY ac.name ASC
+                ");
+                $dateStart =  DateUtils::getStartOfDay(new DateTime());
+                $dateEnd =  DateUtils::getEndOfDay(new DateTime());
+                $stmt->bindValue(1, $idResident, PDO::PARAM_INT);
+                $stmt->execute();
+
+                array_push( $responseMessage, Costanti::OPERATION_OK);
+                $responseData = $stmt -> fetchAll(PDO::FETCH_ASSOC);
+
+            } catch (Exception $e) {
+                $responseSuccess = false;
+                array_push( $responseMessage, sprintf(Costanti::OPERATION_KO, $e->getMessage()));
+            }
+            return $this->initWilsonResponse( $responseSuccess, $responseMessage, $responseData, '' );
+        } 
         /**
          *  Metodo che ritorna la lista ordinate per data inizio "ASC" delle attivita di un 
          *  determinato residente
@@ -69,7 +114,7 @@
          *  Metodo che ritorna la singola attività della tabella
          *  "Activity_Edition"
          * 
-         *  @param id_activity
+         *  @param id_activity_edition
          */
         function getById($idActivityEdition) {
             
