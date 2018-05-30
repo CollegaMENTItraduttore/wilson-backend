@@ -34,6 +34,52 @@ class DateUtils {
         $newDate->setTime(23, 59, 59);
         return $newDate;
     }
+
+    /**
+     * metodo utile a fare il parse delle ricorsivita
+     */
+    public static function whenRepeats( $every, $on ) {
+        $stringWhenRepeats = '';
+
+        switch ($every) {
+            case 'weekly':
+
+                $arrayAllDays = array(
+                    'MO'=>'Lunedì',
+                    'TU'=>'Martedì',
+                    'WE'=>'Mercoledì',
+                    'TH'=>'Giovedì',
+                    'FR'=>'Venerdì',
+                    'SA'=>'Sabato',
+                    'SU'=>'Domenica'
+                );
+
+                $stringWhenRepeats = 'Settimanalmente, tutti i ';
+                $arrayDays = explode(';', $on);
+
+                $countDay = 0;
+
+                foreach($arrayDays as &$value) {
+                    if (!empty($value)) {
+                        $countDay++;
+                        $stringWhenRepeats .= ($countDay > 1 ? ', ' : ' ') . $arrayAllDays[$value];
+                    }
+                }
+
+                if ($countDay > 0) {
+                    $stringWhenRepeats .= '.';
+                }
+
+                break;
+            
+            default:
+                # code...
+                break;
+        }
+
+        return $stringWhenRepeats;
+    }
+
 }
 
 

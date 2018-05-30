@@ -28,7 +28,13 @@
                 $idActivityEdition = isset($_GET['idActivityEdition']) ? $_GET['idActivityEdition'] : null;
                 $payload = $classManager->getById($idActivityEdition);
                 
-                break;   
+                break;
+                
+            case 'getPlannedById':
+                $idActivity = isset($_GET['idActivity']) ? $_GET['idActivity'] : null;
+                $payload = $classManager->getPlannedById($idActivity);
+                
+                break;
         }
         $result = $classManager -> initWilsonResponse( $payload->success, $payload->message, $payload->data, $tokenIsValid );
         echo json_encode($result);

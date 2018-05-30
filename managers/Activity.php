@@ -1,6 +1,7 @@
 <?php
     require_once('../classes/std/WilsonBaseClass.php');
     require_once('../utils/Costanti.php');
+    require_once('../utils/DateUtils.php');
 
     class Activity extends WilsonBaseClass {
         function __construct() {
@@ -96,13 +97,17 @@
                         a.location,
                         a.repeats_every,
                         a.repeats_on,
-                        ac.name as category
+                        ac.name as category,
+                        a.organized_by,
+                        concat(staff.first_name, ' ', staff.last_name) as organized_by_name
 
                     FROM activity_edition ae
                     INNER JOIN activity a
                         on a.id = ae.id_activity
                     INNER JOIN activity_category ac
                         ON a.id_activity_category = ac.id
+                    INNER JOIN staff staff
+                        on a.organized_by = staff.id
                     WHERE ae.id = ? 
                 ");
 
@@ -111,6 +116,67 @@
 
                 array_push( $responseMessage, Costanti::OPERATION_OK);
                 $responseData = $stmt -> fetchAll(PDO::FETCH_ASSOC);
+
+                foreach ($responseData as &$value) {
+                    $value['when_repeats'] = DateUtils::whenRepeats($value['repeats_every'], $value['repeats_on']);
+                }
+
+            } catch (Exception $e) {
+                $responseSuccess = false;
+                array_push( $responseMessage, sprintf(Costanti::OPERATION_KO, $e->getMessage()));
+            }
+            return $this->initWilsonResponse( $responseSuccess, $responseMessage, $responseData, '' );
+        }
+
+        /**
+         *  Metodo che ritorna la pianificazione attività
+         *  dalla lista generica per utente
+         * 
+         *  @param id_activity
+         */
+        function getPlannedById($idActivity) {
+            
+            $responseSuccess = true;
+            $responseMessage = [];
+            $responseData = [];
+
+            if (!isset($idActivity)) {
+                throw new Exception(sprintf(Costanti::INVALID_FIELD, 'idActivity'));
+            }
+           
+            $conn = $this->connectToDatabase();
+            try {
+                
+                $stmt = $conn->prepare("
+                    SELECT 
+                        a.id as id_activity,
+                        a.id_resident,
+                        a.name,
+                        a.description,
+                        a.location,
+                        a.repeats_every,
+                        a.repeats_on,
+                        ac.name as category,
+                        a.organized_by,
+                        concat(staff.first_name, ' ', staff.last_name) as organized_by_name
+
+                    FROM activity a
+                    INNER JOIN activity_category ac
+                        ON a.id_activity_category = ac.id
+                    INNER JOIN staff staff
+                        on a.organized_by = staff.id
+                    WHERE a.id = ? 
+                ");
+
+                $stmt->bindValue(1, $idActivity, PDO::PARAM_INT);
+                $stmt->execute();
+
+                array_push( $responseMessage, Costanti::OPERATION_OK);
+                $responseData = $stmt -> fetchAll(PDO::FETCH_ASSOC);
+
+                foreach ($responseData as &$value) {
+                    $value['when_repeats'] = DateUtils::whenRepeats($value['repeats_every'], $value['repeats_on']);
+                }
 
             } catch (Exception $e) {
                 $responseSuccess = false;
