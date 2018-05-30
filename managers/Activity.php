@@ -41,8 +41,7 @@
                     GROUP BY a.name 
                     ORDER BY ac.name ASC
                 ");
-                $dateStart =  DateUtils::getStartOfDay(new DateTime());
-                $dateEnd =  DateUtils::getEndOfDay(new DateTime());
+                
                 $stmt->bindValue(1, $idResident, PDO::PARAM_INT);
                 $stmt->execute();
 
