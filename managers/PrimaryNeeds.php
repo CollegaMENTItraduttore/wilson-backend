@@ -24,21 +24,14 @@
                 $conn = $this->connectToDatabase();
                 $stmt = $conn->prepare("
                     SELECT 
-                        et.name as event_name,
-                        pn.created_on,
-                        ec.name as category,
-                        eep.name as nameExtraParam,
-                        eep.value_text as valueString,
-                        eep.value_num as valueNum
-
-                    FROM primary_need pn
-                    INNER JOIN event_type et
-                        ON et.id = pn.id_type
-                    INNER JOIN event_category ec
-                        ON ec.id = et.id_category
-                    INNER JOIN event_extra_param eep 
-                        ON pn.id = eep.id_primary_need
-                    WHERE pn.id = ?
+                        id,
+                        name,
+                        description,
+                        value_text,
+                        value_num,
+                        created_by
+                    FROM event_extra_param eep 
+                    WHERE eep.id_primary_need = ?
                 ");
                 $stmt->bindValue(1, $idPrimaryNeed, PDO::PARAM_INT);
                 $stmt->execute();
@@ -70,6 +63,7 @@
                         pn.id_resident,
                         pn.id_type,
                         pn.id as id_primary_need,
+                        et.id_category,
                         et.name as event_name,
                         pn.created_on,
                         ec.name as category
