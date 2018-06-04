@@ -14,23 +14,40 @@
         echo $classManager -> initWilsonResponse(false, ['Invalid Token'], []);
         return false;
     } else {
-        
-        switch ($_GET['action']) {
-            case 'get':
-                $payload = $classManager->getById(isset($_GET['id']) ? $_GET['id'] : null);
+
+        $success = true;
+        $message = [];
+        $payload = [];
+
+        try {
+
+            switch ($_GET['action']) {
+                case 'list':
+                    $idResident = isset($_GET['idResident']) ? $_GET['idResident']: null; 
+                    $dateStart = isset($_GET['dateStart']) ? $_GET['dateStart'] : null;
+                    $dateStart = DateUtils::getStartOfDay($dateStart);
+                    $dateEnd = DateUtils::getEndOfDay($dateStart);
+                    $payload = $classManager->getListByFilters($idResident, $dateStart, $dateEnd);
+                    break;
+
+                case 'getById':
+                    $idPrimaryNeed = isset($_GET['idPrimaryNeed']) ? $_GET['idPrimaryNeed']: null; 
+                    $payload = $classManager->getById($idPrimaryNeed);
                 break;
-            
-            case 'list':
-                //$payload = $classManager->getList();
-                break;
-            
-            case 'save':
-                //TODO: controllare se c'è
-                $data = json_decode( file_get_contents('php://input') );
-                $classManager->save( $data );
-                break;
+                case 'save':
+                    //TODO: controllare se c'è
+                    $data = json_decode( file_get_contents('php://input') );
+                    $classManager->save( $data );
+                    break;
+            }
+
+        } catch(Exception $e) {
+            $success = false;
+            array_push($message, $e->getMessage());
+
+        } finally {
+            $result = $classManager -> initWilsonResponse( $success, $message, $payload, $tokenIsValid );
+            echo json_encode($result);
         }
-        $result = $classManager -> initWilsonResponse( $payload->success, $payload->message, $payload->data, $tokenIsValid );
-        echo json_encode($result);
     }
 ?>

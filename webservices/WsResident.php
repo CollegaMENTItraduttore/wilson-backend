@@ -14,14 +14,30 @@
         echo $classManager -> initWilsonResponse(false, ['Invalid Token'], []);
         return false;
     } else {
-        
-        switch ($_GET['action']) {
+        $success = true;
+        $message = [];
+        $payload = [];
+        try {
+
+            switch ($_GET['action']) {
            
-            case 'list':
-                $payload = $classManager->getList();
-                break;   
-        }
-        $result = $classManager -> initWilsonResponse( $payload->success, $payload->message, $payload->data, $tokenIsValid );
-        echo json_encode($result);
+                case 'list':
+                    $payload = $classManager->getList();
+                    break;   
+                case 'getById':
+                    $idResident = isset($_GET['idResident']) ? $_GET['idResident'] : null;
+                    $payload = $classManager->getById($idResident);
+                    break;   
+            }
+
+        } catch(Exception $e) {
+
+            $success = false;
+            array_push($message, $e->getMessage());
+
+        } finally {
+            $result = $classManager -> initWilsonResponse( $success, $message, $payload, $tokenIsValid );
+            echo json_encode($result);
+        }       
     }
 ?>

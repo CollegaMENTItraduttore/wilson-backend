@@ -16,11 +16,8 @@
          * 
          *  @param idResident
          */
-        function listForCategory($idResident) {
-            $responseSuccess = true;
-            $responseMessage = [];
-            $responseData = [];
-
+        function getPlannedList($idResident) {
+            $data = [];
             if (!isset($idResident)) {
                 throw new Exception(sprintf(Costanti::INVALID_FIELD, 'idResident'));
             }
@@ -44,15 +41,12 @@
                 
                 $stmt->bindValue(1, $idResident, PDO::PARAM_INT);
                 $stmt->execute();
-
-                array_push( $responseMessage, Costanti::OPERATION_OK);
-                $responseData = $stmt -> fetchAll(PDO::FETCH_ASSOC);
+                $data = $stmt -> fetchAll(PDO::FETCH_ASSOC);
 
             } catch (Exception $e) {
-                $responseSuccess = false;
-                array_push( $responseMessage, sprintf(Costanti::OPERATION_KO, $e->getMessage()));
+                throw new Exception(sprintf(Costanti::OPERATION_KO, $e->getMessage()));
             }
-            return $this->initWilsonResponse( $responseSuccess, $responseMessage, $responseData, '' );
+            return $data;
         } 
         /**
          *  Metodo che ritorna la lista ordinate per data inizio "ASC" delle attivita di un 
@@ -63,11 +57,7 @@
          *  @param dateEnd 
          */
         function getListByFilters($idResident, $dateStart, $dateEnd) {
-            
-            $responseSuccess = true;
-            $responseMessage = [];
-            $responseData = [];
-
+            $data = [];
             if (!isset($idResident)) {
                 throw new Exception(sprintf(Costanti::INVALID_FIELD, 'idResident'));
             }
@@ -100,14 +90,12 @@
                 $stmt->bindValue(3, $dateEnd->format('Y-m-d H:i:s'), PDO::PARAM_STR);
                 $stmt->execute();
 
-                array_push( $responseMessage, Costanti::OPERATION_OK);
-                $responseData = $stmt -> fetchAll(PDO::FETCH_ASSOC);
+                $data = $stmt -> fetchAll(PDO::FETCH_ASSOC);
 
             } catch (Exception $e) {
-                $responseSuccess = false;
-                array_push( $responseMessage, sprintf(Costanti::OPERATION_KO, $e->getMessage()));
+                throw new Exception(sprintf(Costanti::OPERATION_KO, $e->getMessage()));
             }
-            return $this->initWilsonResponse( $responseSuccess, $responseMessage, $responseData, '' );
+            return $data;
         }
         /**
          *  Metodo che ritorna la singola attività della tabella
@@ -117,14 +105,9 @@
          */
         function getById($idActivityEdition) {
             
-            $responseSuccess = true;
-            $responseMessage = [];
-            $responseData = [];
-
             if (!isset($idActivityEdition)) {
                 throw new Exception(sprintf(Costanti::INVALID_FIELD, 'idActivityEdition'));
             }
-           
             $conn = $this->connectToDatabase();
             try {
                 
@@ -157,18 +140,16 @@
                 $stmt->bindValue(1, $idActivityEdition, PDO::PARAM_INT);
                 $stmt->execute();
 
-                array_push( $responseMessage, Costanti::OPERATION_OK);
-                $responseData = $stmt -> fetchAll(PDO::FETCH_ASSOC);
+                $data = $stmt -> fetchAll(PDO::FETCH_ASSOC);
 
-                foreach ($responseData as &$value) {
+                foreach ($data as &$value) {
                     $value['when_repeats'] = DateUtils::whenRepeats($value['repeats_every'], $value['repeats_on']);
                 }
 
             } catch (Exception $e) {
-                $responseSuccess = false;
-                array_push( $responseMessage, sprintf(Costanti::OPERATION_KO, $e->getMessage()));
+                throw new Exception(sprintf(Costanti::OPERATION_KO, $e->getMessage()));
             }
-            return $this->initWilsonResponse( $responseSuccess, $responseMessage, $responseData, '' );
+            return $data;
         }
 
         /**
@@ -179,9 +160,7 @@
          */
         function getPlannedById($idActivity) {
             
-            $responseSuccess = true;
-            $responseMessage = [];
-            $responseData = [];
+            $data = [];
 
             if (!isset($idActivity)) {
                 throw new Exception(sprintf(Costanti::INVALID_FIELD, 'idActivity'));
@@ -214,18 +193,16 @@
                 $stmt->bindValue(1, $idActivity, PDO::PARAM_INT);
                 $stmt->execute();
 
-                array_push( $responseMessage, Costanti::OPERATION_OK);
-                $responseData = $stmt -> fetchAll(PDO::FETCH_ASSOC);
+                $data = $stmt -> fetchAll(PDO::FETCH_ASSOC);
 
-                foreach ($responseData as &$value) {
+                foreach ($data as &$value) {
                     $value['when_repeats'] = DateUtils::whenRepeats($value['repeats_every'], $value['repeats_on']);
                 }
 
             } catch (Exception $e) {
-                $responseSuccess = false;
-                array_push( $responseMessage, sprintf(Costanti::OPERATION_KO, $e->getMessage()));
+                throw new Exception(sprintf(Costanti::OPERATION_KO, $e->getMessage()));
             }
-            return $this->initWilsonResponse( $responseSuccess, $responseMessage, $responseData, '' );
+            return $data;
         }
     }
 ?>

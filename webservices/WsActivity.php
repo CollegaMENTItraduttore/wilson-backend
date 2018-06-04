@@ -16,32 +16,46 @@
         return false;
     } else {
         
-        switch ($_GET['action']) {
-            case 'list':
-                $dateStart = isset($_GET['dateStart']) ? $_GET['dateStart'] : null;
-                $dateStart = DateUtils::getStartOfDay($dateStart);
-                $dateEnd = DateUtils::getEndOfDay($dateStart);
-                $payload = $classManager->getListByFilters($_GET['idResident'], $dateStart, $dateEnd);
-                
-                break; 
-            case 'listForCategory':
-                $payload = $classManager-> listForCategory($_GET['idResident']);
-                
-                break; 
-              
-            case 'getById':
-                $idActivityEdition = isset($_GET['idActivityEdition']) ? $_GET['idActivityEdition'] : null;
-                $payload = $classManager->getById($idActivityEdition);
-                
-                break;
-                
-            case 'getPlannedById':
-                $idActivity = isset($_GET['idActivity']) ? $_GET['idActivity'] : null;
-                $payload = $classManager->getPlannedById($idActivity);
-                
-                break;
-        }
-        $result = $classManager -> initWilsonResponse( $payload->success, $payload->message, $payload->data, $tokenIsValid );
-        echo json_encode($result);
+        $success = true;
+        $message = [];
+        $payload = [];
+
+        try {
+
+            switch ($_GET['action']) {
+                case 'list':
+                    $dateStart = isset($_GET['dateStart']) ? $_GET['dateStart'] : null;
+                    $dateStart = DateUtils::getStartOfDay($dateStart);
+                    $dateEnd = DateUtils::getEndOfDay($dateStart);
+                    $payload = $classManager->getListByFilters($_GET['idResident'], $dateStart, $dateEnd);
+                    
+                    break; 
+                case 'getPlannedList':
+                    $payload = $classManager-> getPlannedList($_GET['idResident']);
+                    break; 
+                  
+                case 'getById': //id = idActivityEdition
+                    $idActivityEdition = isset($_GET['id']) ? $_GET['id'] : null;
+                    $payload = $classManager->getById($idActivityEdition);
+                    
+                    break;
+                    
+                case 'getPlannedById'://id = id_activity
+                    $idActivity = isset($_GET['id']) ? $_GET['id'] : null;
+                    $payload = $classManager->getPlannedById($idActivity);
+                    
+                    break;
+            }
+            array_push($message, Costanti::OPERATION_OK);
+
+        } catch (Exception $e) {
+
+            $success = false;
+            array_push($message, $e->getMessage());
+
+        } finally {
+            $result = $classManager -> initWilsonResponse( $success, $message, $payload, $tokenIsValid );
+            echo json_encode($result);
+        }        
     }
 ?>
