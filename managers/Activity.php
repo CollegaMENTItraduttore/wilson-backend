@@ -29,13 +29,15 @@
                         a.id as id_activity,
                         a.id_resident,
                         ac.id as id_category,
-                        a.name,
+                        ai.name,
                         ac.name as category
                     FROM activity a
+                    INNER JOIN activity_info ai
+                        ON a.id_activity_info = ai.id
                     INNER JOIN activity_category ac
-                        ON a.id_activity_category = ac.id
+                        ON ai.id_activity_category = ac.id
                     where a.id_resident = ?
-                    GROUP BY a.name 
+                    GROUP BY ai.name 
                     ORDER BY ac.name ASC
                 ");
                 
@@ -75,12 +77,14 @@
                         ae.id as id_activity_edition,
                         a.id as id_activity,
                         a.id_resident,
-                        a.name,
+                        ai.name,
                         ae.start_date, 
                         ae.end_date 
                     FROM activity_edition ae
                     INNER JOIN activity a
-                    on ae.id_activity = a.id
+                        on ae.id_activity = a.id
+                    INNER JOIN activity_info ai
+                        ON a.id_activity_info = ai.id
                     WHERE a.id_resident = ? AND ae.end_date >= ? AND ae.start_date <= ?
                     ORDER BY ae.start_date ASC"
                 );
@@ -115,11 +119,12 @@
                     SELECT 
                         ae.id as id_activity_edition,
                         a.id as id_activity,
+                        ai.id_activity_category as id_activity_category,
                         a.id_resident,
-                        a.name,
+                        ai.name,
                         ae.start_date, 
                         ae.end_date ,
-                        a.description,
+                        ai.description,
                         a.location,
                         a.repeats_every,
                         a.repeats_on,
@@ -130,8 +135,10 @@
                     FROM activity_edition ae
                     INNER JOIN activity a
                         on a.id = ae.id_activity
+                    INNER JOIN activity_info ai
+                        ON a.id_activity_info = ai.id
                     INNER JOIN activity_category ac
-                        ON a.id_activity_category = ac.id
+                        ON ai.id_activity_category = ac.id
                     INNER JOIN staff staff
                         on a.organized_by = staff.id
                     WHERE ae.id = ? 
@@ -170,11 +177,11 @@
             try {
                 
                 $stmt = $conn->prepare("
-                    SELECT 
+                    SELECT
                         a.id as id_activity,
                         a.id_resident,
-                        a.name,
-                        a.description,
+                        ai.name,
+                        ai.description,
                         a.location,
                         a.repeats_every,
                         a.repeats_on,
@@ -183,8 +190,10 @@
                         concat(staff.first_name, ' ', staff.last_name) as organized_by_name
 
                     FROM activity a
+                    INNER JOIN activity_info ai
+                        ON a.id_activity_info = ai.id
                     INNER JOIN activity_category ac
-                        ON a.id_activity_category = ac.id
+                        ON ai.id_activity_category = ac.id
                     INNER JOIN staff staff
                         on a.organized_by = staff.id
                     WHERE a.id = ? 
