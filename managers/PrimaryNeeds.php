@@ -81,13 +81,17 @@
                 $stmt->bindValue(2, $dateStart->format('Y-m-d H:i:s'), PDO::PARAM_STR);
                 $stmt->bindValue(3, $dateEnd->format('Y-m-d H:i:s'), PDO::PARAM_STR);
                 $stmt->execute();
-
+               
                 $data = $stmt -> fetchAll(PDO::FETCH_ASSOC);
 
             } catch (Exception $e) {
                 throw new Exception(sprintf(Costanti::OPERATION_KO, $e->getMessage()));
             }
             return $data;
+        }
+
+        function getImageFromCategory($idCategory) {
+
         }
         
         function getList() {           

@@ -72,5 +72,35 @@
             }
             return $data;
         }
+        /**
+         *  Esegue l'update dei campi relativi all'ospite
+         *  @param object
+         */
+        function update($object) {
+
+            $data = null;        
+            try {
+
+                $conn = $this->connectToDatabase();
+                $stmt = $conn->prepare("
+                    UPDATE resident r 
+                        SET r.biography=:BIOGRAPHY, r.habits=:HABITS, r.extra_info=:EXTRA_INFO 
+                    WHERE r.id = :IDRESIDENT"
+                );
+
+                $stmt->bindValue(":BIOGRAPHY", $object->biography, PDO::PARAM_STR);
+                $stmt->bindValue(":HABITS", $object->habits, PDO::PARAM_STR);
+                $stmt->bindValue(":EXTRA_INFO", $object->extra_info, PDO::PARAM_STR);
+                $stmt->bindValue(":IDRESIDENT", $object->id_resident, PDO::PARAM_INT);
+
+                $stmt->execute();
+                //recupero l'id
+               //$data = $stmp->lastInsertId()
+
+            } catch (Exception $e) {
+                throw new Exception(sprintf(Costanti::OPERATION_KO, $e->getMessage()));
+            }
+            return $data;
+        }
     }
 ?>

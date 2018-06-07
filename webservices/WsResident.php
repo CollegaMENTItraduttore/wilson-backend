@@ -28,6 +28,10 @@
                     $idResident = isset($_GET['idResident']) ? $_GET['idResident'] : null;
                     $payload = $classManager->getById($idResident);
                     break;   
+                case 'update':
+                    $object = json_decode( file_get_contents('php://input'));
+                    //$payload = $classManager->update($object);
+                    break;   
             }
 
         } catch(Exception $e) {
