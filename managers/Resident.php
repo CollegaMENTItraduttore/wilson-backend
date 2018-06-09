@@ -56,9 +56,16 @@
             
             try {
                 $stmt = $conn->prepare("
-                    SELECT r.id, r.first_name, r.last_name, r.gender,
-                           r.picture, r.birthday, r.birthplace,
-                           r.biography
+                    SELECT r.id, 
+                           r.first_name, 
+                           r.last_name, 
+                           r.gender,
+                           r.picture, 
+                           r.birthday, 
+                           r.birthplace,
+                           r.biography,
+                           r.habits,
+                           r.extra_info
                     FROM resident r
                     WHERE r.id = ?"                  
                 );
@@ -77,7 +84,6 @@
          *  @param object
          */
         function update($object) {
-
             $data = null;        
             try {
 

@@ -28,22 +28,23 @@
                     $dateStart = DateUtils::getStartOfDay($dateStart);
                     $dateEnd = DateUtils::getEndOfDay($dateStart);
                     $payload = $classManager->getListByFilters($_GET['idResident'], $dateStart, $dateEnd);
-                    
+                    $keyData = 'activitiesList';
                     break; 
                 case 'getPlannedList':
                     $payload = $classManager-> getPlannedList($_GET['idResident']);
+                    $keyData = 'activitiesPlanList';
                     break; 
                   
                 case 'getById': //id = idActivityEdition
                     $idActivityEdition = isset($_GET['id']) ? $_GET['id'] : null;
                     $payload = $classManager->getById($idActivityEdition);
-                    
+                    $keyData = 'activityDetail';
                     break;
                     
                 case 'getPlannedById'://id = id_activity
                     $idActivity = isset($_GET['id']) ? $_GET['id'] : null;
                     $payload = $classManager->getPlannedById($idActivity);
-                    
+                    $keyData = 'activityDetail';
                     break;
             }
             array_push($message, Costanti::OPERATION_OK);
@@ -54,7 +55,7 @@
             array_push($message, $e->getMessage());
 
         } finally {
-            $result = $classManager -> initWilsonResponse( $success, $message, $payload, $tokenIsValid );
+            $result = $classManager -> initWilsonResponse( $success, $message, $payload, $keyData, $tokenIsValid );
             echo json_encode($result);
         }        
     }

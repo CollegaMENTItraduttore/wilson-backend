@@ -5,8 +5,8 @@
             
         }
             
-        function initWilsonResponse( $success, $message, $data, $token) {
-            return new WilsonResponse( $success, $message, $data, $token );
+        function initWilsonResponse( $success, $message, $data, $keyData, $token) {
+            return new WilsonResponse( $success, $message, $data, $keyData, $token );
         }
         
         function validateToken( $token ) {
