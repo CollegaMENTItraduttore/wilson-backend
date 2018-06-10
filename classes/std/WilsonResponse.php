@@ -10,7 +10,7 @@
             $this->success = $success;
             $this->message = $message;
             $this->token = $token;
-            $this->{$keyData} = $data;
+            $this->{isset($keyData) ? $keyData : 'data'} = $data;
         }			
     }
 ?>
