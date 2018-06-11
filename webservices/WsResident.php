@@ -24,18 +24,15 @@
            
                 case 'list':
                     $payload = $classManager->getList();
-                    $keyData = 'listResidents';
                     break;   
                 case 'getById':
                     $idResident = isset($_GET['idResident']) ? $_GET['idResident'] : null;
                     $payload = $classManager->getById($idResident);
-                    $keyData = 'resident';
                     break;   
                 case 'update':
                     $object = json_decode( file_get_contents('php://input'));
                     //var_dump($object);
                     $payload = $classManager->update($object);
-                    $keyData = 'data';
                     break;   
             }
             array_push($message, Costanti::OPERATION_OK);
@@ -46,7 +43,7 @@
             array_push($message, $e->getMessage());
 
         } finally {
-            $result = $classManager -> initWilsonResponse( $success, $message, $payload, $keyData, $tokenIsValid );
+            $result = $classManager -> initWilsonResponse( $success, $message, $payload,$tokenIsValid );
             echo json_encode($result);
         }       
     }

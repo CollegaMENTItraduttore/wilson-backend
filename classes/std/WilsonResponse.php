@@ -3,14 +3,13 @@
         
         var $success = true;
         var $message = [];
-        //var $data = [];
-        var $token = '';
+        var $data = [];
 
-        function __construct($success, $message, $data, $keyData, $token) {		
+        function __construct($success, $message, $data, $token) {		
             $this->success = $success;
             $this->message = $message;
             $this->token = $token;
-            $this->{isset($keyData) ? $keyData : 'data'} = $data;
+            $this->data = $data;
         }			
     }
 ?>
