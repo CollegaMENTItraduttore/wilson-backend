@@ -89,10 +89,6 @@
             }
             return $data;
         }
-
-        function getImageFromCategory($idCategory) {
-
-        }
         
         function getList() {           
         }
