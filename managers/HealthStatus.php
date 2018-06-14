@@ -56,5 +56,27 @@
             }
             return $data;
         }
+        function getHealthStatusMedicine($idResident, $dateStart, $dateEnd, $type) {
+            //medicine
+            $txt1 = "Elvira nel mese di aprile ha subito gli strascichi di un'influenza invernale, sentendosi un pò stanca e avendo alcuni episodi di febbre, Dopo la cura ricostituente ora Elvira è stabile e ha ripreso energia e appetito dal punto di vista comportamentale Elvira ha alternato momenti di confusione che sono normali per l'Alzheimer, a momenti di lucidità in cui riusciva a esprimersi e a fare richieste
+            ";
+            $txt2 = "Elvira sta continuando a prendere regolarmente la sua terapia farmacologica, che è costituita dalle pillole per il diabete, dalle medicine per la pressione alta e dalla terapia per l'Alzheimer che la sta aiutando a recuperare le funzioni cognitive inoltre durante l'ultimo mese Elvira ha fatto una cura ricostituente prendendo vitamine e minerali che la aiutano a riprendersi da uno stato influenzale
+            ";
+            $numMonth = $dateStart -> format('n');
+            $data = null;
+           
+            if ($type == 'M') {
+                if ($numMonth % 2 == 0)
+                    $data = $txt1;
+                else 
+                    $data = $txt2;
+            } else if ($type == 'S') {
+                if ($numMonth % 2 == 0)
+                    $data = $txt2;
+                else 
+                    $data = $txt1;
+            } 
+            return [Array('text' => $data)];
+        }
     }
 ?>

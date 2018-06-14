@@ -32,10 +32,14 @@
                     $payload = $classManager->getListByFilters($idResident, $dateStart, $dateEnd);
                     break;
 
-                case 'getById':
-                    $idPrimaryNeed = isset($_GET['idPrimaryNeed']) ? $_GET['idPrimaryNeed']: null; 
-                    $payload = $classManager->getById($idPrimaryNeed);
-                break;
+                case 'getHealthStatusMedicine':
+                    $idResident = isset($_GET['idResident']) ? $_GET['idResident']: null; 
+                    $type = isset($_GET['type']) ? $_GET['type'] : null;
+                    $dateStart = isset($_GET['dateStart']) ? $_GET['dateStart'] : null;
+                    $dateStart = DateUtils::getStartOfMonth($dateStart);
+                    $dateEnd = DateUtils::getEndOfMonth($dateStart);
+                    $payload = $classManager->getHealthStatusMedicine($idResident, $dateStart, $dateEnd, $type);
+                    break;
             }
 
         } catch(Exception $e) {
