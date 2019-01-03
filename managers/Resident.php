@@ -28,8 +28,8 @@
                            CONCAT( r.first_name," ",r.last_name) as nominative,
                            r.picture
                     from resident r
-                    ORDER BY nominative'
-                    
+                    ORDER BY nominative
+                    LIMIT 4'
                 );
                 $stmt->execute();
                 $data = $stmt -> fetchAll(PDO::FETCH_ASSOC);

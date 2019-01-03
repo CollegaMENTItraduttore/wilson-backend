@@ -5,7 +5,7 @@
         var $message = [];
         var $data = [];
 
-        function __construct($success, $message, $data, $token) {		
+        function __construct($success, $message, $data, $token) {
             $this->success = $success;
             $this->message = $message;
             $this->token = $token;

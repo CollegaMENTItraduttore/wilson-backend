@@ -12,8 +12,8 @@
     $tokenIsValid = $classManager->validateToken($token);
 
     if (!$tokenIsValid) {
-        echo $classManager -> initWilsonResponse(false, ['Invalid Token'], []);
-        return false;
+        $result = $classManager -> initWilsonResponse(false, ['Invalid Token'], []);
+        echo json_encode($result);
     } else {
         $success = true;
         $message = [];
