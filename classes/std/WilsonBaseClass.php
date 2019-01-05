@@ -2,9 +2,39 @@
     require_once('WilsonResponse.php');
 
     class WilsonBaseClass {
-        function __construct() {
-            
+        private $db;
+        function __construct($db = 'wilson_db') {
+            $this->db = $db;
         }
+
+        function getDb() {
+            return $this->db;
+        }
+
+        function getIdRsaByDb() {
+
+            if (empty($this->getDb())) {
+                throw new Exception(sprintf(Costanti::INVALID_FIELD, "db")); 
+            }
+            $data = [];    
+            $conn = $this->connectToDatabase(); 
+    
+            try {
+                $stmt = $conn->prepare('
+                            select r.id 
+                            from rsa r
+                            where r.id_dm7 = ?
+                            limit 1
+                ');
+                $stmt->bindValue(1, $this->getDb(), PDO::PARAM_STR);
+                $stmt->execute();
+                $data = $stmt -> fetchAll(PDO::FETCH_ASSOC);
+    
+            } catch (Exception $e) {
+                throw new Exception(sprintf(Costanti::OPERATION_KO, $e->getMessage()));
+            }
+            return (!empty($data) && count($data) > 0 ? $data[0]['id'] : null);
+        } 
             
         function initWilsonResponse( $success, $message, $data, $token = 'EXPIRED') {
             return new WilsonResponse( $success, $message, $data, $token );
@@ -64,7 +94,7 @@
             //connessione PDO
             $conn = null;
             try {
-                $dbh = new PDO('mysql:host=localhost;dbname=wilson_db', "root", "root");
+                $dbh = new PDO('mysql:host=localhost;dbname='.$this->db, "root", "root");
                 $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
                 $dbh->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
 
