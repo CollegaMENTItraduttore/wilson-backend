@@ -85,5 +85,24 @@
             } */
             return $conn; 
         }
+
+        function connectToLogDatabase() {
+
+            //connessione PDO
+            $conn = null;
+            try {
+                $dbh = new PDO('mysql:host=localhost;dbname=cmlog_db', "root", "root");
+                $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+                $dbh->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
+
+                $conn = $dbh;
+            } catch (PDOException $e) {
+                $conn = null;
+                print "Error!: " . $e->getMessage() . "<br/>";
+                die();
+            }
+
+            return $conn; 
+        }
     }
 ?>
