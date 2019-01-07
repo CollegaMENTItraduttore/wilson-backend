@@ -5,7 +5,7 @@
     class Resident extends WilsonBaseClass {
 
         function __construct() {
-            //parent::__construct();        
+            parent::__construct();        
         }
         
         function launch( $params, $data ) {
