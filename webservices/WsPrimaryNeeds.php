@@ -1,7 +1,8 @@
 <?php
     require_once('../managers/PrimaryNeeds.php');
 
-    $classManager = new PrimaryNeeds();
+    $db = isset($_GET['env']) ? $_GET['env'] : null;
+    $classManager = new PrimaryNeeds($db);
     /**
     *    Valido in questo punto il token per evitare che malintenzionati
     *    provino a confermare dati non validi nella speranza che il token

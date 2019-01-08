@@ -4,7 +4,7 @@
     class WilsonBaseClass {
         private $db;
         function __construct($db = 'wilson_db') {
-            $this->db = $db;
+            $this->db = 'env_cm_' . $db;
         }
 
         function getDb() {

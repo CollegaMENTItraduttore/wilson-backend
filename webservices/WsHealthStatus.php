@@ -3,7 +3,8 @@
 
     require_once('../managers/HealthStatus.php');
 
-    $classManager = new HealthStatus();
+    $db = isset($_GET['env']) ? $_GET['env'] : null;
+    $classManager = new HealthStatus($db);
     /**
     *    Valido in questo punto il token per evitare che malintenzionati
     *    provino a confermare dati non validi nella speranza che il token

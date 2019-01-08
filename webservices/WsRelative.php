@@ -2,7 +2,8 @@
     header('Content-Type: application/json');
     require_once('../managers/Relative.php');
 
-    $classManager = new Relative();
+    $db = isset($_GET['env']) ? $_GET['env'] : null;
+    $classManager = new Relative($db);
     /**
     *    Valido in questo punto il token per evitare che malintenzionati
     *    provino a confermare dati non validi nella speranza che il token

@@ -2,7 +2,8 @@
     require_once('../managers/Activity.php');
     require_once('../utils/DateUtils.php');
 
-    $classManager = new Activity();
+    $db = isset($_GET['env']) ? $_GET['env'] : null;
+    $classManager = new Activity($db);
     /**
     *    Valido in questo punto il token per evitare che malintenzionati
     *    provino a confermare dati non validi nella speranza che il token
