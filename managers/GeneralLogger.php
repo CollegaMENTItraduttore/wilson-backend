@@ -25,18 +25,21 @@
                     INSERT INTO logged_fetch (
                         log_date,
                         class_name_fn,
-                        user_id_dm7
+                        user_id_dm7,
+                        environment_id
                     )
                     VALUES (
                         :log_date,
                         :class_name_fn,
-                        :user_id_dm7
+                        :user_id_dm7,
+                        :environment_id
                     )
                 ");
 
                 $stmt->bindValue(":log_date", date("Y-m-d H:i:s"), PDO::PARAM_STR);
                 $stmt->bindValue(":class_name_fn", $object->className, PDO::PARAM_STR);
                 $stmt->bindValue(":user_id_dm7", $object->user_id, PDO::PARAM_STR);
+                $stmt->bindValue(":environment_id", $object->environment_id, PDO::PARAM_STR);
 
                 $stmt->execute();
 
