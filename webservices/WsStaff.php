@@ -31,10 +31,12 @@
                     $payload = $classManager -> get($id);
                     break;      
                 case 'new':
-                    $payload = $classManager -> new($_POST);
+                    $obj =  json_decode(file_get_contents('php://input'));
+                    $payload = $classManager -> new($obj);
                     break;   
                 case 'update':
-                    $payload = $classManager -> update($_POST);
+                    $obj =  json_decode(file_get_contents('php://input'));
+                    $payload = $classManager -> update($obj);
                     break;
                 case 'delete':
                     $id =  (isset($_GET['id']) ? $_GET['id'] : null);
