@@ -42,6 +42,7 @@
             }
 
         } catch(Exception $e) {
+            error_log($e->getMessage());
             $success = false;
             array_push($message, $e->getMessage());
 

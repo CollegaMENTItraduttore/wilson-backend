@@ -1,8 +1,9 @@
 <?php
     header('Content-Type: application/json');
-    require_once('../managers/Resident.php');
+    require_once('../managers/ResocontoPai.php');
 
-    $classManager = new Resident();
+    $db = isset($_GET['db']) ? $_GET['db'] : null;
+    $classManager = new ResocontoPai($db);
     /**
     *    Valido in questo punto il token per evitare che malintenzionati
     *    provino a confermare dati non validi nella speranza che il token
@@ -21,26 +22,33 @@
         try {
 
             switch ($_GET['action']) {
-           
-                case 'list':
-                    $payload = $classManager->getList();
+                case 'get':
+                    $id = isset($_GET['id']) ? $_GET['id'] : null;
+                    $payload = $classManager->get($id);
                     break;   
-                case 'getById':
+                case 'list':
                     $idResident = isset($_GET['idResident']) ? $_GET['idResident'] : null;
-                    $payload = $classManager->getById($idResident);
+                    $data = isset($_GET['data']) ? $_GET['data'] : null;
+                    $payload = $classManager->list($idResident, $data);
                     break;   
                 case 'update':
-                    $object = json_decode( file_get_contents('php://input'));
-                    //var_dump($object);
-                    $payload = $classManager->update($object);
+                    $obj =  json_decode(file_get_contents('php://input'));
+                    $payload = $classManager->update($obj);
                     break;   
+                case 'new':
+                    $obj =  json_decode(file_get_contents('php://input'));
+                    $payload = $classManager->new($obj);
+                    break;
+                case 'delete':
+                    $payload = $classManager->update($object);
+                    break;    
             }
             array_push($message, Costanti::OPERATION_OK);
 
         } catch(Exception $e) {
-            error_log($e->getMessage());
             $success = false;
             array_push($message, $e->getMessage());
+            error_log($e->getMessage());
 
         } finally {
             $result = $classManager -> initWilsonResponse( $success, $message, $payload,$tokenIsValid );

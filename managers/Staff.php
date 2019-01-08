@@ -17,10 +17,10 @@ class Staff extends WilsonBaseClass  {
      */
     function checkCampiObbligatori($object, &$msg = array()) {
 
-        $first_name = isset($object['firstName']) ? $object['firstName'] : null;
-        $last_name = isset($object['lastName']) ? $object['lastName'] : null;
-        $email = isset($object['email']) ? $object['email'] : null;
-        $username = isset($object['username']) ? $object['username'] : null;
+        $first_name = isset($object->firstName) ? $object->firstName : null;
+        $last_name = isset($object->lastName) ? $object->lastName : null;
+        $email = isset($object->email) ? $object->email : null;
+        $username = isset($object->username) ? $object->username : null;
 
         //check campi obbligatori
         if (empty($first_name)) {
@@ -129,12 +129,12 @@ class Staff extends WilsonBaseClass  {
             }
             $stmt = $conn->prepare('insert into staff (first_name, last_name, mail, id_role, id_rsa, username) values(?, ?, ?, ?, ?, ?)');
 
-            $stmt->bindValue(1, $object['firstName'], PDO::PARAM_STR);
-            $stmt->bindValue(2, $object['lastName'], PDO::PARAM_STR);
-            $stmt->bindValue(3, $object['email'], PDO::PARAM_STR);
+            $stmt->bindValue(1, $object->firstName, PDO::PARAM_STR);
+            $stmt->bindValue(2, $object->lastName, PDO::PARAM_STR);
+            $stmt->bindValue(3, $object->email, PDO::PARAM_STR);
             $stmt->bindValue(4, null, PDO::PARAM_STR);
             $stmt->bindValue(5, $id_rsa, PDO::PARAM_INT);
-            $stmt->bindValue(6, $object['username'], PDO::PARAM_STR);
+            $stmt->bindValue(6, $object->username, PDO::PARAM_STR);
 
             $stmt->execute();
 
@@ -155,7 +155,7 @@ class Staff extends WilsonBaseClass  {
         }
 
         //campo id obbligatorio 
-        if (!isset($object['id']) || empty($object['id'])) {
+        if (!isset($object->id) || empty($object->id)) {
             throw new Exception(sprintf(Costanti::INVALID_FIELD, "id"));
         }
 
@@ -170,12 +170,12 @@ class Staff extends WilsonBaseClass  {
                                         s.mail =?
                                     where s.id = ?');
 
-            $stmt->bindValue(1, $object['firstname'], PDO::PARAM_STR);
-            $stmt->bindValue(2, $object['lastname'], PDO::PARAM_STR);
+            $stmt->bindValue(1, $object->firstName, PDO::PARAM_STR);
+            $stmt->bindValue(2, $object->lastName, PDO::PARAM_STR);
             $stmt->bindValue(3, null, PDO::PARAM_STR);
             $stmt->bindValue(4, null, PDO::PARAM_STR);
-            $stmt->bindValue(5, $object['email'], PDO::PARAM_STR);
-            $stmt->bindValue(6, $object['id'], PDO::PARAM_STR);
+            $stmt->bindValue(5, $object->email, PDO::PARAM_STR);
+            $stmt->bindValue(6, $object->id, PDO::PARAM_STR);
             $stmt->execute();
 
         } catch (Exception $e) {

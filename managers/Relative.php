@@ -17,12 +17,12 @@ class Relative extends WilsonBaseClass  {
      */
     function checkCampiObbligatori($object, &$msg = array()) {
 
-        $first_name = isset($object['firstname']) ? $object['firstname'] : null;
-        $last_name = isset($object['lastname']) ? $object['lastname'] : null;
-        $email = isset($object['email']) ? $object['email'] : null;
+        $first_name = isset($object->firstName) ? $object->firstName : null;
+        $last_name = isset($object->lastName) ? $object->lastName : null;
+        $email = isset($object->email) ? $object->email : null;
 
-        $cod_utente = isset($object['codUtente']) ? $object['codUtente'] : null;
-        $username = isset($object['username']) ? $object['username'] : null;
+        $cod_utente = isset($object->codUtente) ? $object->codUtente : null;
+        $username = isset($object->username) ? $object->username : null;
 
         //check campi obbligatori
         if (empty($first_name)) {
@@ -124,12 +124,12 @@ class Relative extends WilsonBaseClass  {
 
             $stmt = $conn->prepare('insert into relative (first_name, last_name, mail, username, id_resident, id_kinship) values(?, ?, ?, ?, ?, ?)');
 
-            $stmt->bindValue(1, $object['firstname'], PDO::PARAM_STR);
-            $stmt->bindValue(2, $object['lastname'], PDO::PARAM_STR);
-            $stmt->bindValue(3, $object['email'], PDO::PARAM_STR);
-            $stmt->bindValue(4, $object['username'], PDO::PARAM_STR);
-            $stmt->bindValue(5, $object['codUtente'], PDO::PARAM_INT);
-            $stmt->bindValue(6, null, PDO::PARAM_INT);
+            $stmt->bindValue(1, $object->firstName, PDO::PARAM_STR);
+            $stmt->bindValue(2, $object->lastName, PDO::PARAM_STR);
+            $stmt->bindValue(3, $object->email, PDO::PARAM_STR);
+            $stmt->bindValue(4, $object->username, PDO::PARAM_STR);
+            $stmt->bindValue(5, $object->codUtente, PDO::PARAM_INT);
+            $stmt->bindValue(6, $object->gradoParentela, PDO::PARAM_INT);
 
             $stmt->execute();
 
@@ -150,7 +150,7 @@ class Relative extends WilsonBaseClass  {
         }
 
         //campo id obbligatorio 
-        if (!isset($object['id']) || empty($object['id'])) {
+        if (!isset($object->id) || empty($object->id)) {
             throw new Exception(sprintf(Costanti::INVALID_FIELD, "id"));
         }
 
@@ -166,13 +166,13 @@ class Relative extends WilsonBaseClass  {
                                         s.id_kinship = ?
                                     where s.id = ?');
 
-             $stmt->bindValue(1, $object['firstname'], PDO::PARAM_STR);
-             $stmt->bindValue(2, $object['lastname'], PDO::PARAM_STR);
-             $stmt->bindValue(3, $object['email'], PDO::PARAM_STR);
-             $stmt->bindValue(4, $object['username'], PDO::PARAM_STR);
-             $stmt->bindValue(5, $object['codUtente'], PDO::PARAM_INT);
-             $stmt->bindValue(6, null, PDO::PARAM_INT);
-             $stmt->bindValue(7, $object['id'], PDO::PARAM_STR);
+             $stmt->bindValue(1, $object->firstName, PDO::PARAM_STR);
+             $stmt->bindValue(2, $object->lastName, PDO::PARAM_STR);
+             $stmt->bindValue(3, $object->email, PDO::PARAM_STR);
+             $stmt->bindValue(4, $object->username, PDO::PARAM_STR);
+             $stmt->bindValue(5, $object->codUtente, PDO::PARAM_INT);
+             $stmt->bindValue(6, $object->gradoParentela, PDO::PARAM_INT);
+             $stmt->bindValue(7, $object->id, PDO::PARAM_STR);
 
              $stmt->execute();
 
