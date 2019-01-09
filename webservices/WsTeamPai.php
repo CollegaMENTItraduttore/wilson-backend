@@ -5,7 +5,7 @@
 
     use utils\Costanti as Costanti;
 
-    $db = isset($_GET['db']) ? $_GET['db'] : null;
+    $db = isset($_GET['env']) ? $_GET['env'] : null;
     $classManager = new TeamPai($db);
     /**
     *    Valido in questo punto il token per evitare che malintenzionati

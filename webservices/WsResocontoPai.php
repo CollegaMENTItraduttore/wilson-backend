@@ -2,7 +2,7 @@
     header('Content-Type: application/json');
     require_once('../managers/ResocontoPai.php');
 
-    $db = isset($_GET['db']) ? $_GET['db'] : null;
+    $db = isset($_GET['env']) ? $_GET['env'] : null;
     $classManager = new ResocontoPai($db);
     /**
     *    Valido in questo punto il token per evitare che malintenzionati

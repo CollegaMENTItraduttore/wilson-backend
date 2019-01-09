@@ -6,7 +6,7 @@ require_once('../utils/DateUtils.php');
 
 class ResocontoPai extends WilsonBaseClass  {
     function __construct($db) {   
-        parent::__construct();        
+        parent::__construct($db);        
     }
 
     function launch( $params, $data ) {

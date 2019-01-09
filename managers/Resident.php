@@ -3,9 +3,8 @@
     require_once('../utils/Costanti.php');
     
     class Resident extends WilsonBaseClass {
-
-        function __construct() {
-            parent::__construct();        
+        function __construct($db) {   
+            parent::__construct($db);        
         }
         
         function launch( $params, $data ) {

@@ -2,11 +2,9 @@
 
 require_once('../classes/std/WilsonBaseClass.php');
 
-use utils\Costanti as Costanti;
-
 class TeamPai extends WilsonBaseClass  {
     function __construct($db) {   
-        parent::__construct();        
+        parent::__construct($db);        
     }
 
     function launch( $params, $data ) {

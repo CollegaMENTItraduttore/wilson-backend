@@ -4,8 +4,8 @@
     require_once('../utils/DateUtils.php');
 
     class Activity extends WilsonBaseClass {
-        function __construct() {
-            parent::__construct();        
+        function __construct($db) {   
+            parent::__construct($db);        
         }
         
         function launch( $params, $data ) {
