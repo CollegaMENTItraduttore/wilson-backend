@@ -37,7 +37,7 @@ class ResocontoPai extends WilsonBaseClass  {
     function list($id_resident = null, $date = null) {
 
         $data = [];    
-        $date = (isset($date) && empty($date) ? $date : new DateTime());
+        $date = (isset($date) && !empty($date) ? $date : new DateTime());
         //init date
         $data_dal =  DateUtils::getStartOfDay($date);
         $data_al =  DateUtils::getEndOfDay($date);
@@ -66,6 +66,7 @@ class ResocontoPai extends WilsonBaseClass  {
                 array_push($sqlParam, $data_dal->format('Y-m-d H:i:s'));
                 array_push($sqlParam, $data_al->format('Y-m-d H:i:s'));
             }
+            
             if (count($condition) > 0) {
                 $sql.= " where ".implode($condition, " and ");
             }
