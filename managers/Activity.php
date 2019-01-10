@@ -270,7 +270,7 @@
             foreach ($listStaff as $staff) {
                 $mapCompilatori->{$staff['id_teanapers']} = $staff['id'];
             }
-            return $mapStaff
+            return $mapStaff;
         }
 
         function checkCampiObbligatori($object, &$msg = array()) {
@@ -298,9 +298,10 @@
                                             can_partecipate,
                                             can_request_appointment,
                                             organized_by,
-                                            id_resident
+                                            id_resident,
+                                            id_plan_sipcar
                                         ) 
-                                        values(?, ?, ?, ?, ?, ? ,? ,?, ?, ?, ?) ');
+                                        values(?, ?, ?, ?, ?, ? ,? ,?, ?, ?, ?, ?) ');
 
 
                 
@@ -318,6 +319,7 @@
                     if ( !$status && count($msg) > 0 ) {
                         throw new Exception(implode("", $msg));
                     }
+                    
 
                     //$idStaff = $mapCompilatori->{$record->oragnizedBy};
                     $idResident = $mpaResident->{$record->idResident};
@@ -342,6 +344,7 @@
                     $stmt->bindValue(9, $record->canRequestAppointment, PDO::PARAM_INT);
                     $stmt->bindValue(10, null, PDO::PARAM_INT);
                     $stmt->bindValue(11, $idResident, PDO::PARAM_INT);
+                    $stmt->bindValue(12, $record->idPlanSipcar, PDO::PARAM_INT);
     
                     $stmt->execute();
                     //capire se a questo punto ho l'id appena inserito
@@ -352,8 +355,8 @@
                         $activityEdition = $record->activityEdition;
                         if (count($activityEdition) > 0) {
                             //inserisco nella tabella di activity edition
-                            foreach ($activityEdition of $edition) {
-                                $edition->id_activity = $edition; 
+                            foreach ($activityEdition as $edition) {
+                                $edition->id_activity = $newId; 
                                 $managerActivityEdition->new($edition);
                             } 
                         }
