@@ -29,7 +29,7 @@
                 case 'get':
                     $id = isset($_GET['id']) ? $_GET['id'] : null;
                     $payload = $classManager -> get($id);
-                    break;      
+                    break;
                 case 'new':
                     $obj =  json_decode(file_get_contents('php://input'));
                     $payload = $classManager -> new($obj);
@@ -41,7 +41,12 @@
                 case 'delete':
                     $id = (isset($_GET['id']) ? $_GET['id'] : null);
                     $payload = $classManager -> delete($id);
-                    break;   
+                    break;
+                
+                case 'getByUsername':
+                    $username = isset($_GET['username']) ? $_GET['username'] : null;
+                    $payload = $classManager -> getByUsername($username);
+                    break; 
             }
             array_push($message, Costanti::OPERATION_OK);
 

@@ -24,7 +24,8 @@
             switch ($_GET['action']) {
            
                 case 'list':
-                    $payload = $classManager->getList();
+                    $listResidents = isset($_GET['listResidents']) ? $_GET['listResidents'] : null;
+                    $payload = $classManager->getList($listResidents);
                     break;   
                 case 'getById':
                     $idResident = isset($_GET['idResident']) ? $_GET['idResident'] : null;
