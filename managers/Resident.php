@@ -10,25 +10,27 @@
         function launch( $params, $data ) {
        
         }
-        /**
-         *  Metodo che ritorna la lista dei residenti 
-         *  per demo 22/GIUGNO listone senza filtri 
-         *  
-         */
-        function getList() {
+        
+        function getList($listResidents = '') {
             
             $data = [];
             
             $conn = $this->connectToDatabase();
             
             try {
-                $stmt = $conn->prepare('
-                    SELECT r.id, r.first_name, r.last_name, r.gender, 
-                           CONCAT( r.first_name," ",r.last_name) as nominative,
-                           r.picture, r.cod_utente
-                    from resident r
-                    ORDER BY nominative'
-                );
+
+                $query = "  select r.id, r.first_name, r.last_name, r.gender,
+                                    CONCAT( r.first_name,\" \",r.last_name) as nominative,
+                                    r.picture, r.cod_utente
+                            from resident r ";
+                
+                if (isset($listResidents) && $listResidents !== '') {
+                    $query .= ' where r.id in ( ' . $listResidents . ' )';
+                }
+
+                $query .=   ' ORDER BY nominative';
+
+                $stmt = $conn->prepare($query);
                 $stmt->execute();
                 $data = $stmt -> fetchAll(PDO::FETCH_ASSOC);
 
@@ -99,7 +101,7 @@
 
                 $stmt->execute();
                 //recupero l'id
-               //$data = $stmp->lastInsertId()
+                $data = $conn->lastInsertId();
 
             } catch (Exception $e) {
                 throw new Exception(sprintf(Costanti::OPERATION_KO, $e->getMessage()));

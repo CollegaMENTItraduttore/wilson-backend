@@ -199,6 +199,31 @@ class Relative extends WilsonBaseClass  {
         }
         return $data;
     }
+
+    function getByUsername($username = null) {
+
+        if (!isset($username)) {
+            throw new Exception(sprintf(Costanti::INVALID_FIELD, "username")); 
+        }
+
+        $data = [];    
+        $conn = $this->connectToDatabase();
+        try {
+            $stmt = $conn->prepare('
+                select r.id as id_relative_cm,
+                       r.id_resident as id_resident_cm
+                from relative r
+                where r.username = ?'
+            );
+            $stmt->bindValue(1, $username, PDO::PARAM_STR);
+            $stmt->execute();
+            $data = $stmt -> fetchAll(PDO::FETCH_ASSOC);
+
+        } catch (Exception $e) {
+            throw new Exception(sprintf(Costanti::OPERATION_KO, $e->getMessage()));
+        }
+        return $data;
+    }
 }
 
 ?> 
