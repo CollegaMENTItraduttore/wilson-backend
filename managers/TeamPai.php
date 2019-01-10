@@ -19,8 +19,8 @@ class TeamPai extends WilsonBaseClass  {
             array_push($msg, sprintf(Costanti::INVALID_FIELD, "nominativo"));
             return false;
         }
-        if (empty($object->figuraProfessionale)) {
-            array_push($msg, sprintf(Costanti::INVALID_FIELD, "figuraProfessionale"));
+        if (empty($object->figura_professionale)) {
+            array_push($msg, sprintf(Costanti::INVALID_FIELD, "figura_professionale"));
             return false;
         }
         if (empty($object->is_family_navigator)) {
@@ -48,7 +48,7 @@ class TeamPai extends WilsonBaseClass  {
             $stmt = $conn->prepare('
                 select  p.id, 
                         p.nominativo, 
-                        p.figuraProfessionale, 
+                        p.figura_professionale, 
                         p.is_family_navigator, 
                         p.id_teanapers,
                         p.id_resident
@@ -79,7 +79,7 @@ class TeamPai extends WilsonBaseClass  {
             $stmt = $conn->prepare('
                     select  p.id, 
                             p.nominativo, 
-                            p.figuraProfessionale, 
+                            p.figura_professionale, 
                             p.is_family_navigator, 
                             p.id_teanapers,
                             p.id_resident
@@ -108,7 +108,7 @@ class TeamPai extends WilsonBaseClass  {
             $stmt = $conn->prepare('insert into team_cura 
                                     (
                                         nominativo, 
-                                        figuraProfessionale,
+                                        figura_professionale,
                                         is_family_navigator,
                                         id_teanapers,
                                         id_resident
@@ -124,7 +124,7 @@ class TeamPai extends WilsonBaseClass  {
                     throw new Exception(implode("", $msg));
                 }
                 $stmt->bindValue(1, $record->nominativo, PDO::PARAM_STR);
-                $stmt->bindValue(2, $record->figuraProfessionale, PDO::PARAM_STR);
+                $stmt->bindValue(2, $record->figura_professionale, PDO::PARAM_STR);
                 $stmt->bindValue(3, $record->is_family_navigator, PDO::PARAM_INT);
                 $stmt->bindValue(4, $record->id_teanapers, PDO::PARAM_INT);   
                 $stmt->bindValue(5, $record->id_resident, PDO::PARAM_INT);   
