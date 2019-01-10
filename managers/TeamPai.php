@@ -134,8 +134,8 @@ class TeamPai extends WilsonBaseClass  {
             $conn->commit();
 
         } catch (Exception $e) {
-            throw new Exception(sprintf(Costanti::OPERATION_KO, $e->getMessage()));
             $conn->rollback();
+            throw new Exception(sprintf(Costanti::OPERATION_KO, $e->getMessage()));
         } 
         return $data;
     }

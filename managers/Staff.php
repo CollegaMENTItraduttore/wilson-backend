@@ -55,7 +55,8 @@ class Staff extends WilsonBaseClass  {
                        s.picture, 
                        s.mail, 
                        s.id_role, 
-                       s.id_rsa
+                       s.id_rsa,
+                       s.id_teanapers
                 from staff s
                 order by s.last_name'
             );

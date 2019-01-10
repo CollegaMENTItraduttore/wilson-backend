@@ -25,10 +25,9 @@
                 $stmt = $conn->prepare('
                     SELECT r.id, r.first_name, r.last_name, r.gender, 
                            CONCAT( r.first_name," ",r.last_name) as nominative,
-                           r.picture
+                           r.picture, r.cod_utente
                     from resident r
-                    ORDER BY nominative
-                    LIMIT 4'
+                    ORDER BY nominative'
                 );
                 $stmt->execute();
                 $data = $stmt -> fetchAll(PDO::FETCH_ASSOC);
@@ -106,6 +105,41 @@
                 throw new Exception(sprintf(Costanti::OPERATION_KO, $e->getMessage()));
             }
             return $data;
+        }
+        /**
+         *  Metodo per recuperare l'ospite in base al codUtente
+         *  relativo alle teabelle di css 1.0
+         */
+        function getByCodUtente($codUtente) {
+            
+            if (empty($codUtente)) {
+                throw new Exception(sprintf(Costanti::INVALID_FIELD, "codUtente")); 
+            }
+            $data = null;        
+            try {
+
+                $conn = $this->connectToDatabase();
+                $stmt = $conn->prepare("
+                        SELECT r.id, 
+                            r.first_name, 
+                            r.last_name, 
+                            r.gender,
+                            r.picture, 
+                            r.birthday, 
+                            r.birthplace,
+                            r.biography,
+                            r.habits,
+                            r.extra_info
+                        FROM resident r
+                        WHERE r.id = ?"    
+                );
+                $stmt->execute([$codUtente]);
+
+            } catch (Exception $e) {
+                throw new Exception(sprintf(Costanti::OPERATION_KO, $e->getMessage()));
+            }
+            return $data;
+
         }
     }
 ?>

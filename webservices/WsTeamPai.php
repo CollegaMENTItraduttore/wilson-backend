@@ -3,8 +3,6 @@
     require_once('../managers/TeamPai.php');
     require_once('../utils/Costanti.php');
 
-    use utils\Costanti as Costanti;
-
     $db = isset($_GET['env']) ? $_GET['env'] : null;
     $classManager = new TeamPai($db);
     /**
