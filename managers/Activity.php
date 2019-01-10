@@ -387,14 +387,14 @@
             try {
                 //todo da controllare
                 $stmt = $conn->prepare("
-                    select a.id, 
-                        (
-                            select max(e.start_date) 
-                            from  activity_edition e
-                            where e.id_activity = a.id
-                        ) as date
-                    from activity a
-                    where a.id_resident = ? 
+                    select 
+                        a.id, 
+                        max(e.start_date) as date 
+                    from activity a 
+                    inner join activity_edition e 
+                        on e.id_activity = a.id
+                    where a.id_resident = ?
+                    group by a.id
                 ");                
                 $stmt->execute([$idResident]);
                 $data = $stmt -> fetchAll(PDO::FETCH_ASSOC);

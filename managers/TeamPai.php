@@ -19,15 +19,11 @@ class TeamPai extends WilsonBaseClass  {
             array_push($msg, sprintf(Costanti::INVALID_FIELD, "nominativo"));
             return false;
         }
-        if (empty($object->figura_professionale)) {
+        if (empty($object->figuraProfessionale)) {
             array_push($msg, sprintf(Costanti::INVALID_FIELD, "figura_professionale"));
             return false;
         }
-        if (empty($object->is_family_navigator)) {
-            array_push($msg, sprintf(Costanti::INVALID_FIELD, "is_family_navigator"));
-            return false;
-        }
-        if (empty($object->id_teanapers)) {
+        if (empty($object->idTeAnaPers)) {
             array_push($msg, sprintf(Costanti::INVALID_FIELD, "id_teanapers"));
             return false;
         }
@@ -126,7 +122,7 @@ class TeamPai extends WilsonBaseClass  {
                 $stmt->bindValue(1, $record->nominativo, PDO::PARAM_STR);
                 $stmt->bindValue(2, $record->figuraProfessionale, PDO::PARAM_STR);
                 $stmt->bindValue(3, $record->isFamilyNavigator, PDO::PARAM_INT);
-                $stmt->bindValue(4, $record->idTeanaPers, PDO::PARAM_INT);   
+                $stmt->bindValue(4, $record->idTeAnaPers, PDO::PARAM_INT);   
                 $stmt->bindValue(5, $record->idResident, PDO::PARAM_INT);   
 
                 $stmt->execute();

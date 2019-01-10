@@ -144,15 +144,15 @@
                             'valueNum' => $record->valueNum,
                             'valueText' => $record->valueText,
                             'name' => $record->name,
-                            'createdBy' => $record->createdBy,
-                            'valueNum' => $record->valueText,
+                            'createdBy' => $record->createdBy
                         );
                         $managerEventExtraParam -> new($eventExtraParam);
                     }
                 }         
                 $conn->commit();
-    
+   
             } catch (Exception $e) {
+               
                 $conn->rollback();
                 throw new Exception(sprintf(Costanti::OPERATION_KO, $e->getMessage()));
             } 

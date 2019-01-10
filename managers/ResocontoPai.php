@@ -16,15 +16,11 @@ class ResocontoPai extends WilsonBaseClass  {
      *  Campi obbligatori durante update or insert 
      */
     function checkCampiObbligatori($object, &$msg = array()) {
-        if (empty($object->created_on)) {
-            array_push($msg, sprintf(Costanti::INVALID_FIELD, "created_on"));
-            return false;
-        }
         if (empty($object->note)) {
             array_push($msg, sprintf(Costanti::INVALID_FIELD, "note"));
             return false;
         }
-        if (empty($object->id_resident)) {
+        if (empty($object->idResident)) {
             array_push($msg, sprintf(Costanti::INVALID_FIELD, "id_resident"));
             return false;
         }
@@ -139,9 +135,9 @@ class ResocontoPai extends WilsonBaseClass  {
                 if ( !$status && count($msg) > 0 ) {
                     throw new Exception(implode("", $msg));
                 }
-                
-                $stmt->bindValue(1, $record->createdBy, PDO::PARAM_STR);
-                $stmt->bindValue(2, $record->createdOn, PDO::PARAM_STR);
+
+                $stmt->bindValue(1, null, PDO::PARAM_STR);
+                $stmt->bindValue(2, $record->data, PDO::PARAM_STR);
                 $stmt->bindValue(3, $record->idResident, PDO::PARAM_INT);
                 $stmt->bindValue(4, $record->note, PDO::PARAM_STR);   
                 $stmt->execute();

@@ -50,8 +50,6 @@
                 $stmt = $conn->prepare('insert into activity_info 
                                         (
                                             name,
-                                            description,
-                                            benefits,
                                             id_activity_category,
                                             id_activity_sipcar
                                         ) 
@@ -66,10 +64,8 @@
                         throw new Exception(implode("", $msg));
                     }
                     $stmt->bindValue(1, $record->name, PDO::PARAM_STR);
-                    $stmt->bindValue(2, $record->description, PDO::PARAM_STR);
-                    $stmt->bindValue(3, $record->benefits, PDO::PARAM_INT);
-                    $stmt->bindValue(4, $record->idActivityCategory, PDO::PARAM_INT);   
-                    $stmt->bindValue(5, $record->idActivitySipcar, PDO::PARAM_INT);   
+                    $stmt->bindValue(3, $record->idActivityCategory, PDO::PARAM_INT);   
+                    $stmt->bindValue(4, $record->idActivitySipcar, PDO::PARAM_INT);   
     
                     $stmt->execute();
                 }         

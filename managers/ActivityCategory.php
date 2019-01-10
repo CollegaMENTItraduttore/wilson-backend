@@ -29,8 +29,7 @@
                 $conn->beginTransaction();
                 $stmt = $conn->prepare('insert into activity_category 
                                         (
-                                            name, 
-                                            description
+                                            name
                                         ) 
                                         values(?, ?) ');
                 //inserimento sequential 
@@ -43,7 +42,6 @@
                         throw new Exception(implode("", $msg));
                     }
                     $stmt->bindValue(1, $record->name, PDO::PARAM_STR);
-                    $stmt->bindValue(2, $record->description, PDO::PARAM_STR);
 
                     $stmt->execute();
                 }         

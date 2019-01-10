@@ -35,12 +35,7 @@
                     $idPrimaryNeed = isset($_GET['idPrimaryNeed']) ? $_GET['idPrimaryNeed']: null; 
                     $payload = $classManager->getById($idPrimaryNeed);
                 break;
-                case 'save':
-                    //TODO: controllare se c'è
-                    $data = json_decode( file_get_contents('php://input') );
-                    $classManager->save( $data );
-                    break;
-                case 'share':
+                case 'new':
                     $data = json_decode( file_get_contents('php://input') );
                     $classManager->new($data);
                     break;

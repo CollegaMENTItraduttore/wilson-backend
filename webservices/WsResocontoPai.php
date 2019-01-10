@@ -35,7 +35,7 @@
                     $obj =  json_decode(file_get_contents('php://input'));
                     $payload = $classManager->update($obj);
                     break;   
-                case 'share':
+                case 'new':
                     $obj =  json_decode(file_get_contents('php://input'));
                     $payload = $classManager->new($obj);
                     break;
