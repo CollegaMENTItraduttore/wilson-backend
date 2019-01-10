@@ -2,7 +2,7 @@
     require_once('../classes/std/WilsonBaseClass.php');
     require_once('../utils/Costanti.php');
 
-    class ActivityEdition extends WilsonBaseClass {
+    class EventExtraParam extends WilsonBaseClass {
         function __construct($db, $conn) {   
             parent::__construct($db, $conn);        
         }
@@ -29,21 +29,25 @@
             }
             $data = [];    
             $conn = $this->connectToDatabase();
-            var_dump($conn);
+
             try {
             
-                $stmt = $conn->prepare('
-                    insert into activity_edition 
+                $stmt = $conn->prepare(
+                    'insert into event_extra_param 
                         (
-                            id_activity, 
-                            start_date, 
-                            end_date
+                            name, 
+                            value_text,
+                            value_num,
+                            created_by,
+                            id_primary_need
                         ) 
-                        values(?, ?, ?)');
+                        values(?, ?, ? ,?, ?)');
     
-                $stmt->bindValue(1, $object->id_activity, PDO::PARAM_INT);
-                $stmt->bindValue(2, $object->startDate, PDO::PARAM_STR);
-                $stmt->bindValue(3, $object->endDate, PDO::PARAM_STR);
+                $stmt->bindValue(1, $object->name, PDO::PARAM_INT);
+                $stmt->bindValue(2, $object->valueText, PDO::PARAM_STR);
+                $stmt->bindValue(3, $object->valueNum, PDO::PARAM_INT);
+                $stmt->bindValue(4, null, PDO::PARAM_INT);
+                $stmt->bindValue(5, $object->idPrimaryNeed, PDO::PARAM_INT);                
                 $stmt->execute();
     
             } catch (Exception $e) {

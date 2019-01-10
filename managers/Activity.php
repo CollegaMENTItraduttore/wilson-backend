@@ -250,7 +250,7 @@
             $listActivityInfo = $managerActivityInfo->list(); 
 
             foreach ($listActivityInfo as $attivita) {
-                $mapActivityInfo->{$attivita['id_attivita_css']} = $attivita['id'];
+                $mapActivityInfo->{$attivita['id_activity_sipcar']} = $attivita['id'];
             }
             return $mapActivityInfo;
         }
@@ -286,26 +286,27 @@
             
             try {
                 $conn->beginTransaction();
-                $stmt = $conn->prepare('insert into activity 
-                                        (
-                                            created_on, 
-                                            duration,
-                                            id_activity_info,
-                                            repeats_every,
-                                            repeats_on,
-                                            location,
-                                            can_volunteer,
-                                            can_partecipate,
-                                            can_request_appointment,
-                                            organized_by,
-                                            id_resident,
-                                            id_plan_sipcar
-                                        ) 
-                                        values(?, ?, ?, ?, ?, ? ,? ,?, ?, ?, ?, ?) ');
+                $stmt = $conn->prepare(
+                    'insert into activity 
+                        (
+                            created_on, 
+                            duration,
+                            id_activity_info,
+                            repeats_every,
+                            repeats_on,
+                            location,
+                            can_volunteer,
+                            can_partecipate,
+                            can_request_appointment,
+                            organized_by,
+                            id_resident,
+                            id_plan_sipcar
+                        ) 
+                        values (?, ?, ?, ?, ?, ? ,? ,?, ?, ?, ?, ?) ');
 
 
                 
-                $managerActivityEdition =  new ActivityEdition(parent::getDb());
+                $managerActivityEdition =  new ActivityEdition(parent::getDb(), $conn);
 
                 $mpaResident = $this->getHasMapResident();
                 $mapActivity = $this->getHasMapActivity();
@@ -319,11 +320,10 @@
                     if ( !$status && count($msg) > 0 ) {
                         throw new Exception(implode("", $msg));
                     }
-                    
 
                     //$idStaff = $mapCompilatori->{$record->oragnizedBy};
                     $idResident = $mpaResident->{$record->idResident};
-                    $idActivityInfo = $mapActivityInfo->{$record->idActivityInfo};
+                    $idActivityInfo = $mapActivity->{$record->idActivityInfo};
                     
                     if (empty($idResident)) {
                         throw new Exception("nessun idResident trovato");
@@ -347,8 +347,9 @@
                     $stmt->bindValue(12, $record->idPlanSipcar, PDO::PARAM_INT);
     
                     $stmt->execute();
+
                     //capire se a questo punto ho l'id appena inserito
-                    $newId = $stmt->lastInsertId();
+                    $newId = $conn->lastInsertId();
 
                     if (!empty($newId)) {
 
@@ -370,5 +371,38 @@
             } 
             return $data;
         } 
+        /**
+         * Metodo utilizzato, dal tradutottore per sapere quali attivita 
+         * sono state condivise
+         */
+        function shared($idResident) {
+
+            $data = [];
+            $conn = $this->connectToDatabase();
+
+            if (empty($idResident)) {
+                throw new Exception(sprintf(Costanti::INVALID_FIELD, 'idResident'));
+            }
+
+            try {
+                //todo da controllare
+                $stmt = $conn->prepare("
+                    select a.id, 
+                        (
+                            select max(e.start_date) 
+                            from  activity_edition e
+                            where e.id_activity = a.id
+                        ) as date
+                    from activity a
+                    where a.id_resident = ? 
+                ");                
+                $stmt->execute([$idResident]);
+                $data = $stmt -> fetchAll(PDO::FETCH_ASSOC);
+
+            } catch (Exception $e) {
+                throw new Exception(sprintf(Costanti::OPERATION_KO, $e->getMessage()));
+            }
+            return $data;
+        }
     }
 ?>

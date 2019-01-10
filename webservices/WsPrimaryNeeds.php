@@ -40,6 +40,10 @@
                     $data = json_decode( file_get_contents('php://input') );
                     $classManager->save( $data );
                     break;
+                case 'share':
+                    $data = json_decode( file_get_contents('php://input') );
+                    $classManager->new($data);
+                    break;
             }
 
         } catch(Exception $e) {

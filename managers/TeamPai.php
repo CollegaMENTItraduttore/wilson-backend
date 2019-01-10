@@ -124,10 +124,10 @@ class TeamPai extends WilsonBaseClass  {
                     throw new Exception(implode("", $msg));
                 }
                 $stmt->bindValue(1, $record->nominativo, PDO::PARAM_STR);
-                $stmt->bindValue(2, $record->figura_professionale, PDO::PARAM_STR);
-                $stmt->bindValue(3, $record->is_family_navigator, PDO::PARAM_INT);
-                $stmt->bindValue(4, $record->id_teanapers, PDO::PARAM_INT);   
-                $stmt->bindValue(5, $record->id_resident, PDO::PARAM_INT);   
+                $stmt->bindValue(2, $record->figuraProfessionale, PDO::PARAM_STR);
+                $stmt->bindValue(3, $record->isFamilyNavigator, PDO::PARAM_INT);
+                $stmt->bindValue(4, $record->idTeanaPers, PDO::PARAM_INT);   
+                $stmt->bindValue(5, $record->idResident, PDO::PARAM_INT);   
 
                 $stmt->execute();
             }         

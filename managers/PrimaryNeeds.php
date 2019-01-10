@@ -2,6 +2,7 @@
     require_once('../classes/std/WilsonBaseClass.php');
     require_once('../utils/Costanti.php');
     require_once('../utils/DateUtils.php');
+    require_once('EventExtraParam.php');
     
     class PrimaryNeeds extends WilsonBaseClass {
         function __construct($db) {   
@@ -91,8 +92,72 @@
         
         function getList() {           
         }
+
+        function checkCampiObbligatori($record, $msg) {
+            return true;
+        }
         
-        function save( $data ) {
+        function new( $array_object ) {
+
+            $array_object = (!is_array($array_object) ? array($array_object) : $array_object); 
+            $data = [];    
+
+            $conn = $this->connectToDatabase();
+                        
+            try {
+                $conn->beginTransaction();
+                $stmt = $conn->prepare('insert into primary_need 
+                    (
+                        created_on, 
+                        id_resident,
+                        id_type,
+                        id_primary_need_sipcar
+                   ) 
+                    values(?, ?, ?, ?) ');
+
+                $managerEventExtraParam =  new EventExtraParam(parent::getDb(), $conn);
+               
+                foreach ($array_object as $record) {
+    
+                    $msg = array();
+                    $status = $this->checkCampiObbligatori($record, $msg);
+                    //se l'inserimento non va a buon fine interrompo il ciclo di tutto ed esco
+                    if ( !$status && count($msg) > 0 ) {
+                        throw new Exception(implode("", $msg));
+                    }
+
+                    $stmt->bindValue(1, $record->createdOn, PDO::PARAM_STR);
+                    $stmt->bindValue(2, $record->idResident, PDO::PARAM_INT);
+                    $stmt->bindValue(3, $record->idType, PDO::PARAM_INT);    
+                    $stmt->bindValue(4, $record->idRecordSipcar, PDO::PARAM_INT);    
+    
+                    $stmt->execute();
+
+                    //capire se a questo punto ho l'id appena inserito
+                    $newId = $conn->lastInsertId();
+
+                    if (!empty($newId)) {
+
+                        //compisizione tabella event extra param
+                        $eventExtraParam = (object) array(
+                            'idPrimaryNeed' => $newId,
+                            'valueNum' => $record->valueNum,
+                            'valueText' => $record->valueText,
+                            'name' => $record->name,
+                            'createdBy' => $record->createdBy,
+                            'valueNum' => $record->valueText,
+                        );
+                        $managerEventExtraParam -> new($eventExtraParam);
+                    }
+                }         
+                $conn->commit();
+    
+            } catch (Exception $e) {
+                $conn->rollback();
+                throw new Exception(sprintf(Costanti::OPERATION_KO, $e->getMessage()));
+            } 
+            return $data;
+
         }
     }
 ?>

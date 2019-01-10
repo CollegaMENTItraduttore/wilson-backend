@@ -139,9 +139,10 @@ class ResocontoPai extends WilsonBaseClass  {
                 if ( !$status && count($msg) > 0 ) {
                     throw new Exception(implode("", $msg));
                 }
-                $stmt->bindValue(1, $record->created_by, PDO::PARAM_STR);
-                $stmt->bindValue(2, $record->created_on, PDO::PARAM_STR);
-                $stmt->bindValue(3, $record->id_resident, PDO::PARAM_INT);
+                
+                $stmt->bindValue(1, $record->createdBy, PDO::PARAM_STR);
+                $stmt->bindValue(2, $record->createdOn, PDO::PARAM_STR);
+                $stmt->bindValue(3, $record->idResident, PDO::PARAM_INT);
                 $stmt->bindValue(4, $record->note, PDO::PARAM_STR);   
                 $stmt->execute();
             }         

@@ -47,6 +47,10 @@
                     $obj =  json_decode(file_get_contents('php://input'));
                     $payload = $classManager->new($obj);
                     break;
+                case 'shared':
+                    $idResident = isset($_GET['idResident']) ? $_GET['idResident'] : null;
+                    $payload = $classManager->shared($idResident);
+                    break;
             }
             array_push($message, Costanti::OPERATION_OK);
 
