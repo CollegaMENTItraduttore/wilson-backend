@@ -52,7 +52,7 @@ class TeamPai extends WilsonBaseClass  {
                         p.is_family_navigator, 
                         p.id_teanapers,
                         p.id_resident
-                from team_cura p
+                from care_team p
                 where p.id_resident = ?'
             );
             $stmt->execute(array($id_resident));
@@ -83,7 +83,7 @@ class TeamPai extends WilsonBaseClass  {
                             p.is_family_navigator, 
                             p.id_teanapers,
                             p.id_resident
-                    from team_cura p
+                    from care_team p
                     where p.id = ?'
             );
             $stmt->execute(array($id));
@@ -105,7 +105,7 @@ class TeamPai extends WilsonBaseClass  {
 
         try {
             $conn->beginTransaction();
-            $stmt = $conn->prepare('insert into team_cura 
+            $stmt = $conn->prepare('insert into care_team 
                                     (
                                         nominativo, 
                                         figura_professionale,
