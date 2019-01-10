@@ -23,7 +23,7 @@
                            s.description, 
                            s.benefits, 
                            s.id_activity_category,
-                           s.id_attivita_css
+                           s.id_activity_sipcar
                     from activity_info s'
                 );
                 $stmt->execute();
@@ -53,7 +53,7 @@
                                             description,
                                             benefits,
                                             id_activity_category,
-                                            id_attivita_css
+                                            id_activity_sipcar
                                         ) 
                                         values(?, ?, ?, ?, ?) ');
                 //inserimento sequential 
@@ -69,7 +69,7 @@
                     $stmt->bindValue(2, $record->description, PDO::PARAM_STR);
                     $stmt->bindValue(3, $record->benefits, PDO::PARAM_INT);
                     $stmt->bindValue(4, $record->idActivityCategory, PDO::PARAM_INT);   
-                    $stmt->bindValue(5, $record->idAttivitaCss, PDO::PARAM_INT);   
+                    $stmt->bindValue(5, $record->idActivitySipcar, PDO::PARAM_INT);   
     
                     $stmt->execute();
                 }         
