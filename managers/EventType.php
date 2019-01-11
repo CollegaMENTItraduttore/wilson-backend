@@ -4,7 +4,6 @@ require_once('../classes/std/WilsonBaseClass.php');
 require_once('../utils/Costanti.php');
 
 class EventType extends WilsonBaseClass  {
-    private $db;
     function __construct($db) {
         parent::__construct($db);        
     }

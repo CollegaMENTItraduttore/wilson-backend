@@ -3,7 +3,6 @@
     require_once('../utils/Costanti.php');
 
     class ActivityInfo extends WilsonBaseClass {
-        private $session;
         function __construct($db) {   
             parent::__construct($db);        
            
