@@ -3,16 +3,17 @@
     class WilsonBaseClass {
 
         
-        private $db;
+        private $db = null;
         private $connection;
 
         function WilsonBaseClass($db = 'wilson_db', $conn = null) {
-            $this->db = 'env_cm_' . $db;
+            $this->db = $db;
+            //$this->db = 'wilson_db';
             $this->connection = $conn;
         }
 
         function getDb() {
-            return $this->db;
+            return 'env_cm_'.$this->db;
         }
 
         function getIdRsaByDb() {
