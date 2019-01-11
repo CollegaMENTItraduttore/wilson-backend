@@ -228,7 +228,7 @@
 
             $mpaResident = new stdClass();
 
-            $managerResident = new Resident(parent::getDb());
+            $managerResident = new Resident(($this->getDb(), null);
             $listUtenti = $managerResident->getList();
              //hasmap per la lista dei residenti
              foreach ($listUtenti as $ospite) {
@@ -246,7 +246,7 @@
 
             $mapActivityInfo = new stdClass();
 
-            $managerActivityInfo = new ActivityInfo(parent::getDb());
+            $managerActivityInfo = new ActivityInfo($this->getDb(), null);
             $listActivityInfo = $managerActivityInfo->list(); 
 
             foreach ($listActivityInfo as $attivita) {
@@ -306,8 +306,8 @@
                         values (?, ?, ?, ?, ?, ? ,? ,?, ?, ?, ?, ?) ');
 
 
-                var_dump($conn);
-                $managerActivityEdition =  new ActivityEdition(parent::getDb(), $conn);
+                var_dump($this->getDb());
+                $managerActivityEdition =  new ActivityEdition($this->getDb(), $conn);
 
                 $mpaResident = $this->getHasMapResident();
                 $mapActivity = $this->getHasMapActivity();
