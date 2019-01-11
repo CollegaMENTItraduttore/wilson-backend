@@ -231,7 +231,11 @@
             echo "Ingresso in hashmapresident";
             var_dump($this->getDb());
             $managerResident = new Resident($this->getDb(), null);
+            echo "manager resident creato";
+            var_dump($this->getDb());
             $listUtenti = $managerResident->getList();
+            echo "lista ottenuta";
+            var_dump($this->getDb());
              //hasmap per la lista dei residenti
              foreach ($listUtenti as $ospite) {
                 $mpaResident->{$ospite['cod_utente']} = $ospite['id'];
@@ -307,15 +311,11 @@
                         ) 
                         values (?, ?, ?, ?, ?, ? ,? ,?, ?, ?, ?, ?) ');
 
-                var_dump($this->getDb());
                 $managerActivityEdition =  new ActivityEdition($this->getDb(), $conn);
-                var_dump($this->getDb());
 
                 $mpaResident = $this->getHasMapResident();
-                var_dump($this->getDb());
                 $mapActivity = $this->getHasMapActivity();
                 //$mapstaff ->$this->getHasMapStaff();
-                var_dump($this->getDb());
 
                 foreach ($array_object as $record) {
     
