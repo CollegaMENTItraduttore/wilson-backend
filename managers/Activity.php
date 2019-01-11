@@ -306,12 +306,13 @@
                         values (?, ?, ?, ?, ?, ? ,? ,?, ?, ?, ?, ?) ');
 
 
-                var_dump(parent::getDb());
+               
                 $managerActivityEdition =  new ActivityEdition(parent::getDb(), $conn);
-                var_dump(parent::getDb());
 
                 $mpaResident = $this->getHasMapResident();
+                var_dump(parent::getDb());
                 $mapActivity = $this->getHasMapActivity();
+                var_dump(parent::getDb());
                 //$mapstaff ->$this->getHasMapStaff();
                
                 foreach ($array_object as $record) {
