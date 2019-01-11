@@ -28,10 +28,10 @@
                 throw new Exception(implode("", $msg));
             }
             $data = [];    
-            $conn = $this->connectToDatabase();
+            
 
             try {
-            
+                $conn = $this->connectToDatabase();
                 $stmt = $conn->prepare(
                     'insert into event_extra_param 
                         (

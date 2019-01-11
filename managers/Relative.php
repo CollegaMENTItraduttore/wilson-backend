@@ -50,8 +50,9 @@ class Relative extends WilsonBaseClass  {
     function list() {
 
         $data = [];    
-        $conn = $this->connectToDatabase();
+        
         try {
+            $conn = $this->connectToDatabase();
             $stmt = $conn->prepare('
                 select s.id, 
                        s.first_name, 
@@ -83,8 +84,9 @@ class Relative extends WilsonBaseClass  {
         }
 
         $data = [];    
-        $conn = $this->connectToDatabase();
+        
         try {
+            $conn = $this->connectToDatabase();
             $stmt = $conn->prepare('
                 select s.id, s.first_name, 
                        s.last_name, 
@@ -118,9 +120,9 @@ class Relative extends WilsonBaseClass  {
         }
 
         $data = [];    
-        $conn = $this->connectToDatabase();
+        
         try {
-
+            $conn = $this->connectToDatabase();
             $stmt = $conn->prepare('insert into relative (first_name, last_name, mail, username, id_resident, id_kinship) values(?, ?, ?, ?, ?, ?)');
 
             $stmt->bindValue(1, $object->firstName, PDO::PARAM_STR);
@@ -154,8 +156,9 @@ class Relative extends WilsonBaseClass  {
         }
 
         $data = [];    
-        $conn = $this->connectToDatabase();
+        
         try {
+            $conn = $this->connectToDatabase();
             $stmt = $conn->prepare('update relative s 
                                     SET s.first_name =?, 
                                         s.last_name =?,  
@@ -189,8 +192,9 @@ class Relative extends WilsonBaseClass  {
             throw new Exception(sprintf(Costanti::INVALID_FIELD, "id"));
         }
         $data = [];    
-        $conn = $this->connectToDatabase();
+        
         try {
+            $conn = $this->connectToDatabase();
             $stmt = $conn->prepare('delete from relative where id = ?');            
             $stmt->execute([$id]);
 
@@ -207,8 +211,9 @@ class Relative extends WilsonBaseClass  {
         }
 
         $data = [];    
-        $conn = $this->connectToDatabase();
+        
         try {
+            $conn = $this->connectToDatabase();
             $stmt = $conn->prepare('
                 select r.id as id_relative_cm,
                        r.id_resident as id_resident_cm

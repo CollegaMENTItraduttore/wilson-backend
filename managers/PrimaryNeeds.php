@@ -55,9 +55,9 @@
             if (!isset($dateEnd)) {
                 throw new Exception(sprintf(Costanti::INVALID_FIELD, 'dateEnd'));
             }
-            $conn = $this->connectToDatabase();
+            
             try {
-                
+                $conn = $this->connectToDatabase();
                 $stmt = $conn->prepare("
                     select 
                         pn.id_resident,
@@ -102,9 +102,10 @@
             $array_object = (!is_array($array_object) ? array($array_object) : $array_object); 
             $data = [];    
 
-            $conn = $this->connectToDatabase();
+            $conn = null;
                         
             try {
+                $conn = $this->connectToDatabase();
                 $conn->beginTransaction();
                 $stmt = $conn->prepare('insert into primary_need 
                     (
@@ -158,6 +159,44 @@
             } 
             return $data;
 
+        }
+        /**
+         * Metodo utilizzato, dal tradutottore per sapere quali attivita 
+         * sono state condivise
+         */
+        function shared($idResident, $listType) {
+
+            $data = [];
+            
+
+            if (empty($idResident)) {
+                throw new Exception(sprintf(Costanti::INVALID_FIELD, 'idResident'));
+            }
+            $param = [];
+            $sql = '
+                select  
+                     p.id_primary_need_sipcar as idRecordSipcar, 
+                     p.id_type as idType
+                from primary_need p 
+                where p.id_resident = ?
+            ';
+            try {
+                $conn = $this->connectToDatabase();
+                //todo da controllare
+                array_push($param, $idResident);
+
+                if(isset($listType) && !empty($listType)) {
+                    $sql .=' and p.id_type in ('.$listType.')'; 
+                }
+                $stmt = $conn->prepare($sql); 
+ 
+                $stmt->execute($param);
+                $data = $stmt -> fetchAll(PDO::FETCH_ASSOC);
+
+            } catch (Exception $e) {
+                throw new Exception(sprintf(Costanti::OPERATION_KO, $e->getMessage()));
+            }
+            return $data;
         }
     }
 ?>

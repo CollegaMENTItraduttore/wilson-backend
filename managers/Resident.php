@@ -52,9 +52,10 @@
             
             $data = [];
             
-            $conn = $this->connectToDatabase();
+            
             
             try {
+                $conn = $this->connectToDatabase();
                 $stmt = $conn->prepare("
                     SELECT r.id, 
                            r.first_name, 

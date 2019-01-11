@@ -26,9 +26,9 @@
             if (!isset($idResident)) {
                 throw new Exception(sprintf(Costanti::INVALID_FIELD, 'idResident'));
             }
-            $conn = $this->connectToDatabase();
+            
             try {
-                
+                $conn = $this->connectToDatabase();
                 $stmt = $conn->prepare("
                     SELECT  
                         a.id as id_activity,
@@ -74,9 +74,9 @@
             if (!isset($dateEnd)) {
                 throw new Exception(sprintf(Costanti::INVALID_FIELD, 'dateEnd'));
             }
-            $conn = $this->connectToDatabase();
+            
             try {
-                
+                $conn = $this->connectToDatabase();
                 $stmt = $conn->prepare("
                     SELECT 
                         ae.id as id_activity_edition,
@@ -117,9 +117,9 @@
             if (!isset($idActivityEdition)) {
                 throw new Exception(sprintf(Costanti::INVALID_FIELD, 'idActivityEdition'));
             }
-            $conn = $this->connectToDatabase();
+            
             try {
-                
+                $conn = $this->connectToDatabase();
                 $stmt = $conn->prepare("
                     SELECT 
                         ae.id as id_activity_edition,
@@ -178,9 +178,9 @@
                 throw new Exception(sprintf(Costanti::INVALID_FIELD, 'idActivity'));
             }
            
-            $conn = $this->connectToDatabase();
+            
             try {
-                
+                $conn = $this->connectToDatabase();
                 $stmt = $conn->prepare("
                     SELECT
                         a.id as id_activity,
@@ -282,9 +282,10 @@
             $array_object = (!is_array($array_object) ? array($array_object) : $array_object); 
             $data = [];    
 
-            $conn = $this->connectToDatabase();
+           $conn = null;
             
             try {
+                $conn = $this->connectToDatabase();
                 $conn->beginTransaction();
                 $stmt = $conn->prepare(
                     'insert into activity 
@@ -336,7 +337,7 @@
                     $stmt->bindValue(1, $record->createdOn, PDO::PARAM_STR);
                     $stmt->bindValue(2, $record->duration, PDO::PARAM_INT);
                     $stmt->bindValue(3, $idActivityInfo, PDO::PARAM_INT);
-                    $stmt->bindValue(4, $record->repeatsEvery, PDO::PARAM_INT);   
+                    $stmt->bindValue(4, $record->repeatsEvery, PDO::PARAM_STR);   
                     $stmt->bindValue(5, $record->repeatsOn, PDO::PARAM_STR);
                     $stmt->bindValue(6, $record->location, PDO::PARAM_STR);
                     $stmt->bindValue(7, $record->canVolunteer, PDO::PARAM_INT);
@@ -378,23 +379,24 @@
         function shared($idResident) {
 
             $data = [];
-            $conn = $this->connectToDatabase();
+            
 
             if (empty($idResident)) {
                 throw new Exception(sprintf(Costanti::INVALID_FIELD, 'idResident'));
             }
 
             try {
+                $conn = $this->connectToDatabase();
                 //todo da controllare
                 $stmt = $conn->prepare("
                     select 
-                        a.id, 
-                        max(e.start_date) as date 
+                        a.id_plan_sipcar as idPlanSipcar, 
+                        max(e.start_date) as lastDate 
                     from activity a 
                     inner join activity_edition e 
                         on e.id_activity = a.id
                     where a.id_resident = ?
-                    group by a.id
+                    group by a.id_plan_sipcar
                 ");                
                 $stmt->execute([$idResident]);
                 $data = $stmt -> fetchAll(PDO::FETCH_ASSOC);

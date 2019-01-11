@@ -39,6 +39,11 @@
                     $data = json_decode( file_get_contents('php://input') );
                     $classManager->new($data);
                     break;
+                case 'shared':
+                    $idResident = isset($_GET['idResident']) ? $_GET['idResident']: null;
+                    $listType = isset($_GET['listType']) ? $_GET['listType']: null;
+                    $payload = $classManager->shared($idResident, $listType);
+                    break;
             }
 
         } catch(Exception $e) {

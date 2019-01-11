@@ -26,9 +26,10 @@ class EventType extends WilsonBaseClass  {
         
         $array_object = (!is_array($array_object) ? array($array_object) : $array_object); 
         $data = [];    
-        $conn = $this->connectToDatabase();
+        $conn = null;
 
         try {
+            $conn = $this->connectToDatabase();
             $conn->beginTransaction();
             $stmt = $conn->prepare(
                 'insert into event_type 
@@ -65,8 +66,9 @@ class EventType extends WilsonBaseClass  {
             throw new Exception(sprintf(Costanti::INVALID_FIELD, "id"));
         }
         $data = [];    
-        $conn = $this->connectToDatabase();
+        
         try {
+            $conn = $this->connectToDatabase();
             $stmt = $conn->prepare('delete from event_type where id = ?');            
             $stmt->execute([$id]);
 
