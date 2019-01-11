@@ -45,8 +45,9 @@ class Staff extends WilsonBaseClass  {
     function list() {
 
         $data = [];    
-        $conn = $this->connectToDatabase();
+        
         try {
+            $conn = $this->connectToDatabase();
             $stmt = $conn->prepare('
                 select s.id, 
                        s.first_name, 
@@ -79,8 +80,9 @@ class Staff extends WilsonBaseClass  {
         }
 
         $data = [];    
-        $conn = $this->connectToDatabase();
+        
         try {
+            $conn = $this->connectToDatabase();
             $stmt = $conn->prepare('
                 select s.id, 
                        s.first_name, 
@@ -115,9 +117,9 @@ class Staff extends WilsonBaseClass  {
             throw new Exception(implode("", $msg));
         }
         $data = [];    
-        $conn = $this->connectToDatabase();
+        
         try {
-
+            $conn = $this->connectToDatabase();
             /**
              *  per l'inserimento di operatori di tipo staff è necessario 
              *  collegarli all'rsa, partendo, dal db 
@@ -161,8 +163,9 @@ class Staff extends WilsonBaseClass  {
         }
 
         $data = [];    
-        $conn = $this->connectToDatabase();
+        
         try {
+            $conn = $this->connectToDatabase();
             $stmt = $conn->prepare('update staff s 
                                     set s.first_name =?, 
                                         s.last_name =?, 
@@ -193,8 +196,9 @@ class Staff extends WilsonBaseClass  {
             throw new Exception(sprintf(Costanti::INVALID_FIELD, "id"));
         }
         $data = [];    
-        $conn = $this->connectToDatabase();
+        
         try {
+            $conn = $this->connectToDatabase();
             $stmt = $conn->prepare('delete from staff where id = ?');            
             $stmt->execute([$id]);
 

@@ -1,10 +1,14 @@
 <?php
     require_once('WilsonResponse.php');
-
     class WilsonBaseClass {
+
+        
         private $db;
-        function __construct($db = 'wilson_db') {
+        private $connection;
+
+        function WilsonBaseClass($db = 'wilson_db', $conn = null) {
             $this->db = 'env_cm_' . $db;
+            $this->connection = $conn;
         }
 
         function getDb() {
@@ -17,9 +21,10 @@
                 throw new Exception(sprintf(Costanti::INVALID_FIELD, "db")); 
             }
             $data = [];    
-            $conn = $this->connectToDatabase(); 
+            
     
             try {
+                $conn = $this->connectToDatabase(); 
                 $stmt = $conn->prepare('
                             select r.id 
                             from rsa r
@@ -90,19 +95,22 @@
         }
         
         function connectToDatabase() {
-
+            if (isset($this->connection) && !empty($this->connection)) {
+                return $this->connection;
+            }
             //connessione PDO
             $conn = null;
             try {
-                $dbh = new PDO('mysql:host=localhost;dbname='.$this->db, "root", "root");
+                $dbh = new PDO('mysql:host=localhost;dbname='.$this->getDb(),"root", "root");
                 $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
                 $dbh->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
 
                 $conn = $dbh;
+
             } catch (PDOException $e) {
                 $conn = null;
-                print "Error!: " . $e->getMessage() . "<br/>";
-                die();
+                //print "Error!: " . $e->getMessage() . "<br/>";
+                throw new Exception($e->getMessage());
             }
 
             /*Create connection

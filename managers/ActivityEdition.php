@@ -28,10 +28,8 @@
                 throw new Exception(implode("", $msg));
             }
             $data = [];    
-            $conn = $this->connectToDatabase();
-            var_dump($conn);
             try {
-            
+                $conn = $this->connectToDatabase();
                 $stmt = $conn->prepare('
                     insert into activity_edition 
                         (

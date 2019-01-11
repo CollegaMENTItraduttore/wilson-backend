@@ -15,8 +15,9 @@
 
         function list() {
             $data = [];    
-            $conn = $this->connectToDatabase();
+            
             try {
+                $conn = $this->connectToDatabase();
                 $stmt = $conn->prepare('
                     select s.id, 
                            s.name, 
@@ -43,17 +44,22 @@
 
             $array_object = (!is_array($array_object) ? array($array_object) : $array_object); 
             $data = [];    
-            $conn = $this->connectToDatabase();
-    
+            $conn = null;
+            
             try {
+                $conn = $this->connectToDatabase();
                 $conn->beginTransaction();
-                $stmt = $conn->prepare('insert into activity_info 
-                                        (
-                                            name,
-                                            id_activity_category,
-                                            id_activity_sipcar
-                                        ) 
-                                        values(?, ?, ?, ?, ?) ');
+                $stmt = $conn->prepare('
+                    insert into activity_info 
+                            (
+                                name,
+                                id_activity_category,
+                                id_activity_sipcar
+                            ) 
+                            values(:name, :id_activity_category, :id_activity_sipcar) ON DUPLICATE KEY UPDATE
+                                name = values(name), 
+                                id_activity_category = values(id_activity_category)
+                    ');
                 //inserimento sequential 
                 foreach ($array_object as $record) {
     
@@ -63,9 +69,9 @@
                     if ( !$status && count($msg) > 0 ) {
                         throw new Exception(implode("", $msg));
                     }
-                    $stmt->bindValue(1, $record->name, PDO::PARAM_STR);
-                    $stmt->bindValue(3, $record->idActivityCategory, PDO::PARAM_INT);   
-                    $stmt->bindValue(4, $record->idActivitySipcar, PDO::PARAM_INT);   
+                    $stmt->bindValue(":name", $record->name, PDO::PARAM_STR);
+                    $stmt->bindValue(":id_activity_category", $record->idActivityCategory, PDO::PARAM_INT);   
+                    $stmt->bindValue(":id_activity_sipcar", $record->idActivitySipcar, PDO::PARAM_INT);   
     
                     $stmt->execute();
                 }         

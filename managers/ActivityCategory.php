@@ -23,15 +23,20 @@
 
             $array_object = (!is_array($array_object) ? array($array_object) : $array_object); 
             $data = [];    
-            $conn = $this->connectToDatabase();
+            $conn = null;
     
             try {
+                $conn = $this->connectToDatabase();
                 $conn->beginTransaction();
-                $stmt = $conn->prepare('insert into activity_category 
-                                        (
-                                            name
-                                        ) 
-                                        values(?, ?) ');
+                $stmt = $conn->prepare('
+                        insert into activity_category 
+                            (
+                                id,
+                                name
+                            ) 
+                            values(:id, :name) ON DUPLICATE KEY UPDATE
+                            name = values(name)
+                        ');
                 //inserimento sequential 
                 foreach ($array_object as $record) {
     
@@ -41,7 +46,8 @@
                     if ( !$status && count($msg) > 0 ) {
                         throw new Exception(implode("", $msg));
                     }
-                    $stmt->bindValue(1, $record->name, PDO::PARAM_STR);
+                    $stmt->bindValue(':id', $record->id, PDO::PARAM_INT);
+                    $stmt->bindValue(':name', $record->name, PDO::PARAM_STR);
 
                     $stmt->execute();
                 }         

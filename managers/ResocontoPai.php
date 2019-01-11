@@ -38,9 +38,9 @@ class ResocontoPai extends WilsonBaseClass  {
         $data_dal =  DateUtils::getStartOfDay($date);
         $data_al =  DateUtils::getEndOfDay($date);
 
-        $conn = $this->connectToDatabase();
+        
         try {
-
+            $conn = $this->connectToDatabase();
             $condition = [];
             $sqlParam = [];
             $sql = "
@@ -87,8 +87,9 @@ class ResocontoPai extends WilsonBaseClass  {
         }
 
         $data = [];    
-        $conn = $this->connectToDatabase();
+        
         try {
+            $conn = $this->connectToDatabase();
             $stmt = $conn->prepare('
                     select  p.id, 
                             p.created_on, 
@@ -114,9 +115,10 @@ class ResocontoPai extends WilsonBaseClass  {
 
         $array_object = (!is_array($array_object) ? array($array_object) : $array_object); 
         $data = [];    
-        $conn = $this->connectToDatabase();
+        $conn = null;
 
         try {
+            $conn = $this->connectToDatabase();
             $conn->beginTransaction();
             $stmt = $conn->prepare('insert into pai_resoconto 
                                     (

@@ -41,6 +41,10 @@
                     break;
                 case 'delete':
                     $payload = $classManager->update($object);
+                    break;
+                case 'shared':
+                    $idResident = isset($_GET['idResident']) ? $_GET['idResident'] : null;
+                    $payload = $classManager->shared($idResident);
                     break;    
             }
             array_push($message, Costanti::OPERATION_OK);

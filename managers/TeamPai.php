@@ -39,8 +39,8 @@ class TeamPai extends WilsonBaseClass  {
         if (!isset($id_resident) || empty($id_resident)) {
             throw new Exception(sprintf(Costanti::INVALID_FIELD, "id_resident")); 
         }
-        $conn = $this->connectToDatabase();
         try {
+            $conn = $this->connectToDatabase();
             $stmt = $conn->prepare('
                 select  p.id, 
                         p.nominativo, 
@@ -70,8 +70,9 @@ class TeamPai extends WilsonBaseClass  {
         }
 
         $data = [];    
-        $conn = $this->connectToDatabase();
+        
         try {
+            $conn = $this->connectToDatabase();
             $stmt = $conn->prepare('
                     select  p.id, 
                             p.nominativo, 
@@ -96,11 +97,16 @@ class TeamPai extends WilsonBaseClass  {
     function new($array_object) {
 
         $array_object = (!is_array($array_object) ? array($array_object) : $array_object); 
-        $data = [];    
-        $conn = $this->connectToDatabase();
+        $data = [];   
 
-        try {
+        $conn = null;
+        try {    
+            $conn = $this->connectToDatabase();
             $conn->beginTransaction();
+            //svuoto la tabella 
+            $this->deleteAll();
+            
+           
             $stmt = $conn->prepare('insert into care_team 
                                     (
                                         nominativo, 
@@ -130,7 +136,7 @@ class TeamPai extends WilsonBaseClass  {
             $conn->commit();
 
         } catch (Exception $e) {
-            $conn->rollback();
+            $conn->rollback(); 
             throw new Exception(sprintf(Costanti::OPERATION_KO, $e->getMessage()));
         } 
         return $data;
@@ -143,8 +149,49 @@ class TeamPai extends WilsonBaseClass  {
     /**
      * Cancellazione dell'operatore, in base all'id passato
      */
-    function delete($id = null) {
+    function deleteAll() {
+        //campo id obbligatorio 
+        $data = [];    
+        
+        try {
+            $conn = $this->connectToDatabase();
+            $stmt = $conn->prepare('delete from care_team');            
+            $stmt->execute();
+
+        } catch (Exception $e) {
+            throw new Exception(sprintf(Costanti::OPERATION_KO, $e->getMessage()));
+        }
+        return $data;
     }
+    function shared($id_resident = null) {
+
+        $data = [];    
+        if (!isset($id_resident) || empty($id_resident)) {
+            throw new Exception(sprintf(Costanti::INVALID_FIELD, "id_resident")); 
+        }
+        
+        try {
+            $conn = $this->connectToDatabase();
+            $stmt = $conn->prepare('
+                select  p.id as id, 
+                        p.nominativo as nominativo, 
+                        p.figura_professionale as figuraProfessionale, 
+                        p.is_family_navigator as isFamilyNavigator, 
+                        p.id_teanapers as idTeAnaPers,
+                        p.id_resident as idResident
+                from care_team p
+                where p.id_resident = ?'
+            );
+            $stmt->execute(array($id_resident));
+            $data = $stmt -> fetchAll(PDO::FETCH_ASSOC);
+
+        } catch (Exception $e) {
+            throw new Exception(sprintf(Costanti::OPERATION_KO, $e->getMessage()));
+        }
+        return $data;
+
+    }
+
 }
 
 ?> 
