@@ -3,19 +3,18 @@
     class WilsonBaseClass {
 
         
-        private $db = null;
+        private $db;
         private $connection;
 
-        function WilsonBaseClass($db = 'wilson_db', $conn = null) {
-            $this->db = $db;
+        function WilsonBaseClass($env = null, $conn = null) {
+            $this->db = 'env_cm_'.$env;
             //$this->db = 'wilson_db';
             $this->connection = $conn;
         }
 
         function getDb() {
-            return 'env_cm_'.$this->db;
+            return $this->db;
         }
-
         function getIdRsaByDb() {
 
             if (empty($this->getDb())) {
@@ -102,7 +101,7 @@
             //connessione PDO
             $conn = null;
             try {
-                $dbh = new PDO('mysql:host=localhost;dbname='.$this->getDb(),"root", "root");
+                $dbh = new PDO('mysql:host=localhost;dbname='.$this->db,"root", "root");
                 $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
                 $dbh->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
 
