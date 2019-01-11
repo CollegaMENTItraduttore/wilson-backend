@@ -14,11 +14,14 @@
         function getList($listResidents = '') {
             
             $data = [];
-            
-            $conn = $this->connectToDatabase();
+            echo "entrato nella getlist";
+            var_dump($this->getDb());
             
             try {
+                $conn = $this->connectToDatabase();
+                echo "connesso al DB"
 
+                var_dump($this->getDb());
                 $query = "  select r.id, r.first_name, r.last_name, r.gender,
                                     CONCAT( r.first_name,\" \",r.last_name) as nominative,
                                     r.picture, r.cod_utente
