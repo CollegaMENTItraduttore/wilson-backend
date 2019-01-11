@@ -307,8 +307,10 @@
 
                 var_dump($this->getDb());
                 $managerActivityEdition =  new ActivityEdition($this->getDb(), $conn);
+                var_dump($this->getDb());
 
                 $mpaResident = $this->getHasMapResident();
+                var_dump($this->getDb());
                 $mapActivity = $this->getHasMapActivity();
                 //$mapstaff ->$this->getHasMapStaff();
                 var_dump($this->getDb());
