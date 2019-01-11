@@ -309,8 +309,8 @@
                
                 $managerActivityEdition =  new ActivityEdition(parent::getDb(), $conn);
 
-                $mpaResident = $this->getHasMapResident();
                 var_dump(parent::getDb());
+                $mpaResident = $this->getHasMapResident();
                 $mapActivity = $this->getHasMapActivity();
                 var_dump(parent::getDb());
                 //$mapstaff ->$this->getHasMapStaff();
