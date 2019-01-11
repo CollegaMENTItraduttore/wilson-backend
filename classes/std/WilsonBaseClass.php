@@ -21,9 +21,10 @@
                 throw new Exception(sprintf(Costanti::INVALID_FIELD, "db")); 
             }
             $data = [];    
-            $conn = $this->connectToDatabase(); 
+            
     
             try {
+                $conn = $this->connectToDatabase(); 
                 $stmt = $conn->prepare('
                             select r.id 
                             from rsa r
