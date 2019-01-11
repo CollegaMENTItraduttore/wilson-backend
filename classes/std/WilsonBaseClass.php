@@ -8,9 +8,7 @@
         
 
         function WilsonBaseClass($env = null, $conn = null) {
-            var_dump($env);
-            $this->db = 'env_cm_'.$env;
-            //$this->db = 'wilson_db';
+            $this->db = $env;
             $this->connection = $conn;
         }
 
@@ -103,7 +101,7 @@
             //connessione PDO
             $conn = null;
             try {
-                $dbh = new PDO('mysql:host=localhost;dbname='.$this->db,"root", "root");
+                $dbh = new PDO('mysql:host=localhost;dbname=env_cm_'.$this->db,"root", "root");
                 $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
                 $dbh->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
 

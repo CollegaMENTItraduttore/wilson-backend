@@ -229,11 +229,7 @@
             $mpaResident = new stdClass();
                 
             $managerResident = new Resident($this->getDb(), null);
-            echo "manager resident creato";
-            var_dump($this->getDb());
             $listUtenti = $managerResident->getList();
-            echo "lista ottenuta";
-            var_dump($this->getDb());
              //hasmap per la lista dei residenti
              foreach ($listUtenti as $ospite) {
                 $mpaResident->{$ospite['cod_utente']} = $ospite['id'];
