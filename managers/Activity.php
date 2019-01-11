@@ -228,8 +228,6 @@
 
             $mpaResident = new stdClass();
                 
-            echo "Ingresso in hashmapresident";
-            var_dump($this->getDb());
             $managerResident = new Resident($this->getDb(), null);
             echo "manager resident creato";
             var_dump($this->getDb());

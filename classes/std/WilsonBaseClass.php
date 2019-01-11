@@ -8,7 +8,7 @@
         
 
         function WilsonBaseClass($env = null, $conn = null) {
-            $this->db = null;
+            var_dump($env);
             $this->db = 'env_cm_'.$env;
             //$this->db = 'wilson_db';
             $this->connection = $conn;
