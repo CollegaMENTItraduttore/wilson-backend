@@ -228,7 +228,7 @@
 
             $mpaResident = new stdClass();
 
-            $managerResident = new Resident(($this->getDb(), null);
+            $managerResident = new Resident($this->getDb(), null);
             $listUtenti = $managerResident->getList();
              //hasmap per la lista dei residenti
              foreach ($listUtenti as $ospite) {
@@ -305,15 +305,14 @@
                         ) 
                         values (?, ?, ?, ?, ?, ? ,? ,?, ?, ?, ?, ?) ');
 
-
                 var_dump($this->getDb());
                 $managerActivityEdition =  new ActivityEdition($this->getDb(), $conn);
 
                 $mpaResident = $this->getHasMapResident();
                 $mapActivity = $this->getHasMapActivity();
                 //$mapstaff ->$this->getHasMapStaff();
-                var_dump($conn);
-               
+                var_dump($this->getDb());
+
                 foreach ($array_object as $record) {
     
                     $msg = array();
