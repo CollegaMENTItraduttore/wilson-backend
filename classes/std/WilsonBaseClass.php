@@ -5,8 +5,10 @@
         
         private $db;
         private $connection;
+        
 
-        function __construct($env, $conn = null) { 
+        function WilsonBaseClass($env = null, $conn = null) {
+            $this->db = null;
             $this->db = 'env_cm_'.$env;
             //$this->db = 'wilson_db';
             $this->connection = $conn;
