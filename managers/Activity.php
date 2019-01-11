@@ -309,11 +309,10 @@
                
                 $managerActivityEdition =  new ActivityEdition(parent::getDb(), $conn);
 
-                var_dump(parent::getDb());
                 $mpaResident = $this->getHasMapResident();
                 $mapActivity = $this->getHasMapActivity();
-                var_dump(parent::getDb());
                 //$mapstaff ->$this->getHasMapStaff();
+                var_dump($conn);
                
                 foreach ($array_object as $record) {
     
