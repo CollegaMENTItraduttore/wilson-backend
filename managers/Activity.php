@@ -306,8 +306,9 @@
                         values (?, ?, ?, ?, ?, ? ,? ,?, ?, ?, ?, ?) ');
 
 
-                
+                var_dump(parent::getDb())
                 $managerActivityEdition =  new ActivityEdition(parent::getDb(), $conn);
+                var_dump(parent::getDb())
 
                 $mpaResident = $this->getHasMapResident();
                 $mapActivity = $this->getHasMapActivity();
