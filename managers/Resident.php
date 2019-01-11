@@ -19,7 +19,7 @@
             
             try {
                 $conn = $this->connectToDatabase();
-                echo "connesso al DB"
+                echo "connesso al DB";
 
                 var_dump($this->getDb());
                 $query = "  select r.id, r.first_name, r.last_name, r.gender,
