@@ -227,7 +227,9 @@
         function getHasMapResident() {
 
             $mpaResident = new stdClass();
-
+                
+            echo "Ingresso in hashmapresident";
+            var_dump($this->getDb());
             $managerResident = new Resident($this->getDb(), null);
             $listUtenti = $managerResident->getList();
              //hasmap per la lista dei residenti
