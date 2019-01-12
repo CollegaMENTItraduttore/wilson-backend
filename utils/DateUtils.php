@@ -41,40 +41,62 @@ class DateUtils {
     public static function whenRepeats( $every, $on ) {
         $stringWhenRepeats = '';
 
-        switch ($every) {
-            case 'weekly':
+        if (isset($on) && !empty($on)) {
 
-                $arrayAllDays = array(
-                    'MO'=>'Lunedì',
-                    'TU'=>'Martedì',
-                    'WE'=>'Mercoledì',
-                    'TH'=>'Giovedì',
-                    'FR'=>'Venerdì',
-                    'SA'=>'Sabato',
-                    'SU'=>'Domenica'
-                );
-
-                $stringWhenRepeats = 'Settimanalmente, tutti i ';
-                $arrayDays = explode(';', $on);
-
-                $countDay = 0;
-
-                foreach($arrayDays as &$value) {
-                    if (!empty($value)) {
-                        $countDay++;
-                        $stringWhenRepeats .= ($countDay > 1 ? ', ' : ' ') . $arrayAllDays[$value];
+            switch ($every) {
+                case 'daily':
+    
+                    $stringWhenRepeats = 'Giornalmente, ';
+    
+                    if ($on === 'MO;TU;WE;TH;FR;SA;SU') {
+                        $stringWhenRepeats .= 'tutti i giorni.';
+                    } else if ($on === 'MO;TU;WE;TH;FR;SA') {
+                        $stringWhenRepeats .= 'tutti i giorni tranne la Domenica.';
+                    } else if ($on === 'MO;TU;WE;TH;FR') {
+                        $stringWhenRepeats .= 'solo nei giorni feriali.';
                     }
-                }
 
-                if ($countDay > 0) {
-                    $stringWhenRepeats .= '.';
-                }
+                    /**
+                     * TODO: da gestire il caso relativo ai festivi.
+                     * EXHOLIDAYS=YES in Cartella Cba
+                     */
 
-                break;
-            
-            default:
-                # code...
-                break;
+                    break;
+                
+                case 'weekly':
+    
+                    $arrayAllDays = array(
+                        'MO'=>'Lunedì',
+                        'TU'=>'Martedì',
+                        'WE'=>'Mercoledì',
+                        'TH'=>'Giovedì',
+                        'FR'=>'Venerdì',
+                        'SA'=>'Sabato',
+                        'SU'=>'Domenica'
+                    );
+    
+                    $stringWhenRepeats = 'Settimanalmente, tutti i ';
+                    $arrayDays = explode(';', $on);
+    
+                    $countDay = 0;
+    
+                    foreach($arrayDays as &$value) {
+                        if (!empty($value)) {
+                            $countDay++;
+                            $stringWhenRepeats .= ($countDay > 1 ? ', ' : ' ') . $arrayAllDays[$value];
+                        }
+                    }
+    
+                    if ($countDay > 0) {
+                        $stringWhenRepeats .= '.';
+                    }
+    
+                    break;
+                
+                default:
+                    # code...
+                    break;
+            }
         }
 
         return $stringWhenRepeats;
