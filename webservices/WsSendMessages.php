@@ -22,7 +22,9 @@
         try {
 
             switch ($_GET['action']) {
-           
+                case 'list':
+                    $payload = $classManager->list();
+                    break;   
                 case 'contactCareTeam':
                     $object = json_decode( file_get_contents('php://input'));
                     $payload = $classManager->contactCareTeam($object);

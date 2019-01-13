@@ -10,7 +10,36 @@
         function launch( $params, $data ) {
        
         }
-        
+        /**
+         *  Metodo per recupere tutte le richieste di appuntamento
+         * questo lato traduttore 
+         */
+        function list() {
+            $data = null;        
+            try {
+
+                $conn = $this->connectToDatabase();
+                $stmt = $conn->prepare("
+                    select 
+                        s.id, 
+                        s.id_relative, 
+                        s.sent_on,
+                        s.id_care_team, 
+                        s.message,
+                        c.id_teanapers
+                    from sent_message s
+                    inner join care_team c
+                    on (c.id = s.id_care_team)
+
+                ");
+                $stmt->execute();
+                $data = $stmt ->fetchAll(PDO::FETCH_ASSOC);
+
+            } catch (Exception $e) {
+                throw new Exception(sprintf(Costanti::OPERATION_KO, $e->getMessage()));
+            }
+            return $data;
+        }
         /**
          *  Esegue l'inserimento per il messaggio relativo alla prenotazione
          *  @param object
