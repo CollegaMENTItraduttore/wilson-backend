@@ -224,7 +224,7 @@
          *      codice: id riferimento cartella
          *      valore: id tabella collegamenti 
          */
-        function getHasMapResident() {
+        function getHashMapResident() {
 
             $mpaResident = new stdClass();
                 
@@ -242,7 +242,7 @@
          *      codice: id riferimento cartella
          *      valore: id tabella collegamenti 
          */
-        function getHasMapActivity() {
+        function getHashMapActivity() {
 
             $mapActivityInfo = new stdClass();
 
@@ -260,15 +260,15 @@
          *      codice: id riferimento cartella (TEANAPERS)
          *      valore: id tabella collegamenti 
          */
-        function getHasMapStaff() {
+        function getHashMapStaff() {
 
             $mapStaff = new stdClass();
 
-            $managerStaff = new Staff(parent::getDb());
+            $managerStaff = new Staff($this->getDb());
             $listStaff = $managerStaff->list();
 
             foreach ($listStaff as $staff) {
-                $mapCompilatori->{$staff['id_teanapers']} = $staff['id'];
+                $mapStaff->{$staff['idTeAnaPers']} = $staff['id'];
             }
             return $mapStaff;
         }
@@ -307,9 +307,9 @@
 
                 $managerActivityEdition =  new ActivityEdition($this->getDb(), $conn);
 
-                $mpaResident = $this->getHasMapResident();
-                $mapActivity = $this->getHasMapActivity();
-                //$mapstaff ->$this->getHasMapStaff();
+                $mpaResident = $this->getHashMapResident();
+                $mapActivity = $this->getHashMapActivity();
+                $mapstaff = $this->getHashMapStaff();
 
                 foreach ($array_object as $record) {
     
@@ -323,6 +323,7 @@
                     //$idStaff = $mapCompilatori->{$record->oragnizedBy};
                     $idResident = $mpaResident->{$record->idResident};
                     $idActivityInfo = $mapActivity->{$record->idActivityInfo};
+                    $idStaff = $mapstaff->{$record->organizedBy};
                     
                     if (empty($idResident)) {
                         throw new Exception("nessun idResident trovato");
@@ -341,7 +342,7 @@
                     $stmt->bindValue(7, $record->canVolunteer, PDO::PARAM_INT);
                     $stmt->bindValue(8, $record->canPartecipate, PDO::PARAM_INT);
                     $stmt->bindValue(9, $record->canRequestAppointment, PDO::PARAM_INT);
-                    $stmt->bindValue(10, null, PDO::PARAM_INT);
+                    $stmt->bindValue(10, $idStaff, PDO::PARAM_INT);
                     $stmt->bindValue(11, $idResident, PDO::PARAM_INT);
                     $stmt->bindValue(12, $record->idPlanSipcar, PDO::PARAM_INT);
     

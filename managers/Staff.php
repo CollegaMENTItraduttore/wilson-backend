@@ -49,14 +49,14 @@ class Staff extends WilsonBaseClass  {
             $conn = $this->connectToDatabase();
             $stmt = $conn->prepare('
                 select s.id, 
-                       s.first_name, 
-                       s.last_name, 
-                       s.username, 
-                       s.picture, 
-                       s.mail, 
-                       s.id_role, 
-                       s.id_rsa,
-                       s.id_teanapers
+                       s.first_name as firstName, 
+                       s.last_name as lastName, 
+                       s.username as username, 
+                       s.picture as picture, 
+                       s.mail as mail, 
+                       s.id_role as idRole, 
+                       s.id_rsa as idRsa,
+                       s.id_teanapers as idTeAnaPers
                 from staff s
                 order by s.last_name'
             );

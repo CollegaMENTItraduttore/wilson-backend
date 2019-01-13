@@ -23,7 +23,6 @@
                         k.id,
                         k.description
                     from kinship k'
-                    
                 );
                 $stmt->execute();
                 $data = $stmt -> fetchAll(PDO::FETCH_ASSOC);

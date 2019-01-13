@@ -22,11 +22,11 @@
                 $stmt = $conn->prepare("
                     select 
                         s.id, 
-                        s.id_relative, 
-                        s.sent_on,
-                        s.id_care_team, 
+                        s.id_relative as idRelative, 
+                        s.sent_on as sentOn,
+                        s.id_care_team as idCareTeam, 
                         s.message,
-                        c.id_teanapers
+                        c.id_teanapers as idTeAnaPers
                     from sent_message s
                     inner join care_team c
                     on (c.id = s.id_care_team)
