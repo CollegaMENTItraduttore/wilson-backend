@@ -143,5 +143,60 @@
             return $data;
 
         }
+        
+        function checkCampiObbligatori($record, &$msg) {
+            return true;
+        }
+
+        function new($array_object) {
+
+            $array_object = (!is_array($array_object) ? array($array_object) : $array_object); 
+            $data = [];    
+            $conn = null;
+    
+            try {
+
+                $conn = $this->connectToDatabase();
+                $conn->beginTransaction();
+
+                $idRsa = $this->getIdRsaByDb();
+                $stmt = $conn->prepare("
+                        insert into resident(
+                            first_name,
+                            last_name,
+                            gender,
+                            birthday,
+                            id_rsa,
+                            cod_utente
+                        )
+                        values (?, ?, ?, ?, ?, ?)"
+                );
+                //inserimento sequential 
+                //inserimento sequential 
+                foreach ($array_object as $record) {
+    
+                    $msg = array();
+                    $status = $this->checkCampiObbligatori($record, $msg);
+                    //se l'inserimento non va a buon fine interrompo il ciclo di tutto ed esco
+                    if ( !$status && count($msg) > 0 ) {
+                        throw new Exception(implode("", $msg));
+                    }
+                    $stmt->bindValue(1,  $record->firstName, PDO::PARAM_STR);
+                    $stmt->bindValue(2, $record->lastName, PDO::PARAM_STR);
+                    $stmt->bindValue(3, $record->gender, PDO::PARAM_STR);
+                    $stmt->bindValue(4, $record->birthDay, PDO::PARAM_STR);
+                    $stmt->bindValue(5, $idRsa, PDO::PARAM_INT);
+                    $stmt->bindValue(6, $record->codUtente, PDO::PARAM_INT);
+
+                    $stmt->execute();
+                }         
+                $conn->commit();
+    
+            } catch (Exception $e) {
+                $conn->rollback();
+                throw new Exception(sprintf(Costanti::OPERATION_KO, $e->getMessage()));
+            } 
+            return $data;
+        }
     }
 ?>

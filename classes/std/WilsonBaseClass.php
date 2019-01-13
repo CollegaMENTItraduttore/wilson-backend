@@ -102,6 +102,8 @@
             $conn = null;
             try {
                 $dbh = new PDO('mysql:host=localhost;dbname=env_cm_'.$this->db,"root", "root");
+                //$dbh = new PDO('mysql:host=localhost;dbname=wilson_db',"root", "root");
+
                 $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
                 $dbh->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
 

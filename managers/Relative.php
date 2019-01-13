@@ -60,8 +60,9 @@ class Relative extends WilsonBaseClass  {
                        s.username, 
                        s.picture, 
                        s.mail, 
-                       s.id_role, 
-                       s.id_rsa
+                       s.id_resident,
+                       s.id_kinship,
+                       s.is_primary
                 from relative s
                 order by s.last_name'
             );

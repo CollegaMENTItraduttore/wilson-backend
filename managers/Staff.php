@@ -16,13 +16,13 @@ class Staff extends WilsonBaseClass  {
      */
     function checkCampiObbligatori($object, &$msg = array()) {
 
-        $first_name = isset($object->firstName) ? $object->firstName : null;
+        /*$first_name = isset($object->firstName) ? $object->firstName : null;
         $last_name = isset($object->lastName) ? $object->lastName : null;
         $email = isset($object->email) ? $object->email : null;
-        $username = isset($object->username) ? $object->username : null;
+        $username = isset($object->username) ? $object->username : null;*/
 
         //check campi obbligatori
-        if (empty($first_name)) {
+        /*if (empty($first_name)) {
             array_push($msg, sprintf(Costanti::INVALID_FIELD, "first_name"));
             return false;
         }
@@ -37,7 +37,7 @@ class Staff extends WilsonBaseClass  {
         if (empty($username)) {
             array_push($msg,sprintf(Costanti::INVALID_FIELD, "username"));
             return false;
-        }
+        }*/
         return true;
     }
 
@@ -107,18 +107,16 @@ class Staff extends WilsonBaseClass  {
     /**
      * Inserimento operatore di tipo "Staff"
      */
-    function new($object) {
+    function new($array_object) {
         
+        $array_object = (!is_array($array_object) ? array($array_object) : $array_object); 
         $msg = array();
-        $result = $this->checkCampiObbligatori($object, $msg);
-        
-        if ( !$result && count($msg) > 0 ) {
-            throw new Exception(implode("", $msg));
-        }
         $data = [];    
-        
+        $conn = null;
         try {
+            
             $conn = $this->connectToDatabase();
+            $conn->beginTransaction();
             /**
              *  per l'inserimento di operatori di tipo staff è necessario 
              *  collegarli all'rsa, partendo, dal db 
@@ -129,18 +127,43 @@ class Staff extends WilsonBaseClass  {
                 //blocco il flusso
                 throw new Exception(sprintf(Costanti::INVALID_FIELD, "rsa"));
             }
-            $stmt = $conn->prepare('insert into staff (first_name, last_name, mail, id_role, id_rsa, username) values(?, ?, ?, ?, ?, ?)');
+            $stmt = $conn->prepare('
+                insert into staff 
+                    (
+                        first_name, 
+                        last_name, 
+                        mail, 
+                        id_role, 
+                        id_rsa, 
+                        username,
+                        id_teanapers
+                    ) 
+                    values(?, ?, ?, ?, ?, ?, ?)'
+                );
 
-            $stmt->bindValue(1, $object->firstName, PDO::PARAM_STR);
-            $stmt->bindValue(2, $object->lastName, PDO::PARAM_STR);
-            $stmt->bindValue(3, $object->email, PDO::PARAM_STR);
-            $stmt->bindValue(4, null, PDO::PARAM_STR);
-            $stmt->bindValue(5, $id_rsa, PDO::PARAM_INT);
-            $stmt->bindValue(6, $object->username, PDO::PARAM_STR);
+            foreach ($array_object as $record) {
+                
+                $msg =  array();
+                $status = $this->checkCampiObbligatori($record, $msg);
+                //se l'inserimento non va a buon fine interrompo il ciclo di tutto ed esco
+                if ( !$status && count($msg) > 0 ) {
+                    throw new Exception(implode("", $msg));
+                }
+                $stmt->bindValue(1, $record->firstName, PDO::PARAM_STR);
+                $stmt->bindValue(2, $record->lastName, PDO::PARAM_STR);
+                $stmt->bindValue(3, $record->email, PDO::PARAM_STR);
+                $stmt->bindValue(4, $record->idRole, PDO::PARAM_STR);
+                $stmt->bindValue(5, $id_rsa, PDO::PARAM_INT);
+                $stmt->bindValue(6, $record->username, PDO::PARAM_STR);
+                $stmt->bindValue(7, $record->idTeAnaPers, PDO::PARAM_INT);
 
-            $stmt->execute();
-
+                $stmt->execute();
+            }
+            $conn->commit();
+            
         } catch (Exception $e) {
+            if(!empty($conn))
+                $conn->rollback();
             throw new Exception(sprintf(Costanti::OPERATION_KO, $e->getMessage()));
         }
         return $data;
@@ -209,3 +232,4 @@ class Staff extends WilsonBaseClass  {
 }
 
 ?> 
+
