@@ -55,16 +55,15 @@ class Relative extends WilsonBaseClass  {
             $conn = $this->connectToDatabase();
             $stmt = $conn->prepare('
                 select s.id, 
-                       s.first_name, 
-                       s.last_name, 
-                       s.username, 
-                       s.picture, 
-                       s.mail, 
-                       s.id_resident,
-                       s.id_kinship,
-                       s.is_primary
+                       s.first_name as firstName, 
+                       s.last_name as lastName, 
+                       s.username as username, 
+                       s.id_kinship as gradoParentela,
+                       concat(r.last_name," ", r.first_name) as nominativoResidente,
+                       r.cod_utente as codUtente
                 from relative s
-                order by s.last_name'
+                inner join resident r
+                on (r.id = s.id_resident)'
             );
             $stmt->execute();
             $data = $stmt -> fetchAll(PDO::FETCH_ASSOC);
