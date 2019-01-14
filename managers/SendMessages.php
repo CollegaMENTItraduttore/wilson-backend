@@ -20,17 +20,20 @@
 
                 $conn = $this->connectToDatabase();
                 $stmt = $conn->prepare("
-                    select 
-                        s.id, 
-                        s.id_relative as idRelative, 
-                        s.sent_on as sentOn,
-                        s.id_care_team as idCareTeam, 
-                        s.message,
-                        c.id_teanapers as idTeAnaPers
-                    from sent_message s
-                    inner join care_team c
-                    on (c.id = s.id_care_team)
-
+                select 
+                    m.id as id, 
+                    m.id_relative as idRelative, 
+                    m.sent_on as sentOn, 
+                    m.message as message, 
+                    concat(f.last_name, f.first_name) as nominativoRelative, 
+                    concat(r.last_name, r.first_name) as nominativoResident, 
+                    t.nominativo as nominativoOperatore,
+                    t.figura_professionale as figProf,
+                    t.id_teanapers as idTeAnaPers
+                FROM sent_message m 
+                    inner join relative f on m.id_relative=f.id 
+                    inner join resident r on f.id_resident=r.id 
+                    inner join care_team t on m.id_care_team=t.id;
                 ");
                 $stmt->execute();
                 $data = $stmt ->fetchAll(PDO::FETCH_ASSOC);
