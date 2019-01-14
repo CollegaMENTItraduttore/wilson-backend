@@ -46,7 +46,7 @@
                 $stmt->bindValue(1, $object->name, PDO::PARAM_STR);
                 $stmt->bindValue(2, $object->valueText, PDO::PARAM_STR);
                 $stmt->bindValue(3, $object->valueNum, PDO::PARAM_INT);
-                $stmt->bindValue(4, null, PDO::PARAM_INT);
+                $stmt->bindValue(4, $object->createdBy, PDO::PARAM_INT);
                 $stmt->bindValue(5, $object->idPrimaryNeed, PDO::PARAM_INT);                
                 $stmt->execute();
     
