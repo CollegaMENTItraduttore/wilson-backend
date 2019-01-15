@@ -25,8 +25,8 @@
                     resident.cod_utente as codUtente, 
                     message.sent_on as sentOn, 
                     message.message as message, 
-                    concat(familiare.last_name, ' ', familiare.first_name) as nominativoRelative, 
-                    concat(resident.last_name, ' ', resident.first_name) as nominativoResident, 
+                    concat(familiare.last_name, " ", familiare.first_name) as nominativoRelative, 
+                    concat(resident.last_name, " ", resident.first_name) as nominativoResident, 
                     team.nominativo as nominativoOperatore,
                     team.figura_professionale as figProf,
                     team.id_teanapers as idTeAnaPers
