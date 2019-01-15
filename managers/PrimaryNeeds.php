@@ -4,6 +4,7 @@
     require_once('../utils/DateUtils.php');
     require_once('EventExtraParam.php');
     require_once('Resident.php');
+    require_once('Staff.php');
     
     class PrimaryNeeds extends WilsonBaseClass {
         function __construct($db) {   
@@ -115,6 +116,24 @@
             }
             return $mpaResident;
         }
+        /**
+         *  HasMap che recupera tutta la lista degli staff, 
+         *  inserisce nel campo 
+         *      codice: id riferimento cartella (TEANAPERS)
+         *      valore: id tabella collegamenti 
+         */
+        function getHashMapStaff() {
+
+            $mapStaff = new stdClass();
+
+            $managerStaff = new Staff($this->getDb());
+            $listStaff = $managerStaff->list();
+
+            foreach ($listStaff as $staff) {
+                $mapStaff->{$staff['idTeAnaPers']} = $staff['id'];
+            }
+            return $mapStaff;
+        }
         
         function new( $array_object ) {
 
@@ -136,6 +155,7 @@
                     values(?, ?, ?, ?) ');
 
                 $mpaResident = $this->getHashMapResident();
+                $mapStaff = $this->getHashMapStaff();
                 $managerEventExtraParam =  new EventExtraParam(parent::getDb(), $conn);
                
                 foreach ($array_object as $record) {
@@ -148,6 +168,7 @@
                     }
 
                     $idResident = $mpaResident->{$record->idResident};
+                    $idStaff = $mapstaff->{$record->createdBy};
 
                     $stmt->bindValue(1, $record->createdOn, PDO::PARAM_STR);
                     $stmt->bindValue(2, $idResident, PDO::PARAM_INT);
@@ -167,7 +188,7 @@
                             'valueNum' => $record->valueNum,
                             'valueText' => $record->valueText,
                             'name' => $record->name,
-                            'createdBy' => $record->createdBy
+                            'createdBy' => $idStaff
                         );
                         $managerEventExtraParam -> new($eventExtraParam);
                     }

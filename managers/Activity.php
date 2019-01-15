@@ -309,7 +309,7 @@
 
                 $mpaResident = $this->getHashMapResident();
                 $mapActivity = $this->getHashMapActivity();
-                $mapstaff = $this->getHashMapStaff();
+                $mapStaff = $this->getHashMapStaff();
 
                 foreach ($array_object as $record) {
     
@@ -323,7 +323,7 @@
                     //$idStaff = $mapCompilatori->{$record->oragnizedBy};
                     $idResident = $mpaResident->{$record->idResident};
                     $idActivityInfo = $mapActivity->{$record->idActivityInfo};
-                    $idStaff = $mapstaff->{$record->organizedBy};
+                    $idStaff = $mapStaff->{$record->organizedBy};
                     
                     if (empty($idResident)) {
                         throw new Exception("nessun idResident trovato");
