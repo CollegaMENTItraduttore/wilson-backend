@@ -168,7 +168,7 @@
                     }
 
                     $idResident = $mpaResident->{$record->idResident};
-                    $idStaff = $mapstaff->{$record->createdBy};
+                    $idStaff = $mapStaff->{$record->createdBy};
 
                     $stmt->bindValue(1, $record->createdOn, PDO::PARAM_STR);
                     $stmt->bindValue(2, $idResident, PDO::PARAM_INT);
