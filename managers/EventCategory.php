@@ -36,7 +36,10 @@ class EventCategory extends WilsonBaseClass  {
                         id, 
                         name
                     ) 
-                    values(?, ?) ');
+                    values(?, ?)
+                    ON DUPLICATE KEY UPDATE
+                        name = values(name)
+                    ');
             //inserimento sequential 
             foreach ($array_object as $record) {
 

@@ -169,7 +169,14 @@
                             id_rsa,
                             cod_utente
                         )
-                        values (?, ?, ?, ?, ?, ?)"
+                        values (?, ?, ?, ?, ?, ?)
+                        ON DUPLICATE KEY UPDATE
+                        first_name = values(first_name),
+                        last_name = values(last_name),
+                        gender = values(gender),
+                        birthday = values(birthday),
+                        id_rsa = values(id_rsa)
+                        "
                 );
                 //inserimento sequential 
                 //inserimento sequential 

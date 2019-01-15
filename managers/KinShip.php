@@ -58,6 +58,8 @@
                                 description
                             ) 
                             values(?, ?)
+                            ON DUPLICATE KEY UPDATE
+                                description = values(description)                            
                         ');
                 //inserimento sequential 
                 foreach ($array_object as $record) {

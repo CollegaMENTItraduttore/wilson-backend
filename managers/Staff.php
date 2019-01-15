@@ -138,7 +138,15 @@ class Staff extends WilsonBaseClass  {
                         username,
                         id_teanapers
                     ) 
-                    values(?, ?, ?, ?, ?, ?, ?)'
+                    values(?, ?, ?, ?, ?, ?, ?)
+                    ON DUPLICATE KEY UPDATE
+                        first_name = values(first_name),
+                        last_name = values(last_name),
+                        mail = values(mail),
+                        id_role = values(id_role),
+                        id_rsa = values(id_rsa),
+                        username = values(username)
+                    '
                 );
 
             foreach ($array_object as $record) {

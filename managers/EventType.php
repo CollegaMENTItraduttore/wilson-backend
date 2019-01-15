@@ -37,7 +37,11 @@ class EventType extends WilsonBaseClass  {
                         name, 
                         id_category
                     ) 
-                    values(?, ?, ?) ');
+                    values(?, ?, ?)
+                    ON DUPLICATE KEY UPDATE
+                        name = values(name),
+                        id_category = values(id_category)
+                    ');
             //inserimento sequential 
             foreach ($array_object as $record) {
 

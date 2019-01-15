@@ -38,7 +38,11 @@ class Rsa extends WilsonBaseClass  {
                     name, 
                     description, 
                     id_dm7
-                ) values(?, ?, ?)');
+                ) values(?, ?, ?)
+                ON DUPLICATE KEY UPDATE
+                    name = values(name),
+                    description = values(description)
+                ');
 
             $stmt->bindValue(1, $object->name, PDO::PARAM_STR);
             $stmt->bindValue(2, $object->description, PDO::PARAM_STR);
