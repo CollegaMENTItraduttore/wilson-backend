@@ -3,6 +3,7 @@
     require_once('../utils/Costanti.php');
     require_once('../utils/DateUtils.php');
     require_once('EventExtraParam.php');
+    require_once('Resident.php');
     
     class PrimaryNeeds extends WilsonBaseClass {
         function __construct($db) {   
@@ -96,6 +97,24 @@
         function checkCampiObbligatori($record, $msg) {
             return true;
         }
+        /**
+         *  HasMap che recupera tutta la lista degli utenti, 
+         *  inserisce nel campo 
+         *      codice: id riferimento cartella
+         *      valore: id tabella collegamenti 
+         */
+        function getHashMapResident() {
+
+            $mpaResident = new stdClass();
+                
+            $managerResident = new Resident($this->getDb(), null);
+            $listUtenti = $managerResident->getList();
+             //hasmap per la lista dei residenti
+             foreach ($listUtenti as $ospite) {
+                $mpaResident->{$ospite['cod_utente']} = $ospite['id'];
+            }
+            return $mpaResident;
+        }
         
         function new( $array_object ) {
 
@@ -116,6 +135,7 @@
                    ) 
                     values(?, ?, ?, ?) ');
 
+                $mpaResident = $this->getHashMapResident();
                 $managerEventExtraParam =  new EventExtraParam(parent::getDb(), $conn);
                
                 foreach ($array_object as $record) {
@@ -127,8 +147,10 @@
                         throw new Exception(implode("", $msg));
                     }
 
+                    $idResident = $mpaResident->{$record->idResident};
+
                     $stmt->bindValue(1, $record->createdOn, PDO::PARAM_STR);
-                    $stmt->bindValue(2, $record->idResident, PDO::PARAM_INT);
+                    $stmt->bindValue(2, $idResident, PDO::PARAM_INT);
                     $stmt->bindValue(3, $record->idType, PDO::PARAM_INT);    
                     $stmt->bindValue(4, $record->idRecordSipcar, PDO::PARAM_INT);    
     
