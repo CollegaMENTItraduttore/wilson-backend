@@ -191,17 +191,15 @@ class Staff extends WilsonBaseClass  {
             $stmt = $conn->prepare('update staff s 
                                     set s.first_name =?, 
                                         s.last_name =?, 
-                                        s.id_rsa=?, 
-                                        s.id_role=?, 
-                                        s.mail =?
+                                        s.mail =?,
+                                        s.username =?
                                     where s.id = ?');
 
             $stmt->bindValue(1, $object->firstName, PDO::PARAM_STR);
             $stmt->bindValue(2, $object->lastName, PDO::PARAM_STR);
-            $stmt->bindValue(3, null, PDO::PARAM_STR);
-            $stmt->bindValue(4, null, PDO::PARAM_STR);
-            $stmt->bindValue(5, $object->email, PDO::PARAM_STR);
-            $stmt->bindValue(6, $object->id, PDO::PARAM_STR);
+            $stmt->bindValue(3, $object->email, PDO::PARAM_STR);
+            $stmt->bindValue(4, $object->username, PDO::PARAM_STR);
+            $stmt->bindValue(5, $object->id, PDO::PARAM_INT);
             $stmt->execute();
 
         } catch (Exception $e) {

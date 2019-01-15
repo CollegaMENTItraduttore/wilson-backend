@@ -1,9 +1,9 @@
 <?php
     header('Content-Type: application/json');
-    require_once('../managers/Kinship.php');
+    require_once('../managers/Rsa.php');
 
     $db = isset($_GET['env']) ? $_GET['env'] : null;
-    $classManager = new Kinship($db);
+    $classManager = new Rsa($db);
     /**
     *    Valido in questo punto il token per evitare che malintenzionati
     *    provino a confermare dati non validi nella speranza che il token
@@ -22,9 +22,6 @@
         try {
 
             switch ($_GET['action']) {
-                case 'list':
-                    $payload = $classManager->list();
-                    break;   
                 case 'new':
                     $obj =  json_decode(file_get_contents('php://input'));
                     $payload = $classManager->new($obj);

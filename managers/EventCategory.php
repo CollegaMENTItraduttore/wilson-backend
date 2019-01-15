@@ -3,7 +3,7 @@
 require_once('../classes/std/WilsonBaseClass.php');
 require_once('../utils/Costanti.php');
 
-class EventType extends WilsonBaseClass  {
+class EventCategory extends WilsonBaseClass  {
     function __construct($db) {
         parent::__construct($db);        
     }
@@ -31,13 +31,12 @@ class EventType extends WilsonBaseClass  {
             $conn = $this->connectToDatabase();
             $conn->beginTransaction();
             $stmt = $conn->prepare(
-                'insert into event_type 
+                'insert into event_category 
                     (
-                        id,
-                        name, 
-                        id_category
+                        id, 
+                        name
                     ) 
-                    values(?, ?, ?) ');
+                    values(?, ?) ');
             //inserimento sequential 
             foreach ($array_object as $record) {
 
@@ -49,7 +48,6 @@ class EventType extends WilsonBaseClass  {
                 }
                 $stmt->bindValue(1, $record->id, PDO::PARAM_STR);
                 $stmt->bindValue(2, $record->name, PDO::PARAM_STR);
-                $stmt->bindValue(3, $record->idCategory, PDO::PARAM_STR);
                 $stmt->execute();
             }         
             $conn->commit();

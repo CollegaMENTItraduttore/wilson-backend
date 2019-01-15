@@ -2,7 +2,7 @@
     require_once('../classes/std/WilsonBaseClass.php');
     require_once('../utils/Costanti.php');
 
-    class KinShip extends WilsonBaseClass {
+    class Kinship extends WilsonBaseClass {
         function __construct($db) {   
             parent::__construct($db);        
         }
@@ -69,7 +69,7 @@
                         throw new Exception(implode("", $msg));
                     }
                     $stmt->bindValue(1, $record->id, PDO::PARAM_INT);
-                    $stmt->bindValue(1, $record->description, PDO::PARAM_STR);
+                    $stmt->bindValue(2, $record->description, PDO::PARAM_STR);
 
                     $stmt->execute();
                 }         

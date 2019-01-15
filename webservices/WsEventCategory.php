@@ -1,9 +1,9 @@
 <?php
     header('Content-Type: application/json');
-    require_once('../managers/Kinship.php');
+    require_once('../managers/EventCategory.php');
 
     $db = isset($_GET['env']) ? $_GET['env'] : null;
-    $classManager = new Kinship($db);
+    $classManager = new EventCategory($db);
     /**
     *    Valido in questo punto il token per evitare che malintenzionati
     *    provino a confermare dati non validi nella speranza che il token
@@ -22,21 +22,18 @@
         try {
 
             switch ($_GET['action']) {
-                case 'list':
-                    $payload = $classManager->list();
-                    break;   
                 case 'new':
                     $obj =  json_decode(file_get_contents('php://input'));
                     $payload = $classManager->new($obj);
-                    break;   
+                    break;
                
             }
             array_push($message, Costanti::OPERATION_OK);
 
         } catch(Exception $e) {
-            error_log($e->getMessage());
             $success = false;
             array_push($message, $e->getMessage());
+            error_log($e->getMessage());
 
         } finally {
             $result = $classManager -> initWilsonResponse( $success, $message, $payload,$tokenIsValid );
