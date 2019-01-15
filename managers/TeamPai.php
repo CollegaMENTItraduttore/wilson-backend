@@ -49,7 +49,8 @@ class TeamPai extends WilsonBaseClass  {
                         p.id_teanapers,
                         p.id_resident
                 from care_team p
-                where p.id_resident = ?'
+                where p.id_resident = ?
+                order by p.is_family_navigator, p.nominativo'
             );
             $stmt->execute(array($id_resident));
             $data = $stmt -> fetchAll(PDO::FETCH_ASSOC);
