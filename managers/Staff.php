@@ -84,19 +84,21 @@ class Staff extends WilsonBaseClass  {
             $conn = $this->connectToDatabase();
             $stmt = $conn->prepare('
                 select s.id, 
-                       s.first_name, 
-                       s.last_name, 
+                       s.first_name as firstName, 
+                       s.last_name as lastName, 
                        s.username, 
                        s.picture, 
                        s.mail, 
-                       s.id_role, 
-                       s.id_rsa
+                       s.id_role as idRole, 
+                       s.id_rsa as idRsa
                 from staff s
                 where s.id =?'
             );
             $stmt->bindValue(1, $id, PDO::PARAM_INT);
             $stmt->execute();
             $data = $stmt -> fetchAll(PDO::FETCH_ASSOC);
+            if (count($data) > 0)
+                $data = $data[0];
 
         } catch (Exception $e) {
             throw new Exception(sprintf(Costanti::OPERATION_KO, $e->getMessage()));

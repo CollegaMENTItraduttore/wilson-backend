@@ -55,6 +55,7 @@ class Relative extends WilsonBaseClass  {
             $conn = $this->connectToDatabase();
             $stmt = $conn->prepare('
                 select s.id, 
+                       s.id as idCM,
                        s.first_name as firstName, 
                        s.last_name as lastName, 
                        s.username as username, 
@@ -88,19 +89,21 @@ class Relative extends WilsonBaseClass  {
         try {
             $conn = $this->connectToDatabase();
             $stmt = $conn->prepare('
-                select s.id, s.first_name, 
-                       s.last_name, 
+                select s.id, s.first_name as firstName, 
+                       s.last_name as lastName, 
                        s.username,
                        s.picture, 
                        s.mail, 
-                       s.id_role, 
-                       s.id_rsa
+                       s.id_kinship as idKinship,
+                       s.id_resident as idResident
                 from relative s
                 where s.id =?'
             );
             $stmt->bindValue(1, $id, PDO::PARAM_INT);
             $stmt->execute();
             $data = $stmt -> fetchAll(PDO::FETCH_ASSOC);
+            if (count($data) > 0)
+                $data = $data[0];
 
         } catch (Exception $e) {
             throw new Exception(sprintf(Costanti::OPERATION_KO, $e->getMessage()));
