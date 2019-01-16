@@ -105,6 +105,43 @@ class TeamPai extends WilsonBaseClass  {
         return $mpaResident;
     }
     /**
+     *  controllo se il record esiste gia in tabella
+     */
+    function existCompilatore($idTeAnaPers, $idResident) {
+
+        $data = [];    
+        
+        try {
+            $conn = $this->connectToDatabase();
+            $stmt = $conn->prepare('
+                    select team.id_teanapers
+                    from care_team team
+                    where team.id_resident = ? and team.id_teanapers =?'
+            );
+            $stmt->execute(array($idResident, $idTeAnaPers));
+            $data = $stmt -> fetchAll(PDO::FETCH_ASSOC);
+
+        } catch (Exception $e) {
+            throw new Exception(sprintf(Costanti::OPERATION_KO, $e->getMessage()));
+        }
+        return $data;
+    }
+    /**
+     * Metodo che recupera tutti i compiltori presenti nella tabella care_team
+     * e ne ritorna una lista di id
+     * @param idResident
+     */
+    function getIdCompilatori($idResident) {
+        $data = $this->list($idResident);
+        $array = [];
+        if (count($data) > 0) {
+            foreach($data as $compilatore) {
+                array_push($array, $compilatore['id_teanapers']);
+            }
+        }
+        return $array;
+    }
+    /**
      * Inserimento operatore di tipo "Staff"
      */
     function new($array_object) {
@@ -117,7 +154,7 @@ class TeamPai extends WilsonBaseClass  {
             $conn = $this->connectToDatabase();
             $conn->beginTransaction();
             //svuoto la tabella 
-            $this->deleteAll();
+           
             
             
             $stmt = $conn->prepare('insert into care_team 
@@ -131,7 +168,8 @@ class TeamPai extends WilsonBaseClass  {
                                     values(?, ?, ?, ?, ?) ');
             
             $mpaResident = $this->getHashMapResident();
-           
+            $idResident = null;
+            $listIdCompilatori = [];
             //inserimento sequential 
             foreach ($array_object as $record) {
 
@@ -141,7 +179,19 @@ class TeamPai extends WilsonBaseClass  {
                 if ( !$status && count($msg) > 0 ) {
                     throw new Exception(implode("", $msg));
                 }
-                $idResident = $mpaResident->{$record->idResident};
+                if (empty($idResident)) {
+                    //questo pezzo di codice lo eseguo solo una volta
+                    $idResident = $mpaResident->{$record->idResident};
+                    /**
+                     * elimino tutti i compilatori del pai, esclusi quelli presenti 
+                     * nella tabella sent_message relativi a quell'idResident
+                     */
+                    $listIdCompilatori = $this->compilatoriNotDeleted($idResident);
+                }
+                //se compilatore incluso nella mia lista non lo inserisco
+                if ( (count($listIdCompilatori) > 0) && (in_array($record->idTeAnaPers, $listIdCompilatori)) ) {
+                    continue;
+                }
                 $stmt->bindValue(1, $record->nominativo, PDO::PARAM_STR);
                 $stmt->bindValue(2, $record->figuraProfessionale, PDO::PARAM_STR);
                 $stmt->bindValue(3, $record->isFamilyNavigator, PDO::PARAM_INT);
@@ -166,19 +216,35 @@ class TeamPai extends WilsonBaseClass  {
     /**
      * Cancellazione dell'operatore, in base all'id passato
      */
-    function deleteAll() {
+    function compilatoriNotDeleted($idResident) {
         //campo id obbligatorio 
-        $data = [];    
+        $data = [];
+        $array = [];    
         
         try {
             $conn = $this->connectToDatabase();
-            $stmt = $conn->prepare('delete from care_team');            
-            $stmt->execute();
+            $stmt = $conn->prepare('
+                delete team from care_team team
+                left join sent_message sent
+                    on (sent.id_care_team = team.id)
+                where sent.id_care_team is  null and 
+                      team.id_resident = ?
+            ');            
+            $stmt->execute([$idResident]);
 
+            //richiamo la list mi riscarico i compilatori avanzati dalla delete
+            $data = $this->list($idResident);
+
+            if (count($data) > 0) {
+                foreach($data as $compilatore) {
+                    array_push($array, $compilatore['id_teanapers']);
+                }
+            }
         } catch (Exception $e) {
             throw new Exception(sprintf(Costanti::OPERATION_KO, $e->getMessage()));
         }
-        return $data;
+        var_dump($array);
+        return $array;
     }
     function shared($id_resident = null) {
 
