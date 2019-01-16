@@ -54,13 +54,11 @@ class Relative extends WilsonBaseClass  {
         try {
             $conn = $this->connectToDatabase();
             $stmt = $conn->prepare('
-                select s.id, 
-                       s.id as idCM,
+                select s.id as id,
                        s.first_name as firstName, 
                        s.last_name as lastName, 
                        s.username as username, 
-                       s.id_kinship as gradoParentela,
-                       concat(r.last_name," ", r.first_name) as nominativoResidente,
+                       s.id_kinship as idKinship,
                        r.cod_utente as codUtente
                 from relative s
                 inner join resident r
