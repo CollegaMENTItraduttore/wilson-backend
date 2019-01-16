@@ -168,8 +168,10 @@
                     }
 
                     $idResident = $mpaResident->{$record->idResident};
-                    $idStaff = $mapStaff->{$record->createdBy};
-
+                    $idStaff = null;
+                    if (property_exists($mapStaff, $record->createdBy)) {
+                        $idStaff = $mapStaff->{$record->createdBy};
+                    }
                     $stmt->bindValue(1, $record->createdOn, PDO::PARAM_STR);
                     $stmt->bindValue(2, $idResident, PDO::PARAM_INT);
                     $stmt->bindValue(3, $record->idType, PDO::PARAM_INT);    
@@ -218,10 +220,12 @@
             $param = [];
             $sql = '
                 select  
-                     p.id_primary_need_sipcar as idRecordSipcar, 
-                     p.id_type as idType
-                from primary_need p 
-                where p.id_resident = ?
+                    primaryneed.id_primary_need_sipcar as idRecordSipcar, 
+                    primaryneed.id_type as idType
+                from primary_need primaryneed
+                inner join resident resident
+                    on (resident.id = primaryneed.id_resident)
+                where resident.cod_utente = ?
             ';
             try {
                 $conn = $this->connectToDatabase();
@@ -229,7 +233,7 @@
                 array_push($param, $idResident);
 
                 if(isset($listType) && !empty($listType)) {
-                    $sql .=' and p.id_type in ('.$listType.')'; 
+                    $sql .=' and primaryneed.id_type in ('.$listType.')'; 
                 }
                 $stmt = $conn->prepare($sql); 
  

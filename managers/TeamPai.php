@@ -1,6 +1,7 @@
 <?php 
 
 require_once('../classes/std/WilsonBaseClass.php');
+require_once('Resident.php');
 
 class TeamPai extends WilsonBaseClass  {
     function __construct($db) {   
@@ -92,6 +93,17 @@ class TeamPai extends WilsonBaseClass  {
         }
         return $data;
     }
+    
+    function getHashMapResident() {
+        $mpaResident = new stdClass(); 
+        $managerResident = new Resident($this->getDb(), null);
+        $listUtenti = $managerResident->getList();
+            //hasmap per la lista dei residenti
+            foreach ($listUtenti as $ospite) {
+            $mpaResident->{$ospite['cod_utente']} = $ospite['id'];
+        }
+        return $mpaResident;
+    }
     /**
      * Inserimento operatore di tipo "Staff"
      */
@@ -107,7 +119,7 @@ class TeamPai extends WilsonBaseClass  {
             //svuoto la tabella 
             $this->deleteAll();
             
-           
+            
             $stmt = $conn->prepare('insert into care_team 
                                     (
                                         nominativo, 
@@ -117,6 +129,9 @@ class TeamPai extends WilsonBaseClass  {
                                         id_resident
                                     ) 
                                     values(?, ?, ?, ?, ?) ');
+            
+            $mpaResident = $this->getHashMapResident();
+            $idResident = $mpaResident->{$record->idResident};
             //inserimento sequential 
             foreach ($array_object as $record) {
 

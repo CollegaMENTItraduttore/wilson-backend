@@ -3,6 +3,7 @@
 require_once('../classes/std/WilsonBaseClass.php');
 require_once('../utils/Costanti.php');
 require_once('../utils/DateUtils.php');
+require_once('Resident.php');
 
 class ResocontoPai extends WilsonBaseClass  {
     function __construct($db) {   
@@ -53,7 +54,7 @@ class ResocontoPai extends WilsonBaseClass  {
             ";
 
             if (!empty($id_resident)) {
-                array_push($condition, "id_resident = ? ");
+                array_push($condition, "p.id_resident = ? ");
                 array_push($sqlParam, $id_resident);
             }
 
@@ -108,6 +109,18 @@ class ResocontoPai extends WilsonBaseClass  {
         }
         return $data;
     }
+    function getHashMapResident() {
+
+        $mpaResident = new stdClass();
+            
+        $managerResident = new Resident($this->getDb(), null);
+        $listUtenti = $managerResident->getList();
+         //hasmap per la lista dei residenti
+         foreach ($listUtenti as $ospite) {
+            $mpaResident->{$ospite['cod_utente']} = $ospite['id'];
+        }
+        return $mpaResident;
+    }
     /**
      * Inserimento operatore di tipo "Staff"
      */
@@ -120,6 +133,10 @@ class ResocontoPai extends WilsonBaseClass  {
         try {
             $conn = $this->connectToDatabase();
             $conn->beginTransaction();
+
+            $mpaResident = $this->getHashMapResident();
+            
+
             $stmt = $conn->prepare('insert into pai_resoconto 
                                     (
                                         created_by, 
@@ -138,9 +155,11 @@ class ResocontoPai extends WilsonBaseClass  {
                     throw new Exception(implode("", $msg));
                 }
 
+                $idResident = $mpaResident->{$record->idResident};
+
                 $stmt->bindValue(1, null, PDO::PARAM_STR);
                 $stmt->bindValue(2, $record->data, PDO::PARAM_STR);
-                $stmt->bindValue(3, $record->idResident, PDO::PARAM_INT);
+                $stmt->bindValue(3, $idResident, PDO::PARAM_INT);
                 $stmt->bindValue(4, $record->note, PDO::PARAM_STR);   
                 $stmt->execute();
             }         

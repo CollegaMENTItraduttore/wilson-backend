@@ -323,8 +323,11 @@
                     //$idStaff = $mapCompilatori->{$record->oragnizedBy};
                     $idResident = $mpaResident->{$record->idResident};
                     $idActivityInfo = $mapActivity->{$record->idActivityInfo};
-                    $idStaff = $mapStaff->{$record->organizedBy};
-                    
+
+                    $idStaff = null;
+                    if (property_exists($mapStaff, $record->organizedBy)) {
+                        $idStaff = $mapStaff->{$record->organizedBy};
+                    }                   
                     if (empty($idResident)) {
                         throw new Exception("nessun idResident trovato");
                     }
@@ -389,13 +392,15 @@
                 //todo da controllare
                 $stmt = $conn->prepare("
                     select 
-                        a.id_plan_sipcar as idPlanSipcar, 
-                        max(e.start_date) as lastDate 
-                    from activity a 
-                    inner join activity_edition e 
-                        on e.id_activity = a.id
-                    where a.id_resident = ?
-                    group by a.id_plan_sipcar
+                        att.id_plan_sipcar as idPlanSipcar, 
+                        max(att_edition.start_date) as lastDate 
+                    from activity att 
+                    inner join activity_edition att_edition 
+                        on (att_edition.id_activity = att.id)
+                    inner join resident resident
+                        on (resident.id = att.id_resident)
+                    where resident.cod_utente = ?
+                    group by att.id_plan_sipcar
                 ");                
                 $stmt->execute([$idResident]);
                 $data = $stmt -> fetchAll(PDO::FETCH_ASSOC);
