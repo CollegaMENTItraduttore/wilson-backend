@@ -93,7 +93,7 @@ class TeamPai extends WilsonBaseClass  {
         }
         return $data;
     }
-    
+
     function getHashMapResident() {
         $mpaResident = new stdClass(); 
         $managerResident = new Resident($this->getDb(), null);
@@ -131,7 +131,7 @@ class TeamPai extends WilsonBaseClass  {
                                     values(?, ?, ?, ?, ?) ');
             
             $mpaResident = $this->getHashMapResident();
-            $idResident = $mpaResident->{$record->idResident};
+           
             //inserimento sequential 
             foreach ($array_object as $record) {
 
@@ -141,11 +141,12 @@ class TeamPai extends WilsonBaseClass  {
                 if ( !$status && count($msg) > 0 ) {
                     throw new Exception(implode("", $msg));
                 }
+                $idResident = $mpaResident->{$record->idResident};
                 $stmt->bindValue(1, $record->nominativo, PDO::PARAM_STR);
                 $stmt->bindValue(2, $record->figuraProfessionale, PDO::PARAM_STR);
                 $stmt->bindValue(3, $record->isFamilyNavigator, PDO::PARAM_INT);
                 $stmt->bindValue(4, $record->idTeAnaPers, PDO::PARAM_INT);   
-                $stmt->bindValue(5, $record->idResident, PDO::PARAM_INT);   
+                $stmt->bindValue(5, $idResident, PDO::PARAM_INT);   
 
                 $stmt->execute();
             }         
@@ -196,7 +197,9 @@ class TeamPai extends WilsonBaseClass  {
                         p.id_teanapers as idTeAnaPers,
                         p.id_resident as idResident
                 from care_team p
-                where p.id_resident = ?'
+                inner join resident res
+                on (p.id_resident = res.id)
+                where res.cod_utente = ?'
             );
             $stmt->execute(array($id_resident));
             $data = $stmt -> fetchAll(PDO::FETCH_ASSOC);
