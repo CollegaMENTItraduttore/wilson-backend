@@ -15,19 +15,6 @@ class TeamPai extends WilsonBaseClass  {
      *  Campi obbligatori durante update or insert 
      */
     function checkCampiObbligatori($object, &$msg = array()) {
-
-       if (empty($object->nominativo)) {
-            array_push($msg, sprintf(Costanti::INVALID_FIELD, "nominativo"));
-            return false;
-        }
-        if (empty($object->figuraProfessionale)) {
-            array_push($msg, sprintf(Costanti::INVALID_FIELD, "figura_professionale"));
-            return false;
-        }
-        if (empty($object->idTeAnaPers)) {
-            array_push($msg, sprintf(Costanti::INVALID_FIELD, "id_teanapers"));
-            return false;
-        }
         return true;
     }
     /**
