@@ -101,7 +101,7 @@
             //connessione PDO
             $conn = null;
             try {
-                $dbh = new PDO('mysql:host=localhost;dbname=env_cm_'.$this->db,"root", "root");
+                $dbh = new PDO('mysql:host=localhost;dbname=env_cm_'.$this->db,"root", "hAjScBahAjScBa0");
                 /* $dbh = new PDO('mysql:host=localhost;dbname=env_cm_'.$this->db,"root", "root"); */
 
                 $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
