@@ -12,32 +12,13 @@ class Staff extends WilsonBaseClass  {
         
     }
     /**
-     *  Campi obbligatori durante update or insert 
+     * Undocumented function
+     *
+     * @param [type] $object
+     * @param array $msg
+     * @return boolean
      */
     function checkCampiObbligatori($object, &$msg = array()) {
-
-        /*$first_name = isset($object->firstName) ? $object->firstName : null;
-        $last_name = isset($object->lastName) ? $object->lastName : null;
-        $email = isset($object->email) ? $object->email : null;
-        $username = isset($object->username) ? $object->username : null;*/
-
-        //check campi obbligatori
-        /*if (empty($first_name)) {
-            array_push($msg, sprintf(Costanti::INVALID_FIELD, "first_name"));
-            return false;
-        }
-        if (empty($last_name)) {
-            array_push($msg, sprintf(Costanti::INVALID_FIELD, "last_name"));
-            return false;
-        }       
-        if (empty($email)) {
-            array_push($msg,sprintf(Costanti::INVALID_FIELD, "email"));
-            return false;
-        }
-        if (empty($username)) {
-            array_push($msg,sprintf(Costanti::INVALID_FIELD, "username"));
-            return false;
-        }*/
         return true;
     }
 
@@ -71,6 +52,9 @@ class Staff extends WilsonBaseClass  {
     }
     /**
      * Metodo che recupera l'operatore passato a parametro
+     *
+     * @param [type] $id
+     * @return void
      */
     function get($id = null) {
         
@@ -105,9 +89,11 @@ class Staff extends WilsonBaseClass  {
         }
         return $data;
     }
-    
     /**
-     * Inserimento operatore di tipo "Staff"
+     * Inserimento operatori di tipo "Staff"
+     *
+     * @param [type] $array_object
+     * @return void
      */
     function new($array_object) {
         
@@ -161,7 +147,7 @@ class Staff extends WilsonBaseClass  {
                 }
                 $stmt->bindValue(1, $record->firstName, PDO::PARAM_STR);
                 $stmt->bindValue(2, $record->lastName, PDO::PARAM_STR);
-                $stmt->bindValue(3, $record->email, PDO::PARAM_STR);
+                $stmt->bindValue(3, $record->mail, PDO::PARAM_STR);
                 $stmt->bindValue(4, $record->idRole, PDO::PARAM_STR);
                 $stmt->bindValue(5, $id_rsa, PDO::PARAM_INT);
                 $stmt->bindValue(6, $record->username, PDO::PARAM_STR);
@@ -179,7 +165,10 @@ class Staff extends WilsonBaseClass  {
         return $data;
     }
     /**
-     * Update operatore di tipo "Staff"
+     * update operatore di tipo staff 
+     *
+     * @param [type] $object
+     * @return void
      */
     function update($object) {
         $msg = array();
@@ -207,7 +196,7 @@ class Staff extends WilsonBaseClass  {
 
             $stmt->bindValue(1, $object->firstName, PDO::PARAM_STR);
             $stmt->bindValue(2, $object->lastName, PDO::PARAM_STR);
-            $stmt->bindValue(3, $object->email, PDO::PARAM_STR);
+            $stmt->bindValue(3, $object->mail, PDO::PARAM_STR);
             $stmt->bindValue(4, $object->username, PDO::PARAM_STR);
             $stmt->bindValue(5, $object->id, PDO::PARAM_INT);
             $stmt->execute();
@@ -218,7 +207,10 @@ class Staff extends WilsonBaseClass  {
         return $data;
     }
     /**
-     * Cancellazione dell'operatore, in base all'id passato
+     * Eliminazione del record
+     *
+     * @param [type] $id
+     * @return void
      */
     function delete($id = null) {
         //campo id obbligatorio 

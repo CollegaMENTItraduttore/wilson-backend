@@ -14,7 +14,11 @@ class ResocontoPai extends WilsonBaseClass  {
         
     }
     /**
-     *  Campi obbligatori durante update or insert 
+     * Campi obbligatori
+     *
+     * @param [type] $object
+     * @param array $msg
+     * @return void
      */
     function checkCampiObbligatori($object, &$msg = array()) {
         if (empty($object->note)) {
@@ -28,8 +32,12 @@ class ResocontoPai extends WilsonBaseClass  {
         return true;
     }
     /**
-     *  Ritorna una lista di resoconto_pai, ordinata per "created_on" relativi all'utente selezionato
-     *  
+     * Ritorna una lista di resoconto_pai, ordinata per "created_on" 
+     * relativi all'utente selezionato
+     *
+     * @param [type] $id_resident
+     * @param [type] $date
+     * @return 
      */
     function list($id_resident = null, $date = null) {
 

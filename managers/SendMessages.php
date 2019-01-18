@@ -11,8 +11,10 @@
        
         }
         /**
-         *  Metodo per recupere tutte le richieste di appuntamento
+         * Metodo per recupere tutte le richieste di appuntamento
          * questo lato traduttore 
+         *
+         * @return
          */
         function list() {
             $data = null;        
@@ -22,6 +24,7 @@
                 $stmt = $conn->prepare("
                 select 
                     message.id as id, 
+                    message.shared_on as sharedOn,
                     resident.cod_utente as codUtente, 
                     message.sent_on as sentOn, 
                     message.message as message, 
@@ -33,7 +36,8 @@
                 FROM sent_message message 
                     inner join relative familiare on message.id_relative=familiare.id 
                     inner join resident resident on familiare.id_resident=resident.id 
-                    inner join care_team team on message.id_care_team=team.id;
+                    inner join care_team team on message.id_care_team=team.id
+                WHERE message.shared_on is null
                 ");
                 $stmt->execute();
                 $data = $stmt ->fetchAll(PDO::FETCH_ASSOC);
@@ -69,6 +73,38 @@
             } catch (Exception $e) {
                 throw new Exception(sprintf(Costanti::OPERATION_KO, $e->getMessage()));
             }
+            return $data;
+        }
+        /**
+         * esegue l'update sulle richieste appuntamento
+         *
+         * @param [type] $array_object
+         * @return void
+         */
+        function update($array_object) {
+            $array_object = (!is_array($array_object) ? array($array_object) : $array_object); 
+            $data = [];    
+            $conn = null;
+    
+            try {
+
+                $conn = $this->connectToDatabase();
+                $stmt = $conn->prepare(
+                    'update sent_message  sm
+                        set sm.shared_on = ?
+                        where sm.id = ? 
+                    ');
+                //inserimento sequential 
+                foreach ($array_object as $record) {
+    
+                    $stmt->bindValue(1, $record->sharedOn, PDO::PARAM_STR);
+                    $stmt->bindValue(2, $record->id, PDO::PARAM_INT);
+                    $stmt->execute();
+                }         
+    
+            } catch (Exception $e) {
+                throw new Exception(sprintf(Costanti::OPERATION_KO, $e->getMessage()));
+            } 
             return $data;
         }
         

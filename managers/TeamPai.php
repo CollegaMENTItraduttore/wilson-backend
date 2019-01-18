@@ -12,14 +12,20 @@ class TeamPai extends WilsonBaseClass  {
         
     }
     /**
-     *  Campi obbligatori durante update or insert 
+     * Campi obbligatori durante update or insert 
+     *
+     * @param [type] $object
+     * @param array $msg
+     * @return
      */
     function checkCampiObbligatori($object, &$msg = array()) {
         return true;
     }
     /**
-     *  Ritorna una lista di team di cura filtrata per id_resident
-     *  
+     * Ritorna una lista di team di cura filtrata per id_resident
+     *
+     * @param [type] $id_resident
+     * @return
      */
     function list($id_resident = null) {
 
@@ -51,6 +57,9 @@ class TeamPai extends WilsonBaseClass  {
     }
     /**
      * Metodo che recupera il singolo componente del team del pai
+     *
+     * @param [type] $id
+     * @return 
      */
     function get($id = null) {
         
@@ -80,7 +89,11 @@ class TeamPai extends WilsonBaseClass  {
         }
         return $data;
     }
-
+    /**
+     * Hasmap, codice = cod_utente valore = id (tabella resident db collegamenti)
+     *
+     * @return
+     */
     function getHashMapResident() {
         $mpaResident = new stdClass(); 
         $managerResident = new Resident($this->getDb(), null);
@@ -90,28 +103,6 @@ class TeamPai extends WilsonBaseClass  {
             $mpaResident->{$ospite['cod_utente']} = $ospite['id'];
         }
         return $mpaResident;
-    }
-    /**
-     *  controllo se il record esiste gia in tabella
-     */
-    function existCompilatore($idTeAnaPers, $idResident) {
-
-        $data = [];    
-        
-        try {
-            $conn = $this->connectToDatabase();
-            $stmt = $conn->prepare('
-                    select team.id_teanapers
-                    from care_team team
-                    where team.id_resident = ? and team.id_teanapers =?'
-            );
-            $stmt->execute(array($idResident, $idTeAnaPers));
-            $data = $stmt -> fetchAll(PDO::FETCH_ASSOC);
-
-        } catch (Exception $e) {
-            throw new Exception(sprintf(Costanti::OPERATION_KO, $e->getMessage()));
-        }
-        return $data;
     }
     /**
      * Metodo che recupera tutti i compiltori presenti nella tabella care_team
@@ -129,7 +120,10 @@ class TeamPai extends WilsonBaseClass  {
         return $array;
     }
     /**
-     * Inserimento operatore di tipo "Staff"
+     * Inserimento, team pai
+     *
+     * @param [type] $array_object
+     * @return 
      */
     function new($array_object) {
 
@@ -196,12 +190,19 @@ class TeamPai extends WilsonBaseClass  {
         return $data;
     }
     /**
-     * Update operatore di tipo "Staff"
+     * Undocumented function
+     *
+     * @param [type] $object
+     * @return
      */
     function update($object) {
     }
     /**
-     * Cancellazione dell'operatore, in base all'id passato
+     * Metodo che prevede la cancellazione dei record all'interno della tabella 
+     * care_team per idResident, se e solo se non è stato inviato un messaggio
+     *
+     * @param [type] $idResident
+     * @return
      */
     function compilatoriNotDeleted($idResident) {
         //campo id obbligatorio 
@@ -233,6 +234,12 @@ class TeamPai extends WilsonBaseClass  {
         var_dump($array);
         return $array;
     }
+    /**
+     * Ritorna al ws traduttore la lista dei compilatori pai già compilati
+     *
+     * @param [type] $id_resident
+     * @return
+     */
     function shared($id_resident = null) {
 
         $data = [];    

@@ -12,7 +12,11 @@ class Relative extends WilsonBaseClass  {
         
     }
     /**
-     *  Campi obbligatori durante update or insert 
+     * Campi obbligatori
+     *
+     * @param [type] $object
+     * @param array $msg
+     * @return
      */
     function checkCampiObbligatori($object, &$msg = array()) {
 
@@ -46,7 +50,11 @@ class Relative extends WilsonBaseClass  {
         }
         return true;
     }
-
+    /**
+     * Metodo, ritorna una lista di utenti di tipo familiare
+     *
+     * @return 
+     */
     function list() {
 
         $data = [];    
@@ -75,6 +83,9 @@ class Relative extends WilsonBaseClass  {
     }
     /**
      * Metodo che recupera l'operatore passato a parametro
+     *
+     * @param [type] $id
+     * @return void
      */
     function get($id = null) {
         
@@ -109,7 +120,10 @@ class Relative extends WilsonBaseClass  {
         return $data;
     }
     /**
-     * Inserimento operatore di tipo "Staff"
+     * Inserimento operatore di tipo Familiare
+     *
+     * @param [type] $object
+     * @return
      */
     function new($object) {
         
@@ -141,7 +155,10 @@ class Relative extends WilsonBaseClass  {
         return $data;
     }
     /**
-     * Update operatore di tipo "Staff"
+     * Update operatore di tipo familiare
+     *
+     * @param [type] $object
+     * @return void
      */
     function update($object) {
         $msg = array();
@@ -185,7 +202,10 @@ class Relative extends WilsonBaseClass  {
         return $data;
     }
     /**
-     * Cancellazione dell'operatore, in base all'id passato
+     * Cancellazione dell'operatore di tipo familiare, in base all'id passato
+     *
+     * @param [type] $id
+     * @return void
      */
     function delete($id = null) {
         //campo id obbligatorio 
@@ -204,7 +224,12 @@ class Relative extends WilsonBaseClass  {
         }
         return $data;
     }
-
+    /**
+     * Metodo che recupera l'utente di tipo familiare, passando per lo username
+     *
+     * @param [type] $username
+     * @return 
+     */
     function getByUsername($username = null) {
 
         if (!isset($username)) {
