@@ -67,7 +67,8 @@ class Relative extends WilsonBaseClass  {
                        s.last_name as lastName, 
                        s.username as username, 
                        s.id_kinship as idKinship,
-                       r.cod_utente as codUtente
+                       r.cod_utente as codUtente,
+                       concat(r.last_name, " ", r.first_name) as nominativoResidente
                 from relative s
                 inner join resident r
                 on (r.id = s.id_resident)'
