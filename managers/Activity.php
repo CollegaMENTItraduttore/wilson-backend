@@ -219,10 +219,12 @@
             return $data;
         }
         /**
-         *  HasMap che recupera tutta la lista degli utenti, 
-         *  inserisce nel campo 
+         * HasMap che recupera tutta la lista degli utenti, 
+         * inserisce nel campo 
          *      codice: id riferimento cartella
-         *      valore: id tabella collegamenti 
+         *      valore: id tabella collegamenti
+         *
+         * @return
          */
         function getHashMapResident() {
 
@@ -237,10 +239,12 @@
             return $mpaResident;
         }
         /**
-         *  HasMap che recupera tutta la lista degli delle anagrafiche attività, 
-         *  inserisce nel campo 
-         *      codice: id riferimento cartella
-         *      valore: id tabella collegamenti 
+         * HasMap che recupera tutta la lista degli delle anagrafiche attività, 
+         * inserisce nel campo 
+         *    codice: id riferimento cartella
+         *    valore: id tabella collegamenti
+         *
+         * @return
          */
         function getHashMapActivity() {
 
@@ -255,10 +259,12 @@
             return $mapActivityInfo;
         }
         /**
-         *  HasMap che recupera tutta la lista degli staff, 
-         *  inserisce nel campo 
+         * HasMap che recupera tutta la lista degli staff, 
+         * inserisce nel campo 
          *      codice: id riferimento cartella (TEANAPERS)
-         *      valore: id tabella collegamenti 
+         *      valore: id tabella collegamenti
+         *
+         * @return
          */
         function getHashMapStaff() {
 
@@ -272,11 +278,22 @@
             }
             return $mapStaff;
         }
-
+        /**
+         * Controllo campi obbligatori in fase di insert or update
+         *
+         * @param [type] $object
+         * @param array $msg
+         * @return
+         */
         function checkCampiObbligatori($object, &$msg = array()) {
             return true;
         }
-
+        /**
+         * Inserimento attività e relativa tabella di dettaglio (singoli eventi)
+         *
+         * @param [type] $array_object
+         * @return
+         */
         function new($array_object) {
 
             $array_object = (!is_array($array_object) ? array($array_object) : $array_object); 

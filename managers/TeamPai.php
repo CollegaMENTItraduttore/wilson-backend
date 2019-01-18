@@ -16,7 +16,7 @@ class TeamPai extends WilsonBaseClass  {
      *
      * @param [type] $object
      * @param array $msg
-     * @return void
+     * @return
      */
     function checkCampiObbligatori($object, &$msg = array()) {
         return true;
@@ -59,7 +59,7 @@ class TeamPai extends WilsonBaseClass  {
      * Metodo che recupera il singolo componente del team del pai
      *
      * @param [type] $id
-     * @return void
+     * @return 
      */
     function get($id = null) {
         
@@ -123,7 +123,7 @@ class TeamPai extends WilsonBaseClass  {
      * Inserimento, team pai
      *
      * @param [type] $array_object
-     * @return void
+     * @return 
      */
     function new($array_object) {
 
@@ -190,7 +190,10 @@ class TeamPai extends WilsonBaseClass  {
         return $data;
     }
     /**
-     * Update operatore di tipo "Staff"
+     * Undocumented function
+     *
+     * @param [type] $object
+     * @return
      */
     function update($object) {
     }
@@ -199,7 +202,7 @@ class TeamPai extends WilsonBaseClass  {
      * care_team per idResident, se e solo se non è stato inviato un messaggio
      *
      * @param [type] $idResident
-     * @return void
+     * @return
      */
     function compilatoriNotDeleted($idResident) {
         //campo id obbligatorio 
@@ -235,7 +238,7 @@ class TeamPai extends WilsonBaseClass  {
      * Ritorna al ws traduttore la lista dei compilatori pai già compilati
      *
      * @param [type] $id_resident
-     * @return void
+     * @return
      */
     function shared($id_resident = null) {
 
