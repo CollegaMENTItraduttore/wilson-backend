@@ -204,12 +204,12 @@
                     if ( !$status && count($msg) > 0 ) {
                         throw new Exception(implode("", $msg));
                     }
-                    $stmt->bindValue(1,  $record->firstName, PDO::PARAM_STR);
-                    $stmt->bindValue(2, $record->lastName, PDO::PARAM_STR);
+                    $stmt->bindValue(1,  $record->first_name, PDO::PARAM_STR);
+                    $stmt->bindValue(2, $record->last_name, PDO::PARAM_STR);
                     $stmt->bindValue(3, $record->gender, PDO::PARAM_STR);
-                    $stmt->bindValue(4, $record->birthDay, PDO::PARAM_STR);
+                    $stmt->bindValue(4, $record->birthday, PDO::PARAM_STR);
                     $stmt->bindValue(5, $idRsa, PDO::PARAM_INT);
-                    $stmt->bindValue(6, $record->codUtente, PDO::PARAM_INT);
+                    $stmt->bindValue(6, $record->cod_utente, PDO::PARAM_INT);
 
                     $stmt->execute();
                 }         
