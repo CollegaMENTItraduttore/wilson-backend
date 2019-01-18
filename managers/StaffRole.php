@@ -11,13 +11,20 @@
        
         }
         /**
-         * 
+         * Undocumented function
+         *
+         * @param [type] $object
+         * @param array $msg
+         * @return void
          */
         function checkCampiObbligatori($object, &$msg = array()) {
             return true;
         }
         /**
-         * 
+         * Undocumented function
+         *
+         * @param [type] $array_object
+         * @return void
          */
         function new($array_object) {
 

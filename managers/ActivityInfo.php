@@ -11,7 +11,11 @@
         function launch( $params, $data ) {
        
         }
-
+        /**
+         * lista anagrafica attività
+         *
+         * @return 
+         */
         function list() {
             $data = [];    
             
@@ -34,11 +38,22 @@
             }
             return $data;
         }
-
+        /**
+         * Campi obbligatori durante update or insert
+         *
+         * @param [type] $object
+         * @param array $msg
+         * @return void
+         */
         function checkCampiObbligatori($object, &$msg = array()) {
             return true;
         }
-
+        /**
+         * Inserimento set di anagrafiche attività
+         *
+         * @param [type] $array_object
+         * @return void
+         */
         function new($array_object) {
 
             $array_object = (!is_array($array_object) ? array($array_object) : $array_object); 

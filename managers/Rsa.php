@@ -12,13 +12,20 @@ class Rsa extends WilsonBaseClass  {
         
     }
     /**
-     *  Campi obbligatori durante update or insert 
+     * Campi obbligatori
+     *
+     * @param [type] $object
+     * @param array $msg
+     * @return
      */
     function checkCampiObbligatori($object, &$msg = array()) {
         return true;
     }
     /**
      * Inserimento rsa
+     *
+     * @param [type] $object
+     * @return
      */
     function new($object) {
         

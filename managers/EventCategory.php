@@ -12,14 +12,20 @@ class EventCategory extends WilsonBaseClass  {
         
     }
     /**
-     *  Campi obbligatori durante update or insert 
+     * Campi obbligatori durante update or insert 
+     *
+     * @param [type] $object
+     * @param array $msg
+     * @return void
      */
     function checkCampiObbligatori($object, &$msg = array()) {
         return true;
     }
-
     /**
-     * Inserimento tipi bisogni primari
+     * Inserimento nuova categoria
+     *
+     * @param [type] $array_object
+     * @return void
      */
     function new($array_object) {
         
@@ -61,7 +67,12 @@ class EventCategory extends WilsonBaseClass  {
         } 
         return $data;
     }
-    
+    /**
+     * Eliminazione di una categoria
+     * 
+     * @param [type] $id
+     * @return
+     */
     function delete($id = null) {
         //campo id obbligatorio 
         if (empty($id)) {
@@ -71,7 +82,7 @@ class EventCategory extends WilsonBaseClass  {
         
         try {
             $conn = $this->connectToDatabase();
-            $stmt = $conn->prepare('delete from event_type where id = ?');            
+            $stmt = $conn->prepare('delete from event_type_category where id = ?');            
             $stmt->execute([$id]);
 
         } catch (Exception $e) {

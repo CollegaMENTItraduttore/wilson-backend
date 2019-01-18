@@ -11,7 +11,9 @@
        
         }
         /**
-         * Metodo per recuperare tutti i gradi di parentela 
+         * Undocumented function
+         *
+         * @return
          */
         function list() {
             $data = [];    
@@ -32,16 +34,22 @@
             }
             return $data; 
         }
-         
         /**
-         * 
+         * Controllo campi obbligatori
+         *
+         * @param [type] $object
+         * @param array $msg
+         * @return
          */
         function checkCampiObbligatori($object, &$msg = array()) {
             return true;
         }
-        /**
-         * Metodo per inserimento gradi di parentela
-         */
+       /**
+        * Inserimento dei gradi di parentela
+        *
+        * @param [type] $array_object
+        * @return
+        */
         function new($array_object) {
 
             $array_object = (!is_array($array_object) ? array($array_object) : $array_object); 

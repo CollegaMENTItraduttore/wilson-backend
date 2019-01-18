@@ -11,13 +11,20 @@
        
         }
         /**
-         * 
+         * Campi obbligatori durante update or insert
+         *
+         * @param [type] $object
+         * @param array $msg
+         * @return void
          */
         function checkCampiObbligatori($object, &$msg = array()) {
             return true;
         }
         /**
-         * 
+         * Inserimento singolo evento
+         *
+         * @param [type] $object
+         * @return void
          */
         function new($object) {
 

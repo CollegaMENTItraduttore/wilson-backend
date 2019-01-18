@@ -12,14 +12,20 @@ class EventType extends WilsonBaseClass  {
         
     }
     /**
-     *  Campi obbligatori durante update or insert 
+     * Controllo campi obbligatori
+     *
+     * @param [type] $object
+     * @param array $msg
+     * @return 
      */
     function checkCampiObbligatori($object, &$msg = array()) {
         return true;
     }
-
     /**
-     * Inserimento tipi bisogni primari
+     * Inserimento tipo evento
+     *
+     * @param [type] $array_object
+     * @return
      */
     function new($array_object) {
         
@@ -64,7 +70,12 @@ class EventType extends WilsonBaseClass  {
         } 
         return $data;
     }
-    
+    /**
+     * Eliminazione tipo evento
+     *
+     * @param [type] $id
+     * @return 
+     */
     function delete($id = null) {
         //campo id obbligatorio 
         if (empty($id)) {

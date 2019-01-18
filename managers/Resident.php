@@ -10,7 +10,12 @@
         function launch( $params, $data ) {
        
         }
-        
+        /**
+         * Undocumented function
+         *
+         * @param string $listResidents
+         * @return void
+         */
         function getList($listResidents = '') {
             
             $data = [];
@@ -143,11 +148,22 @@
             return $data;
 
         }
-        
+        /**
+         * Undocumented function
+         *
+         * @param [type] $record
+         * @param [type] $msg
+         * @return void
+         */
         function checkCampiObbligatori($record, &$msg) {
             return true;
         }
-
+        /**
+         * Undocumented function
+         *
+         * @param [type] $array_object
+         * @return void
+         */
         function new($array_object) {
 
             $array_object = (!is_array($array_object) ? array($array_object) : $array_object); 
@@ -155,7 +171,7 @@
             $conn = null;
     
             try {
-
+                
                 $conn = $this->connectToDatabase();
                 $conn->beginTransaction();
 

@@ -11,8 +11,10 @@
        
         }
         /**
-         *  Metodo per recupere tutte le richieste di appuntamento
+         * Metodo per recupere tutte le richieste di appuntamento
          * questo lato traduttore 
+         *
+         * @return
          */
         function list() {
             $data = null;        

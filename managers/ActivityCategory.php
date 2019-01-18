@@ -17,7 +17,10 @@
             return true;
         }
         /**
-         * 
+         * Inserimento set di categorie attività
+         *
+         * @param [type] $array_object
+         * @return 
          */
         function new($array_object) {
 

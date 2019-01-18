@@ -377,6 +377,9 @@
         /**
          * Metodo utilizzato, dal tradutottore per sapere quali attivita 
          * sono state condivise
+         *
+         * @param [type] $idResident
+         * @return 
          */
         function shared($idResident) {
 

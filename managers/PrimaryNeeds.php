@@ -13,7 +13,12 @@
         
         function launch( $params, $data ) {
         }
-
+        /**
+         * Metodo che ritorna il bisogno primario passato a parametro
+         *
+         * @param [type] $idPrimaryNeed
+         * @return void
+         */
         function getById($idPrimaryNeed) {
 
             $data = [];
@@ -45,7 +50,14 @@
             return $data;
 
         }
-        
+        /**
+         * Lista bisogni primari filtrara
+         *
+         * @param [type] $idResident
+         * @param [type] $dateStart
+         * @param [type] $dateEnd
+         * @return 
+         */
         function getListByFilters($idResident, $dateStart, $dateEnd) {
             $data = [];
             if (!isset($idResident)) {
@@ -91,10 +103,20 @@
             }
             return $data;
         }
-        
+        /**
+         * Undocumented function
+         *
+         * @return
+         */
         function getList() {           
         }
-
+        /**
+         * Campi obbligatori
+         *
+         * @param [type] $record
+         * @param [type] $msg
+         * @return
+         */
         function checkCampiObbligatori($record, $msg) {
             return true;
         }
@@ -103,6 +125,8 @@
          *  inserisce nel campo 
          *      codice: id riferimento cartella
          *      valore: id tabella collegamenti 
+         *
+         * @return
          */
         function getHashMapResident() {
 
@@ -117,10 +141,12 @@
             return $mpaResident;
         }
         /**
-         *  HasMap che recupera tutta la lista degli staff, 
+         * HasMap che recupera tutta la lista degli staff, 
          *  inserisce nel campo 
          *      codice: id riferimento cartella (TEANAPERS)
          *      valore: id tabella collegamenti 
+         *
+         * @return
          */
         function getHashMapStaff() {
 
@@ -134,7 +160,12 @@
             }
             return $mapStaff;
         }
-        
+        /**
+         * Undocumented function
+         *
+         * @param [type] $array_object
+         * @return
+         */
         function new( $array_object ) {
 
             $array_object = (!is_array($array_object) ? array($array_object) : $array_object); 
@@ -208,6 +239,10 @@
         /**
          * Metodo utilizzato, dal tradutottore per sapere quali attivita 
          * sono state condivise
+         *
+         * @param [type] $idResident
+         * @param [type] $listType
+         * @return
          */
         function shared($idResident, $listType) {
 

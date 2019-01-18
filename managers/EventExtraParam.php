@@ -11,13 +11,20 @@
        
         }
         /**
-         * 
+         * Controllo campi obbligatori
+         *
+         * @param [type] $object
+         * @param array $msg
+         * @return void
          */
         function checkCampiObbligatori($object, &$msg = array()) {
             return true;
         }
         /**
-         * 
+         * Inserimento informazioni extra relativi al tipo di evento 
+         *
+         * @param [type] $object
+         * @return
          */
         function new($object) {
 
