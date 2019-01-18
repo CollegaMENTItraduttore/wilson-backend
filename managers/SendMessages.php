@@ -24,6 +24,7 @@
                 $stmt = $conn->prepare("
                 select 
                     message.id as id, 
+                    message.shared_on as sharedOn,
                     resident.cod_utente as codUtente, 
                     message.sent_on as sentOn, 
                     message.message as message, 
@@ -35,7 +36,8 @@
                 FROM sent_message message 
                     inner join relative familiare on message.id_relative=familiare.id 
                     inner join resident resident on familiare.id_resident=resident.id 
-                    inner join care_team team on message.id_care_team=team.id;
+                    inner join care_team team on message.id_care_team=team.id
+                WHERE message.shared_on is null
                 ");
                 $stmt->execute();
                 $data = $stmt ->fetchAll(PDO::FETCH_ASSOC);
