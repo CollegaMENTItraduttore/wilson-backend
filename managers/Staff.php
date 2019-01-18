@@ -147,7 +147,7 @@ class Staff extends WilsonBaseClass  {
                 }
                 $stmt->bindValue(1, $record->firstName, PDO::PARAM_STR);
                 $stmt->bindValue(2, $record->lastName, PDO::PARAM_STR);
-                $stmt->bindValue(3, $record->email, PDO::PARAM_STR);
+                $stmt->bindValue(3, $record->mail, PDO::PARAM_STR);
                 $stmt->bindValue(4, $record->idRole, PDO::PARAM_STR);
                 $stmt->bindValue(5, $id_rsa, PDO::PARAM_INT);
                 $stmt->bindValue(6, $record->username, PDO::PARAM_STR);
@@ -196,7 +196,7 @@ class Staff extends WilsonBaseClass  {
 
             $stmt->bindValue(1, $object->firstName, PDO::PARAM_STR);
             $stmt->bindValue(2, $object->lastName, PDO::PARAM_STR);
-            $stmt->bindValue(3, $object->email, PDO::PARAM_STR);
+            $stmt->bindValue(3, $object->mail, PDO::PARAM_STR);
             $stmt->bindValue(4, $object->username, PDO::PARAM_STR);
             $stmt->bindValue(5, $object->id, PDO::PARAM_INT);
             $stmt->execute();

@@ -25,6 +25,10 @@
                 case 'list':
                     $payload = $classManager->list();
                     break;   
+                case 'update':
+                    $object = json_decode( file_get_contents('php://input'));
+                    $payload = $classManager->update($object);
+                    break;   
                 case 'contactCareTeam':
                     $object = json_decode( file_get_contents('php://input'));
                     $payload = $classManager->contactCareTeam($object);

@@ -73,6 +73,38 @@
             }
             return $data;
         }
+        /**
+         * esegue l'update sulle richieste appuntamento
+         *
+         * @param [type] $array_object
+         * @return void
+         */
+        function update($array_object) {
+            $array_object = (!is_array($array_object) ? array($array_object) : $array_object); 
+            $data = [];    
+            $conn = null;
+    
+            try {
+
+                $conn = $this->connectToDatabase();
+                $stmt = $conn->prepare(
+                    'update sent_message  sm
+                        set sm.shared_on = ?
+                        where sm.id = ? 
+                    ');
+                //inserimento sequential 
+                foreach ($array_object as $record) {
+    
+                    $stmt->bindValue(1, $record->sharedOn, PDO::PARAM_STR);
+                    $stmt->bindValue(2, $record->id, PDO::PARAM_INT);
+                    $stmt->execute();
+                }         
+    
+            } catch (Exception $e) {
+                throw new Exception(sprintf(Costanti::OPERATION_KO, $e->getMessage()));
+            } 
+            return $data;
+        }
         
     }
 ?>
