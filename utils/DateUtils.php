@@ -93,6 +93,13 @@ class DateUtils {
     
                     break;
                 
+                case 'monthly':
+                case 'yearly':
+                    
+                    
+
+                    break;
+
                 default:
                     # code...
                     break;
