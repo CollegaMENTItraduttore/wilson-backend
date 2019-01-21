@@ -43,14 +43,16 @@
                             id_activity, 
                             start_date, 
                             end_date,
-                            comment
+                            comment,
+                            location
                         ) 
-                        values(?, ?, ?, ?)');
+                        values(?, ?, ?, ?, ?)');
     
                 $stmt->bindValue(1, $object->id_activity, PDO::PARAM_INT);
                 $stmt->bindValue(2, $object->startDate, PDO::PARAM_STR);
                 $stmt->bindValue(3, $object->endDate, PDO::PARAM_STR);
                 $stmt->bindValue(4, $object->comment, PDO::PARAM_STR);
+                $stmt->bindValue(5, $object->location, PDO::PARAM_STR);
                 $stmt->execute();
     
             } catch (Exception $e) {
