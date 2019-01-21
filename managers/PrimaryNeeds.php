@@ -181,9 +181,10 @@
                         created_on, 
                         id_resident,
                         id_type,
-                        id_primary_need_sipcar
+                        id_primary_need_sipcar,
+                        comment
                    ) 
-                    values(?, ?, ?, ?) ');
+                    values(?, ?, ?, ?, ?) ');
 
                 $mpaResident = $this->getHashMapResident();
                 $mapStaff = $this->getHashMapStaff();
@@ -207,6 +208,7 @@
                     $stmt->bindValue(2, $idResident, PDO::PARAM_INT);
                     $stmt->bindValue(3, $record->idType, PDO::PARAM_INT);    
                     $stmt->bindValue(4, $record->idRecordSipcar, PDO::PARAM_INT);    
+                    $stmt->bindValue(5, $record->comment, PDO::PARAM_STR);
     
                     $stmt->execute();
 
