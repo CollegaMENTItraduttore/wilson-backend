@@ -135,7 +135,8 @@
                         a.repeats_on,
                         ac.name as category,
                         a.organized_by,
-                        concat(staff.first_name, ' ', staff.last_name) as organized_by_name
+                        concat(staff.first_name, ' ', staff.last_name) as organized_by_name,
+                        ae.comment
 
                     FROM activity_edition ae
                     INNER JOIN activity a

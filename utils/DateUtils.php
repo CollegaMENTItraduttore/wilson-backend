@@ -41,7 +41,7 @@ class DateUtils {
     public static function whenRepeats( $every, $on ) {
         $stringWhenRepeats = '';
 
-        if (isset($on) && !empty($on)) {
+        /* if (isset($on) && !empty($on)) { */
 
             switch ($every) {
                 case 'daily':
@@ -95,16 +95,129 @@ class DateUtils {
                 
                 case 'monthly':
                 case 'yearly':
+
+                    $repeatsOn = '';
                     
-                    
+                    $every = true;
+                    if (strpos($on, 'BYDAY=1') !== false) {
+                        $stringWhenRepeats .= 'Ogni primo ';
+                    } else if (strpos($on, 'BYDAY=2') !== false) {
+                        $stringWhenRepeats .= 'Ogni secondo ';
+                    } else if (strpos($on, 'BYDAY=3') !== false) {
+                        $stringWhenRepeats .= 'Ogni terzo ';
+                    } else if (strpos($on, 'BYDAY=4') !== false) {
+                        $stringWhenRepeats .= 'Ogni quarto ';
+                    } else {
+                        $every = false;
+                    }
+
+                    $everyType = true;
+                    if (    (strpos($on, 'BYDAY=1MO,1TU,1WE,1TH,1FR') !== false) ||
+                            (strpos($on, 'BYDAY=2MO,2TU,2WE,2TH,2FR') !== false) ||
+                            (strpos($on, 'BYDAY=3MO,3TU,3WE,3TH,3FR') !== false) ||
+                            (strpos($on, 'BYDAY=4MO,4TU,4WE,4TH,4FR') !== false)
+                    ) {
+                        /* Ogni x settimana */
+                        $stringWhenRepeats .= 'settimana ';
+                        $start = strpos($on, 'BYDAY=');
+                        $repeatsOn = substr($on, $start, $start + 25) . ';';
+                    } else if (     (strpos($on, 'BYDAY=1SA,1SU') !== false) ||
+                                    (strpos($on, 'BYDAY=2SA,2SU') !== false) ||
+                                    (strpos($on, 'BYDAY=3SA,3SU') !== false) ||
+                                    (strpos($on, 'BYDAY=4SA,4SU') !== false)
+                    ) {
+                        /* Ogni x fine settimana */
+                        $stringWhenRepeats .= 'fine settimana ';
+                        $start = strpos($on, 'BYDAY=');
+                        $repeatsOn = substr($on, $start, $start + 13) . ';';
+                    } else if (     (strpos($on, 'BYDAY=1MO') !== false) ||
+                                    (strpos($on, 'BYDAY=2MO') !== false) ||
+                                    (strpos($on, 'BYDAY=3MO') !== false) ||
+                                    (strpos($on, 'BYDAY=4MO') !== false)
+                    ) {
+                        /* Ogni x lunedì */
+                        $stringWhenRepeats .= 'lunedì ';
+                        $start = strpos($on, 'BYDAY=');
+                        $repeatsOn = substr($on, $start, $start + 9) . ';';
+                    } else if (     (strpos($on, 'BYDAY=1TU') !== false) ||
+                                    (strpos($on, 'BYDAY=2TU') !== false) ||
+                                    (strpos($on, 'BYDAY=3TU') !== false) ||
+                                    (strpos($on, 'BYDAY=4TU') !== false)
+                    ) {
+                        /* Ogni x martedì */
+                        $stringWhenRepeats .= 'martedì ';
+                        $start = strpos($on, 'BYDAY=');
+                        $repeatsOn = substr($on, $start, $start + 9) . ';';
+                    } else if (     (strpos($on, 'BYDAY=1WE') !== false) ||
+                                    (strpos($on, 'BYDAY=2WE') !== false) ||
+                                    (strpos($on, 'BYDAY=3WE') !== false) ||
+                                    (strpos($on, 'BYDAY=4WE') !== false)
+                    ) {
+                        /* Ogni x mercoledì */
+                        $stringWhenRepeats .= 'mercoledì ';
+                        $start = strpos($on, 'BYDAY=');
+                        $repeatsOn = substr($on, $start, $start + 9) . ';';
+                    } else if (     (strpos($on, 'BYDAY=1TH') !== false) ||
+                                    (strpos($on, 'BYDAY=2TH') !== false) ||
+                                    (strpos($on, 'BYDAY=3TH') !== false) ||
+                                    (strpos($on, 'BYDAY=4TH') !== false)
+                    ) {
+                        /* Ogni x giovedì */
+                        $stringWhenRepeats .= 'giovedì ';
+                        $start = strpos($on, 'BYDAY=');
+                        $repeatsOn = substr($on, $start, $start + 9) . ';';
+                    } else if (     (strpos($on, 'BYDAY=1FR') !== false) ||
+                                    (strpos($on, 'BYDAY=2FR') !== false) ||
+                                    (strpos($on, 'BYDAY=3FR') !== false) ||
+                                    (strpos($on, 'BYDAY=4FR') !== false)
+                    ) {
+                        /* Ogni x venerdì */
+                        $stringWhenRepeats .= 'venerdì ';
+                        $start = strpos($on, 'BYDAY=');
+                        $repeatsOn = substr($on, $start, $start + 9) . ';';
+                    } else if (     (strpos($on, 'BYDAY=1SA') !== false) ||
+                                    (strpos($on, 'BYDAY=2SA') !== false) ||
+                                    (strpos($on, 'BYDAY=3SA') !== false) ||
+                                    (strpos($on, 'BYDAY=4SA') !== false)
+                    ) {
+                        /* Ogni x sabato */
+                        $stringWhenRepeats .= 'sabato ';
+                        $start = strpos($on, 'BYDAY=');
+                        $repeatsOn = substr($on, $start, $start + 9) . ';';
+                    } else if (     (strpos($on, 'BYDAY=1SU') !== false) ||
+                                    (strpos($on, 'BYDAY=2SU') !== false) ||
+                                    (strpos($on, 'BYDAY=3SU') !== false) ||
+                                    (strpos($on, 'BYDAY=4SU') !== false)
+                    ) {
+                        /* Ogni x domenica */
+                        $stringWhenRepeats .= 'domenica ';
+                        $start = strpos($on, 'BYDAY=');
+                        $repeatsOn = substr($on, $start, $start + 9) . ';';
+                    } else {
+                        $everyType = false;
+                    }
+
+
+                    /*
+                    * Se non ho avvalorato entrambi i campi "Ogni" e "OgniTipo", avvaloro il campo
+                    * "Ogni stesso giorno del mese/anno"
+                    */
+                    if ( !$every || !$everyType ) {
+                        /* Ogni stesso giorno del mese/anno */
+
+                    }
+
 
                     break;
 
                 default:
-                    # code...
+                    /**
+                     * TODO: passare data in chiaro del singolo evento
+                     */
+                    $stringWhenRepeats = 'Singolo evento';
                     break;
             }
-        }
+        /* } */
 
         return $stringWhenRepeats;
     }

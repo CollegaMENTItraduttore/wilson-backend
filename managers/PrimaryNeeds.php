@@ -31,13 +31,16 @@
                 $conn = $this->connectToDatabase();
                 $stmt = $conn->prepare("
                     SELECT 
-                        id,
-                        name,
-                        description,
-                        value_text,
-                        value_num,
-                        created_by
+                        eep.id,
+                        eep.name,
+                        eep.description,
+                        eep.value_text,
+                        eep.value_num,
+                        eep.created_by,
+                        pn.comment
                     FROM event_extra_param eep 
+                    INNER JOIN primary_need pn
+                        ON pn.id = eep.id_primary_need
                     WHERE eep.id_primary_need = ?
                 ");
                 $stmt->bindValue(1, $idPrimaryNeed, PDO::PARAM_INT);
