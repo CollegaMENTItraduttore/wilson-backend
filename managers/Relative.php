@@ -22,7 +22,7 @@ class Relative extends WilsonBaseClass  {
 
         $first_name = isset($object->firstName) ? $object->firstName : null;
         $last_name = isset($object->lastName) ? $object->lastName : null;
-        $email = isset($object->email) ? $object->email : null;
+        $email = isset($object->mail) ? $object->mail : null;
 
         $cod_utente = isset($object->codUtente) ? $object->codUtente : null;
         $username = isset($object->username) ? $object->username : null;

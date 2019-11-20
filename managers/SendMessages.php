@@ -17,7 +17,7 @@
          * @return
          */
         function list() {
-            $data = null;        
+            $data = [];        
             try {
 
                 $conn = $this->connectToDatabase();
@@ -41,7 +41,7 @@
                 ");
                 $stmt->execute();
                 $data = $stmt ->fetchAll(PDO::FETCH_ASSOC);
-
+	       
             } catch (Exception $e) {
                 throw new Exception(sprintf(Costanti::OPERATION_KO, $e->getMessage()));
             }

@@ -149,18 +149,18 @@ class TeamPai extends WilsonBaseClass  {
                                     values(?, ?, ?, ?, ?) ');
             
             $mpaResident = $this->getHashMapResident();
+            $checkDelete = true;
             $idResident = null;
             $listIdCompilatori = [];
             //inserimento sequential 
             foreach ($array_object as $record) {
-
                 $msg = array();
                 $status = $this->checkCampiObbligatori($record, $msg);
                 //se l'inserimento non va a buon fine interrompo il ciclo di tutto ed esco
                 if ( !$status && count($msg) > 0 ) {
                     throw new Exception(implode("", $msg));
                 }
-                if (empty($idResident)) {
+                if ($checkDelete) {
                     //questo pezzo di codice lo eseguo solo una volta
                     $idResident = $mpaResident->{$record->idResident};
                     /**
@@ -168,6 +168,7 @@ class TeamPai extends WilsonBaseClass  {
                      * nella tabella sent_message relativi a quell'idResident
                      */
                     $listIdCompilatori = $this->compilatoriNotDeleted($idResident);
+		    		$checkDelete = false;
                 }
                 //se compilatore incluso nella mia lista non lo inserisco
                 if ( (count($listIdCompilatori) > 0) && (in_array($record->idTeAnaPers, $listIdCompilatori)) ) {
@@ -178,12 +179,13 @@ class TeamPai extends WilsonBaseClass  {
                 $stmt->bindValue(3, $record->isFamilyNavigator, PDO::PARAM_INT);
                 $stmt->bindValue(4, $record->idTeAnaPers, PDO::PARAM_INT);   
                 $stmt->bindValue(5, $idResident, PDO::PARAM_INT);   
-
+                			
                 $stmt->execute();
             }         
             $conn->commit();
 
         } catch (Exception $e) {
+
             $conn->rollback(); 
             throw new Exception(sprintf(Costanti::OPERATION_KO, $e->getMessage()));
         } 
